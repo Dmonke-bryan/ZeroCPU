@@ -1,0 +1,625 @@
+#!/bin/bash
+
+VERSION="1.21"
++ VERSION=1.21
+
+help() {
+    echo "Version v"$VERSION
+    echo "Usage:"
+    echo "build.sh [-e project_name] [-b] [-t top_file] [-s] [-a parameters_list] [-f] [-l] [-g] [-w] [-c] [-d] [-m] [-r test_cases] [-v parameters_list] [-y]"
+    echo "Description:"
+    echo "-e: Specify a example project. For example: -e counter. If not specified, the default directory \"cpu\" will be used."
+    echo "-b: Build project using verilator and make tools automatically. It will generate the \"build\"(difftest) or \"build_test\" subfolder under the project directory."
+    echo "-t: Specify a file as verilog top file. If not specified, the default filename \"top.v\" will be used. This option is invalid when connected difftest."
+    echo "-s: Run simulation program. Use the \"build_test\" or \"build\"(difftest) folder as work path."
+    echo "-a: Parameters passed to the simulation program. For example: -a \"1 2 3 ......\". Multiple parameters require double quotes."
+    echo "-f: C++ compiler arguments for makefile. For example: -f \"-DGLOBAL_DEFINE=1 -ggdb3\". Multiple parameters require double quotes. This option is invalid when connected difftest."
+    echo "-l: C++ linker arguments for makefile. For example: -l \"-ldl -lm\". Multiple parameters require double quotes. This option is invalid when connected difftest."
+    echo "-g: Debug the simulation program with GDB. This option is invalid when connected difftest."
+    echo "-w: Open the latest waveform file(.vcd) using gtkwave under work path. Use the \"build_test\" or \"build\"(difftest) folder as work path."
+    echo "-c: Delete \"build\" and \"build_test\" folders under the project directory."
+    echo "-d: Connect to XiangShan difftest framework."
+    echo "-m: Parameters passed to the difftest makefile. For example: -m \"EMU_TRACE=1 EMU_THREADS=4\". Multiple parameters require double quotes."
+    echo "-r: Run all test cases of the specified directory in the \"bin\" directory. For example: -r \"case1 case2\". This option requires the project to be able to connect to difftest."
+    echo "-v: Parameters passed to verilator. For example: -v '--timescale \"1ns/1ns\"'"
+    echo "-y: Connect to ysyx SoC."
+    exit 0
+}
+
+create_soft_link() {
+    mkdir ${1} 1>/dev/null 2>&1
+    find -L ${1} -type l -delete
+    FILES=`eval "find ${2} -mindepth 1 -maxdepth 1 -name ${3}"`
+    for FILE in ${FILES[@]}
+    do
+        eval "ln -s \"`realpath --relative-to="${1}" "$FILE"`\" \"${1}/${FILE##*/}\" 1>/dev/null 2>&1"
+    done
+}
+
+create_bin_soft_link() {
+    find -L $BUILD_PATH -maxdepth 1 -type l -delete
+    FOLDERS=`find bin -mindepth 1 -maxdepth 1 -type d`
+    for FOLDER in ${FOLDERS[@]}
+    do
+        SUBFOLDER=${FOLDER##*/}
+        eval "ln -s \"`realpath --relative-to="$BUILD_PATH" "$OSCPU_PATH/$FOLDER"`\" \"$BUILD_PATH/${FOLDER##*/}\" 1>/dev/null 2>&1"
+    done
+
+    # create soft link ($BUILD_PATH/*.bin -> $OSCPU_PATH/$BIN_FOLDER/*.bin). Why? Because of laziness!
+    create_soft_link $BUILD_PATH $OSCPU_PATH/$BIN_FOLDER \"*.bin\"
+}
+
+compile_dramsim3() {
+    if [[ ! -f $OSCPU_PATH/$DRAMSIM3_FOLDER/build/libdramsim3.a ]]; then
+        [[ ! `dpkg -l | grep cmake` ]] && sudo apt-get --yes install cmake
+        mkdir $OSCPU_PATH/$DRAMSIM3_FOLDER/build
+        cd $OSCPU_PATH/$DRAMSIM3_FOLDER/build
+        cmake -D COSIM=1 ..
+        make
+        if [ $? -ne 0 ]; then
+            echo "Failed to compile dramsim3!!!"
+            exit 1
+        fi
+        cd $OSCPU_PATH
+    fi
+}
+
+compile_nemu() {
+    if [[ ! -f $NEMU_HOME/build/riscv64-nemu-interpreter-so ]]; then
+        cd $NEMU_HOME
+        make riscv64-ysyx-ref_defconfig
+        make
+        if [ $? -ne 0 ]; then
+            echo "Failed to compile nemu!!!"
+            exit 1
+        fi
+        cd $OSCPU_PATH
+    fi
+}
+
+compile_chisel() {
+    if [[ -f $PROJECT_PATH/build.sc ]]; then
+        # create soft link ($PROJECT_PATH/difftest -> $LIBRARIES_HOME/difftest)
+        if [[ ! -L $PROJECT_PATH/$DIFFTEST_FOLDER ]]; then
+            eval "ln -s \"`realpath --relative-to="$PROJECT_PATH" "$LIBRARIES_HOME"`/$DIFFTEST_FOLDER\" \"$PROJECT_PATH/$DIFFTEST_FOLDER\" 1>/dev/null 2>&1"
+        fi
+
+        cd $PROJECT_PATH
+        mkdir vsrc 1>/dev/null 2>&1
+        mill -i oscpu.runMain TopMain -td vsrc
+        if [ $? -ne 0 ]; then
+            echo "Failed to compile chisel!!!"
+            exit 1
+        fi
+        cd $OSCPU_PATH
+    fi
+}
+
+compile_difftest() {
+    cd $DIFFTEST_HOME
+    make DESIGN_DIR=$PROJECT_PATH $DIFFTEST_PARAM
+    if [ $? -ne 0 ]; then
+        echo "Failed to compile difftest!!!"
+        exit 1
+    fi
+    cd $OSCPU_PATH
+}
+
+build_diff_proj() {
+    compile_dramsim3
+    compile_nemu
+    compile_chisel
+
+    # Refresh the modification time of the top file, otherwise some changes to the RTL source code will not take effect in next compilation.
+    touch -m `find $PROJECT_PATH/$VSRC_FOLDER -name $DIFFTEST_TOP_FILE` 1>/dev/null 2>&1
+    # create soft link ($BUILD_PATH/*.v -> $PROJECT_PATH/$VSRC_FOLDER/*.v)
+    create_soft_link $BUILD_PATH $PROJECT_PATH/$VSRC_FOLDER \"*.v\"
+
+    compile_difftest
+}
+
+build_soc_proj() {
+    mkdir -p $BUILD_PATH/vsrc $BUILD_PATH/csrc
+
+    if [[ ! -f "$PROJECT_PATH/$VSRC_FOLDER/ysyx_${ID:0-6}.v" ]]; then
+        echo "$VSRC_FOLDER/ysyx_${ID:0-6}.v not detected. Please follow the README of ysyxSoC to get this file."
+        exit 1
+    fi
+
+    [[ -f $BUILD_PATH/vsrc/cpu-check.py ]] || cp $YSYXSOC_HOME/ysyx/soc/cpu-check.py $BUILD_PATH/
+    sed -i -e "s/input(.*)/\"${ID:0-4}\"/g" $BUILD_PATH/cpu-check.py
+    eval "cd $PROJECT_PATH/$VSRC_FOLDER && python3 $BUILD_PATH/cpu-check.py 1> /dev/null && mv -f cpu-check.log $BUILD_PATH"
+    grep 'fine' $BUILD_PATH/cpu-check.log 1> /dev/null 2>&1
+    if [[ $? -ne 0 ]]; then
+        echo "Interface check failed. Check $BUILD_FOLDER/cpu-check.log for more details."
+        exit 1
+    fi
+
+    if [[ ! -f $BUILD_PATH/vsrc/ysyxSoCFull.v ]]; then
+        cp $YSYXSOC_HOME/ysyx/soc/ysyxSoCFull.v $BUILD_PATH/vsrc/
+        sed -i -e "s/ysyx_000000/ysyx_${ID:0-6}/g" $BUILD_PATH/vsrc/ysyxSoCFull.v
+    fi
+
+    ln -s $YSYXSOC_HOME/ysyx/peripheral $BUILD_PATH/vsrc/
+    ln -s $YSYXSOC_HOME/ysyx/ram $BUILD_PATH/vsrc/
+    ln -s $YSYXSOC_HOME/ysyx/peripheral/spiFlash $BUILD_PATH/csrc/
+    VSRC_FOLDER+=" $BUILD_PATH/vsrc"
+    CSRC_FOLDER+=" $BUILD_PATH/csrc"
+
+    ln -s $YSYXSOC_HOME/ysyx/program/bin $BUILD_PATH/ysyxSoC
+}
+
+build_proj() {
+    cd $PROJECT_PATH
+
+    # get all .cpp files
+    CSRC_LIST=`find -L $PROJECT_PATH/$CSRC_FOLDER -name "*.cpp"`
+    for CSRC_FILE in ${CSRC_LIST[@]}
+    do
+        CSRC_FILES="$CSRC_FILES $CSRC_FILE"
+    done
+    # get all vsrc subfolders
+    VSRC_SUB_FOLDER=`find -L $VSRC_FOLDER -type d`
+    for SUBFOLDER in ${VSRC_SUB_FOLDER[@]}
+    do
+        INCLUDE_VSRC_FOLDERS="$INCLUDE_VSRC_FOLDERS -I$SUBFOLDER"
+    done
+    # get all csrc subfolders
+    CSRC_SUB_FOLDER=`find -L $PROJECT_PATH/$CSRC_FOLDER -type d`
+    for SUBFOLDER in ${CSRC_SUB_FOLDER[@]}
+    do
+        INCLUDE_CSRC_FOLDERS="$INCLUDE_CSRC_FOLDERS -I$SUBFOLDER"
+    done
+
+    # compile
+    mkdir $BUILD_FOLDER 1>/dev/null 2>&1
+    eval "verilator --x-assign unique --cc --exe --trace --assert -O3 $VERILATORFLAGS -CFLAGS \"-std=c++11 -Wall $INCLUDE_CSRC_FOLDERS $CFLAGS\" $LDFLAGS -o $PROJECT_PATH/$BUILD_FOLDER/$EMU_FILE \
+        -Mdir $PROJECT_PATH/$BUILD_FOLDER/emu-compile $INCLUDE_VSRC_FOLDERS --build $V_TOP_FILE $CSRC_FILES"
+    if [ $? -ne 0 ]; then
+        echo "Failed to run verilator!!!"
+        exit 1
+    fi
+
+    cd $OSCPU_PATH
+}
+
+# Initialize variables
+OSCPU_PATH=$(dirname $(readlink -f "$0"))
++++ readlink -f build.sh
+++ dirname /home/bryan/ysyx/oscpu-framework/build.sh
++ OSCPU_PATH=/home/bryan/ysyx/oscpu-framework
+MYINFO_FILE=$OSCPU_PATH"/myinfo.txt"
++ MYINFO_FILE=/home/bryan/ysyx/oscpu-framework/myinfo.txt
+EMU_FILE="emu"
++ EMU_FILE=emu
+PROJECT_FOLDER="cpu"
++ PROJECT_FOLDER=cpu
+BUILD_FOLDER="build_test"
++ BUILD_FOLDER=build_test
+DIFF_BUILD_FOLDER="build"
++ DIFF_BUILD_FOLDER=build
+VSRC_FOLDER="vsrc"
++ VSRC_FOLDER=vsrc
+CSRC_FOLDER="csrc"
++ CSRC_FOLDER=csrc
+BIN_FOLDER="bin"
++ BIN_FOLDER=bin
+BUILD="false"
++ BUILD=false
+V_TOP_FILE="top.v"
++ V_TOP_FILE=top.v
+SIMULATE="false"
++ SIMULATE=false
+CHECK_WAVE="false"
++ CHECK_WAVE=false
+CLEAN="false"
++ CLEAN=false
+PARAMETERS=
++ PARAMETERS=
+CFLAGS=-Wmaybe-uninitialized
++ CFLAGS=-Wmaybe-uninitialized
+LDFLAGS=
++ LDFLAGS=
+GDB="false"
++ GDB=false
+LIBRARIES_FOLDER="libraries"
++ LIBRARIES_FOLDER=libraries
+DIFFTEST="false"
++ DIFFTEST=false
+DIFFTEST_FOLDER="difftest"
++ DIFFTEST_FOLDER=difftest
+DIFFTEST_PATH=$LIBRARIES_FOLDER/$DIFFTEST_FOLDER
++ DIFFTEST_PATH=libraries/difftest
+DIFFTEST_TOP_FILE="SimTop.v"
++ DIFFTEST_TOP_FILE=SimTop.v
+NEMU_PATH=$LIBRARIES_FOLDER"/NEMU"
++ NEMU_PATH=libraries/NEMU
+DIFFTEST_HELPER_PATH="src/test/vsrc/common"
++ DIFFTEST_HELPER_PATH=src/test/vsrc/common
+DIFFTEST_PARAM=
++ DIFFTEST_PARAM=
+DRAMSIM3_FOLDER="libraries/DRAMsim3"
++ DRAMSIM3_FOLDER=libraries/DRAMsim3
+TEST_CASES=
++ TEST_CASES=
+YSYXSOC="false"
++ YSYXSOC=false
+YSYXSOC_FOLDER="libraries/ysyxSoC"
++ YSYXSOC_FOLDER=libraries/ysyxSoC
+VERILATORFLAGS=
++ VERILATORFLAGS=
+
+# Check parameters
+while getopts 'he:bt:sa:f:l:gwcdm:r:yv:' OPT; do
+    case $OPT in
+        h) help;;
+        e) PROJECT_FOLDER="$OPTARG";;
+        b) BUILD="true";;
+        t) V_TOP_FILE="$OPTARG";;
+        s) SIMULATE="true";;
+        a) PARAMETERS="$OPTARG";;
+        f) CFLAGS="$OPTARG";;
+        l) LDFLAGS="$OPTARG";;
+        g) GDB="true";;
+        w) CHECK_WAVE="true";;
+        c) CLEAN="true";;
+        d) DIFFTEST="true";;
+        m) DIFFTEST_PARAM="$OPTARG";;
+        r) TEST_CASES="$OPTARG"; DIFFTEST="true";;
+        y) YSYXSOC="true"; V_TOP_FILE="ysyxSoCFull.v";;
+        v) VERILATORFLAGS="$OPTARG";;
+        ?) help;;
+    esac
+done
++ getopts he:bt:sa:f:l:gwcdm:r:yv: OPT
++ case $OPT in
++ PROJECT_FOLDER=cpu_diff
++ getopts he:bt:sa:f:l:gwcdm:r:yv: OPT
++ case $OPT in
++ DIFFTEST=true
++ getopts he:bt:sa:f:l:gwcdm:r:yv: OPT
++ case $OPT in
++ BUILD=true
++ getopts he:bt:sa:f:l:gwcdm:r:yv: OPT
++ case $OPT in
++ SIMULATE=true
++ getopts he:bt:sa:f:l:gwcdm:r:yv: OPT
++ case $OPT in
++ PARAMETERS='-i inst_diff.bin'
++ getopts he:bt:sa:f:l:gwcdm:r:yv: OPT
+
+[[ $LDFLAGS ]] && LDFLAGS="-LDFLAGS "\"$LDFLAGS\"
++ [[ -n '' ]]
+
+PROJECT_PATH=$OSCPU_PATH/projects/$PROJECT_FOLDER
++ PROJECT_PATH=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff
+[[ "$DIFFTEST" == "true" ]] && BUILD_PATH=$PROJECT_PATH/$DIFF_BUILD_FOLDER || BUILD_PATH=$PROJECT_PATH/$BUILD_FOLDER
++ [[ true == \t\r\u\e ]]
++ BUILD_PATH=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build
+[[ "$DIFFTEST" == "true" ]] && V_TOP_FILE=$DIFFTEST_TOP_FILE
++ [[ true == \t\r\u\e ]]
++ V_TOP_FILE=SimTop.v
+NEMU_HOME=$OSCPU_PATH/$NEMU_PATH
++ NEMU_HOME=/home/bryan/ysyx/oscpu-framework/libraries/NEMU
+DIFFTEST_HOME=$OSCPU_PATH/$DIFFTEST_PATH
++ DIFFTEST_HOME=/home/bryan/ysyx/oscpu-framework/libraries/difftest
+DRAMSIM3_HOME=$OSCPU_PATH/$DRAMSIM3_FOLDER
++ DRAMSIM3_HOME=/home/bryan/ysyx/oscpu-framework/libraries/DRAMsim3
+LIBRARIES_HOME=$OSCPU_PATH/$LIBRARIES_FOLDER
++ LIBRARIES_HOME=/home/bryan/ysyx/oscpu-framework/libraries
+YSYXSOC_HOME=$OSCPU_PATH/$YSYXSOC_FOLDER
++ YSYXSOC_HOME=/home/bryan/ysyx/oscpu-framework/libraries/ysyxSoC
+export NEMU_HOME=$NEMU_HOME
++ export NEMU_HOME=/home/bryan/ysyx/oscpu-framework/libraries/NEMU
++ NEMU_HOME=/home/bryan/ysyx/oscpu-framework/libraries/NEMU
+export NOOP_HOME=$PROJECT_PATH
++ export NOOP_HOME=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff
++ NOOP_HOME=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff
+export DRAMSIM3_HOME=$DRAMSIM3_HOME
++ export DRAMSIM3_HOME=/home/bryan/ysyx/oscpu-framework/libraries/DRAMsim3
++ DRAMSIM3_HOME=/home/bryan/ysyx/oscpu-framework/libraries/DRAMsim3
+
+# Get id and name
+ID=`sed '/^ID=/!d;s/.*=//' $MYINFO_FILE`
+++ sed '/^ID=/!d;s/.*=//' /home/bryan/ysyx/oscpu-framework/myinfo.txt
++ ID=20210407
+NAME=`sed '/^Name=/!d;s/.*=//' $MYINFO_FILE`
+++ sed '/^Name=/!d;s/.*=//' /home/bryan/ysyx/oscpu-framework/myinfo.txt
++ NAME='Zhou Zhi Dao'
+if [[ ${#ID} -le 7 ]] || [[ ${#NAME} -le 1 ]]; then
+    echo "Please fill your information in myinfo.txt!!!"
+    exit 1
+fi
++ [[ 8 -le 7 ]]
++ [[ 12 -le 1 ]]
+ID="${ID##*\r}"
++ ID=20210407
+NAME="${NAME##*\r}"
++ NAME='Zhou Zhi Dao'
+
+# Clean
+if [[ "$CLEAN" == "true" ]]; then
+    rm -rf $PROJECT_PATH/$BUILD_FOLDER $PROJECT_PATH/$DIFF_BUILD_FOLDER $PROJECT_PATH/out
+    unlink $PROJECT_PATH/$DIFFTEST_FOLDER 1>/dev/null 2>&1
+    exit 0
+fi
++ [[ false == \t\r\u\e ]]
+
+# Build project
+if [[ "$BUILD" == "true" ]]; then
+    [[ -d $BUILD_PATH ]] && find $BUILD_PATH -type l -delete
+    [[ "$YSYXSOC" == "true" ]] && build_soc_proj
+    [[ "$DIFFTEST" == "true" ]] && build_diff_proj || build_proj
+
+    #git commit
+    if [[ ! -f $OSCPU_PATH/.no_commit ]]; then
+        git add . -A --ignore-errors
+        (echo $NAME && echo $ID && hostnamectl && uptime) | git commit -F - -q --author='tracer-oscpu2021 <tracer@oscpu.org>' --no-verify --allow-empty 1>/dev/null 2>&1
+        sync
+    fi
+fi
++ [[ true == \t\r\u\e ]]
++ [[ -d /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build ]]
++ find /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build -type l -delete
++ [[ false == \t\r\u\e ]]
++ [[ true == \t\r\u\e ]]
++ build_diff_proj
++ compile_dramsim3
++ [[ ! -f /home/bryan/ysyx/oscpu-framework/libraries/DRAMsim3/build/libdramsim3.a ]]
++ compile_nemu
++ [[ ! -f /home/bryan/ysyx/oscpu-framework/libraries/NEMU/build/riscv64-nemu-interpreter-so ]]
++ compile_chisel
++ [[ -f /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build.sc ]]
+++ find /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc -name SimTop.v
++ touch -m /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/SimTop.v
++ create_soft_link /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc '"*.v"'
++ mkdir /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build
++ find -L /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build -type l -delete
+++ eval 'find /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc -mindepth 1 -maxdepth 1 -name "*.v"'
++++ find /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc -mindepth 1 -maxdepth 1 -name '*.v'
++ FILES='/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/defines.v
+/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/ctrl.v
+/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/SimTop.v
+/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/mem_stage.v
+/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/exe_stage.v
+/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/gen_en_dff.v
+/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/CSRfile.v
+/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/id_stage.v
+/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/wb_stage.v
+/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/regfile.v
+/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/rvcpu.v
+/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/if_stage.v'
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/defines.v
++ eval 'ln -s "../vsrc/defines.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/defines.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/defines.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/defines.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/defines.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/defines.v
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/ctrl.v
++ eval 'ln -s "../vsrc/ctrl.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/ctrl.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/ctrl.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/ctrl.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/ctrl.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/ctrl.v
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/SimTop.v
++ eval 'ln -s "../vsrc/SimTop.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/SimTop.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/SimTop.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/SimTop.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/SimTop.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/SimTop.v
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/mem_stage.v
++ eval 'ln -s "../vsrc/mem_stage.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/mem_stage.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/mem_stage.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/mem_stage.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/mem_stage.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/mem_stage.v
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/exe_stage.v
++ eval 'ln -s "../vsrc/exe_stage.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/exe_stage.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/exe_stage.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/exe_stage.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/exe_stage.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/exe_stage.v
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/gen_en_dff.v
++ eval 'ln -s "../vsrc/gen_en_dff.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/gen_en_dff.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/gen_en_dff.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/gen_en_dff.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/gen_en_dff.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/gen_en_dff.v
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/CSRfile.v
++ eval 'ln -s "../vsrc/CSRfile.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/CSRfile.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/CSRfile.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/CSRfile.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/CSRfile.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/CSRfile.v
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/id_stage.v
++ eval 'ln -s "../vsrc/id_stage.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/id_stage.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/id_stage.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/id_stage.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/id_stage.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/id_stage.v
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/wb_stage.v
++ eval 'ln -s "../vsrc/wb_stage.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/wb_stage.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/wb_stage.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/wb_stage.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/wb_stage.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/wb_stage.v
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/regfile.v
++ eval 'ln -s "../vsrc/regfile.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/regfile.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/regfile.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/regfile.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/regfile.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/regfile.v
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/rvcpu.v
++ eval 'ln -s "../vsrc/rvcpu.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/rvcpu.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/rvcpu.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/rvcpu.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/rvcpu.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/rvcpu.v
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/vsrc/if_stage.v
++ eval 'ln -s "../vsrc/if_stage.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/if_stage.v" 1>/dev/null 2>&1'
+ln -s "../vsrc/if_stage.v" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/if_stage.v" 1>/dev/null 2>&1
+++ ln -s ../vsrc/if_stage.v /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/if_stage.v
++ compile_difftest
++ cd /home/bryan/ysyx/oscpu-framework/libraries/difftest
++ make DESIGN_DIR=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff
+find: ‘/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/src/main/scala’: No such file or directory
+Wed, 25 May 2022 14:33:45 +0800
+time -a -o /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/time.log verilator --cc --exe --top-module SimTop +define+VERILATOR=1 +define+PRINTF_COND=1 +define+RANDOMIZE_REG_INIT +define+RANDOMIZE_MEM_INIT +define+RANDOMIZE_GARBAGE_ASSIGN +define+RANDOMIZE_DELAY=0 -Wno-STMTDLY -Wno-WIDTH -I/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build --x-assign unique -O3 -CFLAGS "-std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1" -LDFLAGS "-lpthread -lSDL2 -ldl -lz" --assert --stats-vars --output-split 30000 --output-split-cfuncs 30000 \
+	-o /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/emu -Mdir /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/emu-compile /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/SimTop.v ./src/test/vsrc/common/difftest.v ./src/test/vsrc/common/ref.v ./src/test/vsrc/common/ram.v ./src/test/vsrc/common/assert.v ./src/test/vsrc/common/EICG_wrapper.v ./src/test/vsrc/common/SimJTAG.v /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/spikedasm.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/difftest.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/goldenmem.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/nemuproxy.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/ref.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/interface.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/verilator/snapshot.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/verilator/main.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/verilator/emu.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/vcs/main.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/common.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/keyboard.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/sdcard.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/flash.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/ram.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/uart.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/vga.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/SimJTAG.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/device.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/axi4.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/compress.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/remote_bitbang.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/common.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/keyboard.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/sdcard.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/flash.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/ram.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/uart.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/vga.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/SimJTAG.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/device.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/axi4.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/compress.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/remote_bitbang.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/spikedasm.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/difftest.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/goldenmem.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/nemuproxy.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/ref.cpp /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest/interface.cpp
+find /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build -name "VSimTop.h" | xargs sed -i 's/private/public/g' 
+make build_emu_local
+make[1]: Entering directory '/home/bryan/ysyx/oscpu-framework/libraries/difftest'
+find: ‘/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/src/main/scala’: No such file or directory
+Wed, 25 May 2022 14:33:45 +0800
+time -a -o /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/time.log make VM_PARALLEL_BUILDS=1 OPT_FAST="-O3" -C /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/emu-compile -f VSimTop.mk 
+make[2]: Entering directory '/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/emu-compile'
+VSimTop.mk:127: warning: overriding recipe for target 'main.o'
+VSimTop.mk:123: warning: ignoring old recipe for target 'main.o'
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14 -O3 -c -o main.o /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/verilator/main.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14 -O3 -c -o emu.o /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/verilator/emu.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14 -O3 -c -o VSimTop.o VSimTop.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14 -O3 -c -o VSimTop___024root__DepSet_h278d43d2__0.o VSimTop___024root__DepSet_h278d43d2__0.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14 -O3 -c -o VSimTop___024root__DepSet_hd5918264__0.o VSimTop___024root__DepSet_hd5918264__0.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14 -O3 -c -o VSimTop___024unit__DepSet_hd90c3539__0.o VSimTop___024unit__DepSet_hd90c3539__0.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14 -O3 -c -o VSimTop__Dpi.o VSimTop__Dpi.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14  -c -o VSimTop___024root__Slow.o VSimTop___024root__Slow.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14  -c -o VSimTop___024root__DepSet_h278d43d2__0__Slow.o VSimTop___024root__DepSet_h278d43d2__0__Slow.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14  -c -o VSimTop___024root__DepSet_hd5918264__0__Slow.o VSimTop___024root__DepSet_hd5918264__0__Slow.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14  -c -o VSimTop___024unit__Slow.o VSimTop___024unit__Slow.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14  -c -o VSimTop___024unit__DepSet_hab1093f9__0__Slow.o VSimTop___024unit__DepSet_hab1093f9__0__Slow.cpp
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -std=c++11 -static -Wall -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common -I/home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/difftest -DVERILATOR -Wno-maybe-uninitialized  -DNUM_CORES=1  -std=gnu++14  -c -o VSimTop__Syms.o VSimTop__Syms.cpp
+echo "" > VSimTop__ALL.verilator_deplist.tmp
+Archive ar -rcs VSimTop__ALL.a VSimTop.o VSimTop___024root__DepSet_h278d43d2__0.o VSimTop___024root__DepSet_hd5918264__0.o VSimTop___024unit__DepSet_hd90c3539__0.o VSimTop__Dpi.o VSimTop___024root__Slow.o VSimTop___024root__DepSet_h278d43d2__0__Slow.o VSimTop___024root__DepSet_hd5918264__0__Slow.o VSimTop___024unit__Slow.o VSimTop___024unit__DepSet_hab1093f9__0__Slow.o VSimTop__Syms.o
+g++    SimJTAG.o axi4.o common.o compress.o device.o flash.o keyboard.o ram.o remote_bitbang.o sdcard.o uart.o vga.o difftest.o goldenmem.o interface.o nemuproxy.o ref.o spikedasm.o main.o emu.o snapshot.o verilated.o verilated_dpi.o VSimTop__ALL.a   -lpthread -lSDL2 -ldl -lz    -o /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/emu
+rm VSimTop__ALL.verilator_deplist.tmp
+make[2]: Leaving directory '/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/emu-compile'
+make[1]: Leaving directory '/home/bryan/ysyx/oscpu-framework/libraries/difftest'
++ '[' 0 -ne 0 ']'
++ cd /home/bryan/ysyx/oscpu-framework
++ [[ ! -f /home/bryan/ysyx/oscpu-framework/.no_commit ]]
++ git add . -A --ignore-errors
++ git commit -F - -q '--author=tracer-oscpu2021 <tracer@oscpu.org>' --no-verify --allow-empty
++ echo Zhou Zhi Dao
++ echo 20210407
++ hostnamectl
++ uptime
++ sync
+
+# Simulate
+if [[ "$SIMULATE" == "true" ]]; then
+    create_bin_soft_link
+
+    cd $BUILD_PATH
+    
+    # run simulation program
+    echo "Simulating..."
+    [[ "$GDB" == "true" ]] && gdb -s $EMU_FILE --args ./$EMU_FILE $PARAMETERS || ./$EMU_FILE $PARAMETERS
+
+    if [ $? -ne 0 ]; then
+        echo "Failed to simulate!!!"
+        FAILED="true"
+    fi
+
+    cd $OSCPU_PATH
+fi
++ [[ true == \t\r\u\e ]]
++ create_bin_soft_link
++ find -L /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build -maxdepth 1 -type l -delete
+++ find bin -mindepth 1 -maxdepth 1 -type d
++ FOLDERS='bin/non-output
+bin/custom-output
+bin/rtthread'
++ for FOLDER in ${FOLDERS[@]}
++ SUBFOLDER=non-output
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/bin/non-output
++ eval 'ln -s "../../../bin/non-output" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/non-output" 1>/dev/null 2>&1'
+ln -s "../../../bin/non-output" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/non-output" 1>/dev/null 2>&1
+++ ln -s ../../../bin/non-output /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/non-output
++ for FOLDER in ${FOLDERS[@]}
++ SUBFOLDER=custom-output
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/bin/custom-output
++ eval 'ln -s "../../../bin/custom-output" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/custom-output" 1>/dev/null 2>&1'
+ln -s "../../../bin/custom-output" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/custom-output" 1>/dev/null 2>&1
+++ ln -s ../../../bin/custom-output /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/custom-output
++ for FOLDER in ${FOLDERS[@]}
++ SUBFOLDER=rtthread
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/bin/rtthread
++ eval 'ln -s "../../../bin/rtthread" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/rtthread" 1>/dev/null 2>&1'
+ln -s "../../../bin/rtthread" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/rtthread" 1>/dev/null 2>&1
+++ ln -s ../../../bin/rtthread /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/rtthread
++ create_soft_link /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/bin '"*.bin"'
++ mkdir /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build
++ find -L /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build -type l -delete
+++ eval 'find /home/bryan/ysyx/oscpu-framework/bin -mindepth 1 -maxdepth 1 -name "*.bin"'
++++ find /home/bryan/ysyx/oscpu-framework/bin -mindepth 1 -maxdepth 1 -name '*.bin'
++ FILES='/home/bryan/ysyx/oscpu-framework/bin/inst_diff.bin
+/home/bryan/ysyx/oscpu-framework/bin/inst.bin'
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/bin/inst_diff.bin
++ eval 'ln -s "../../../bin/inst_diff.bin" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/inst_diff.bin" 1>/dev/null 2>&1'
+ln -s "../../../bin/inst_diff.bin" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/inst_diff.bin" 1>/dev/null 2>&1
+++ ln -s ../../../bin/inst_diff.bin /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/inst_diff.bin
++ for FILE in ${FILES[@]}
+++ realpath --relative-to=/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build /home/bryan/ysyx/oscpu-framework/bin/inst.bin
++ eval 'ln -s "../../../bin/inst.bin" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/inst.bin" 1>/dev/null 2>&1'
+ln -s "../../../bin/inst.bin" "/home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/inst.bin" 1>/dev/null 2>&1
+++ ln -s ../../../bin/inst.bin /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build/inst.bin
++ cd /home/bryan/ysyx/oscpu-framework/projects/cpu_diff/build
++ echo Simulating...
+Simulating...
++ [[ false == \t\r\u\e ]]
++ ./emu -i inst_diff.bin
+Emu compiled at May 25 2022, 14:33:46
+key num:0
+share memory id:33
+The image is inst_diff.bin
+Using simulated 256MB RAM
+--diff is not given, try to use $(NEMU_HOME)/build/riscv64-nemu-interpreter-so by default
+Using /home/bryan/ysyx/oscpu-framework/libraries/NEMU/build/riscv64-nemu-interpreter-so for difftest
+The first instruction of core 0 has commited. Difftest enabled. 
+Core 0: [32mHIT GOOD TRAP at pc = 0x8000000c
+[0m[35mtotal guest instructions = 4
+[0m[35minstrCnt = 4, cycleCnt = 8, IPC = 0.500000
+[0m[34mSeed=0 Guest cycle spent: 10 (this will be different from cycleCnt if emu loads a snapshot)
+[0m[34mHost time spent: 0ms
+[0m+ '[' 0 -ne 0 ']'
++ cd /home/bryan/ysyx/oscpu-framework
+
+# Check waveform
+if [[ "$CHECK_WAVE" == "true" ]]; then
+    cd $BUILD_PATH
+    WAVE_FILE=`ls -t | grep .vcd | head -n 1`
+    if [ -n "$WAVE_FILE" ]; then
+        gtkwave $WAVE_FILE
+        if [ $? -ne 0 ]; then
+            echo "Failed to run gtkwave!!!"
+            exit 1
+        fi
+    else
+        echo "*.vcd file does not exist!!!"
+    fi
+    
+    cd $OSCPU_PATH
+fi
++ [[ false == \t\r\u\e ]]
+
+[[ "$FAILED" == "true" ]] && exit 1
++ [[ '' == \t\r\u\e ]]
+
+# Run all
+if [[ -n $TEST_CASES ]]; then
+    create_bin_soft_link
+
+    cd $BUILD_PATH
+
+    mkdir log 1>/dev/null 2>&1
+    for FOLDER in ${TEST_CASES[@]}
+    do
+        BIN_FILES=`eval "find $FOLDER -mindepth 1 -maxdepth 1 -regex \".*\.\(bin\)\""`
+        for BIN_FILE in $BIN_FILES; do
+            FILE_NAME=`basename ${BIN_FILE%.*}`
+            printf "[%30s] " $FILE_NAME
+            LOG_FILE=log/$FILE_NAME-log.txt
+            ./$EMU_FILE -i $BIN_FILE &> $LOG_FILE
+            if (grep 'HIT GOOD TRAP' $LOG_FILE > /dev/null) then
+                echo -e "\033[1;32mPASS!\033[0m"
+                rm $LOG_FILE
+            else
+                echo -e "\033[1;31mFAIL!\033[0m see $BUILD_PATH/$LOG_FILE for more information"
+            fi
+        done
+    done
+
+    cd $OSCPU_PATH
+fi
++ [[ -n '' ]]

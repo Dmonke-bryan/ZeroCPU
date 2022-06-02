@@ -1,0 +1,120 @@
+
+[verilator] Generating C++ files...
+Tue, 24 May 2022 16:35:32 +0800
+0.10user 0.02system 0:00.12elapsed 95%CPU (0avgtext+0avgdata 24908maxresident)k
+176inputs+1008outputs (5major+6622minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Tue, 24 May 2022 16:35:33 +0800
+13.47user 0.92system 0:14.72elapsed 97%CPU (0avgtext+0avgdata 182620maxresident)k
+7584inputs+73616outputs (1major+571877minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Tue, 24 May 2022 16:36:09 +0800
+0.12user 0.01system 0:00.15elapsed 94%CPU (0avgtext+0avgdata 26780maxresident)k
+0inputs+1560outputs (0major+7078minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Tue, 24 May 2022 16:36:09 +0800
+10.54user 0.46system 0:11.22elapsed 98%CPU (0avgtext+0avgdata 131252maxresident)k
+112inputs+60112outputs (0major+408728minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Tue, 24 May 2022 17:19:13 +0800
+0.12user 0.02system 0:00.15elapsed 96%CPU (0avgtext+0avgdata 26792maxresident)k
+0inputs+1560outputs (0major+7070minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Tue, 24 May 2022 17:19:13 +0800
+0.78user 0.09system 0:00.92elapsed 94%CPU (0avgtext+0avgdata 100384maxresident)k
+8inputs+6488outputs (0major+41713minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Tue, 24 May 2022 17:20:24 +0800
+0.13user 0.00system 0:00.15elapsed 92%CPU (0avgtext+0avgdata 26780maxresident)k
+0inputs+1560outputs (0major+7066minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Tue, 24 May 2022 17:20:24 +0800
+0.76user 0.10system 0:00.91elapsed 95%CPU (0avgtext+0avgdata 100384maxresident)k
+8inputs+6488outputs (0major+41742minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Tue, 24 May 2022 17:32:36 +0800
+0.10user 0.03system 0:00.15elapsed 91%CPU (0avgtext+0avgdata 26716maxresident)k
+0inputs+1560outputs (0major+7066minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Tue, 24 May 2022 17:32:36 +0800
+0.79user 0.09system 0:00.93elapsed 94%CPU (0avgtext+0avgdata 100488maxresident)k
+8inputs+6488outputs (0major+41746minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Tue, 24 May 2022 17:33:47 +0800
+0.13user 0.01system 0:00.14elapsed 96%CPU (0avgtext+0avgdata 26728maxresident)k
+0inputs+1560outputs (0major+7058minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Tue, 24 May 2022 17:33:48 +0800
+0.79user 0.08system 0:00.89elapsed 97%CPU (0avgtext+0avgdata 100232maxresident)k
+8inputs+6488outputs (0major+41773minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Wed, 25 May 2022 14:23:34 +0800
+0.11user 0.02system 0:00.21elapsed 67%CPU (0avgtext+0avgdata 24980maxresident)k
+18896inputs+1016outputs (112major+6593minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Wed, 25 May 2022 14:23:34 +0800
+0.69user 0.30system 0:01.33elapsed 74%CPU (0avgtext+0avgdata 100084maxresident)k
+70928inputs+4720outputs (372major+40588minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Wed, 25 May 2022 14:32:50 +0800
+0.10user 0.03system 0:00.19elapsed 70%CPU (0avgtext+0avgdata 24876maxresident)k
+176inputs+1016outputs (3major+6642minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Wed, 25 May 2022 14:32:50 +0800
+0.73user 0.15system 0:01.01elapsed 88%CPU (0avgtext+0avgdata 100084maxresident)k
+23192inputs+4720outputs (139major+40657minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Wed, 25 May 2022 14:33:45 +0800
+0.11user 0.01system 0:00.15elapsed 82%CPU (0avgtext+0avgdata 24832maxresident)k
+1600inputs+1016outputs (11major+6630minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Wed, 25 May 2022 14:33:45 +0800
+0.78user 0.09system 0:01.01elapsed 86%CPU (0avgtext+0avgdata 100352maxresident)k
+368inputs+4720outputs (5major+40762minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Wed, 25 May 2022 15:22:36 +0800
+0.10user 0.03system 0:00.17elapsed 82%CPU (0avgtext+0avgdata 25016maxresident)k
+17576inputs+1016outputs (110major+6572minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Wed, 25 May 2022 15:22:37 +0800
+0.68user 0.26system 0:01.08elapsed 87%CPU (0avgtext+0avgdata 100016maxresident)k
+70248inputs+4720outputs (370major+40555minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Mon, 30 May 2022 10:14:47 +0800
+0.10user 0.01system 0:00.13elapsed 94%CPU (0avgtext+0avgdata 25052maxresident)k
+328inputs+1016outputs (7major+6643minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Mon, 30 May 2022 10:14:47 +0800
+0.78user 0.09system 0:00.98elapsed 90%CPU (0avgtext+0avgdata 100300maxresident)k
+7952inputs+4720outputs (18major+40715minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Mon, 30 May 2022 10:14:55 +0800
+0.10user 0.01system 0:00.12elapsed 98%CPU (0avgtext+0avgdata 24916maxresident)k
+0inputs+1016outputs (0major+6629minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Mon, 30 May 2022 10:14:55 +0800
+0.76user 0.08system 0:00.88elapsed 95%CPU (0avgtext+0avgdata 100408maxresident)k
+16inputs+4720outputs (0major+40710minor)pagefaults 0swaps

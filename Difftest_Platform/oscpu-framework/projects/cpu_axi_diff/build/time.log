@@ -1,0 +1,10 @@
+
+[verilator] Generating C++ files...
+Tue, 24 May 2022 17:35:20 +0800
+0.09user 0.00system 0:00.10elapsed 96%CPU (0avgtext+0avgdata 21044maxresident)k
+0inputs+928outputs (0major+5653minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Tue, 24 May 2022 17:35:20 +0800
+14.90user 0.83system 0:16.12elapsed 97%CPU (0avgtext+0avgdata 131744maxresident)k
+168inputs+105016outputs (0major+643215minor)pagefaults 0swaps

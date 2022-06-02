@@ -1,0 +1,1 @@
+verilator --lint-only --top-module ysyx_210407 -Wall -Wno-DECLFILENAME ysyx_210407.v
