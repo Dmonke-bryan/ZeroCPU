@@ -4,7 +4,7 @@
 # Execute this makefile from the object directory:
 #    make -f Vrvcpu.mk
 
-default: /home/bryan/ysyx/oscpu-framework/projects/cpu/build_test/emu
+default: /home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/projects/cpu/build_test/emu
 
 ### Constants...
 # Perl executable (from $PERL)
@@ -35,7 +35,7 @@ VM_PREFIX = Vrvcpu
 VM_MODPREFIX = Vrvcpu
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-	-std=c++11 -Wall  -I/home/bryan/ysyx/oscpu-framework/projects/cpu/csrc -Wmaybe-uninitialized \
+	-std=c++11 -Wall  -I/home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/projects/cpu/csrc -Wmaybe-uninitialized \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
@@ -46,7 +46,7 @@ VM_USER_CLASSES = \
 
 # User .cpp directories (from .cpp's on Verilator command line)
 VM_USER_DIR = \
-	/home/bryan/ysyx/oscpu-framework/projects/cpu/csrc \
+	/home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/projects/cpu/csrc \
 
 
 ### Default rules...
@@ -58,11 +58,11 @@ include $(VERILATOR_ROOT)/include/verilated.mk
 ### Executable rules... (from --exe)
 VPATH += $(VM_USER_DIR)
 
-rvcpu-test.o: /home/bryan/ysyx/oscpu-framework/projects/cpu/csrc/rvcpu-test.cpp
+rvcpu-test.o: /home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/projects/cpu/csrc/rvcpu-test.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 
 ### Link rules... (from --exe)
-/home/bryan/ysyx/oscpu-framework/projects/cpu/build_test/emu: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a $(VM_HIER_LIBS)
+/home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/projects/cpu/build_test/emu: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a $(VM_HIER_LIBS)
 	$(LINK) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) $(LIBS) $(SC_LIBS) -o $@
 
 

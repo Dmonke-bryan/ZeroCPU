@@ -1,5 +1,5 @@
 rvcpu-test.o: \
- /home/bryan/ysyx/oscpu-framework/projects/cpu/csrc/rvcpu-test.cpp \
+ /home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/projects/cpu/csrc/rvcpu-test.cpp \
  /usr/local/share/verilator/include/verilated.h \
  /usr/local/share/verilator/include/verilatedos.h \
  /usr/local/share/verilator/include/verilated_config.h \
