@@ -1,9 +1,10 @@
 `timescale 1ns/1ps
 `include "defines.v"
 `include "zerocore.v"
+/* verilator lint_off UNUSED */
 
 module SimTop(
-    input clk,
+    input  clk,
     input  rst,
     input  [63:0] io_logCtrl_log_begin,
     input  [63:0] io_logCtrl_log_end,
@@ -49,5 +50,5 @@ zerocore u_core(
 );
     
 
-    
+
 endmodule

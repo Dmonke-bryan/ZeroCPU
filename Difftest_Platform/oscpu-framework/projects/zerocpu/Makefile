@@ -1,5 +1,6 @@
+
 .PHONY: select specific .v file
-TOPNAME = core
+TOPNAME = zerocore
 CSRC_NAME = $(TOPNAME)
 VSRC_NAME = $(TOPNAME)
 

@@ -25,8 +25,8 @@ wire [2:0] funt3;
 assign opcode = inst[6:0];
 assign funt3 = inst[14:12];
 //assign funt7 = inst[31:25];
-assign rs1_addr = inst[19:15];
-assign rs2_addr = inst[24:20];
+assign ra_addr = inst[19:15];
+assign rb_addr = inst[24:20];
 assign rd_addr = inst[11:7];
 
 //define the 1-bit flag for opcode

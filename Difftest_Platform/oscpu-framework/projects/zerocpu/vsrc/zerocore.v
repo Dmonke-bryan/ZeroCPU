@@ -1,4 +1,6 @@
 `timescale 1ns/1ps
+/* verilator lint_off UNOPTFLAT */
+/* verilator lint_off UNDRIVEN */
 
 `include "defines.v"
 `include "if_stage.v"
@@ -10,13 +12,14 @@ module zerocore (
     input clk,
     input rst,
     //interface with inst/data RAM
-    input [`DATA_BUS] ReadData,
-    output ReadEnable,
-    output WriteEnable,
-    output [`ADDR_BUS] ReadAddr,
-    output [`ADDR_BUS] WriteAddr,
-    output [`DATA_BUS] WriteMask,
-    output [`DATA_BUS] WriteData
+    /* verilator lint_off UNUSED */
+    input [`DATA_BUS] RamReadData,
+    output RamReadEnable,
+    output RamWriteEnable,
+    output [`ADDR_BUS] RamReadAddr,
+    output [`ADDR_BUS] RamWriteAddr,
+    output [`DATA_BUS] RamWriteMask,
+    output [`DATA_BUS] RamWriteData
 );
     
 wire [`ADDR_BUS] pc;
@@ -29,10 +32,11 @@ if_stage u_if(
 
 //read inst from extern virtual RAM
 wire [`INST_BUS] inst;
-assign ReadEnable = 1'b1;
+assign RamReadEnable = 1'b1;
 
-assign inst = ReadData[31:0];
-assign ReadAddr = {{52{1'b0}},pc};
+/* verilator lint_off UNUSED */
+assign inst = RamReadData[31:0];
+assign RamReadAddr = pc;
 
 
 wire aluBsrc;
@@ -61,21 +65,23 @@ id_stage u_id(
 );
 
 
+wire [`DATA_BUS] ra_ex;
 wire [`DATA_BUS] rb_ex;
 wire [`DATA_BUS] res;
+assign ra_ex = ra;
 assign rb_ex = aluBsrc ? imm : rb;
 
 ex_stage u_ex(
-    .ra(ra),
-    .ra_en(ra_en),
+    .ra(ra_ex),
+    //.ra_en(ra_en),
     .rb(rb_ex),
-    .rb_en(rb_en),
+    //.rb_en(rb_en),
     .aluCtl(aluCtl),
     .res(res)
 );
 
 Regfile u_regs(
-    .clk(clkS),
+    .clk(clk),
     .rst(rst),
     .Ra_en(ra_en),
     .Rb_en(rb_en),
