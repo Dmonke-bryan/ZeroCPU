@@ -97,7 +97,7 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
         = (0x1fU & (IData)((vlSelf->SimTop__DOT__ReadData 
                             >> 7U)));
     vlSelf->SimTop__DOT__u_zerocore__DOT__pc = ((IData)(vlSelf->reset)
-                                                 ? 0ULL
+                                                 ? 0x80000000ULL
                                                  : 
                                                 (4ULL 
                                                  + vlSelf->SimTop__DOT__u_zerocore__DOT__pc));
