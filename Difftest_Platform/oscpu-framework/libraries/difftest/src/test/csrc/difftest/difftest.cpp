@@ -277,6 +277,7 @@ void Difftest::do_first_instr_commit() {
     printf("pre-check the judgement condition 01: %d\n",has_commit);
     printf("pre-check the judgement condition 02: %d\n",dut.commit[0].valid);
     printf("pre-check the judgement condition 03: %lx\n",dut.commit[0].pc);
+    printf("pre-do_first_instr_commit: the inst is %x\n",dut.commit[0].inst);
 
   if (!has_commit && dut.commit[0].valid && dut.commit[0].pc == FIRST_INST_ADDRESS) {
     printf("check the judgement condition 01: %d\n",has_commit);
