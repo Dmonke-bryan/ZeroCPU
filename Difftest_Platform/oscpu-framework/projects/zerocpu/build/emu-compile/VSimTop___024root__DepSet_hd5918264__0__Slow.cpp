@@ -92,7 +92,6 @@ VL_ATTR_COLD void VSimTop___024root___ctor_var_reset(VSimTop___024root* vlSelf) 
     vlSelf->SimTop__DOT__WriteAddr = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__WriteData = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__WriteMask = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__r_pc = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__r_inst = VL_RAND_RESET_I(32);
     vlSelf->SimTop__DOT__r_valid = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__u_zerocore__DOT__pc = VL_RAND_RESET_Q(64);

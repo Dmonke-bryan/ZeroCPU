@@ -72,7 +72,7 @@ DifftestInstrCommit U_inst_commit(
   .coreid   ( 8'd0 ),//8bit
   .index    ( 8'd0 ),//8bit
   .valid    ( r_valid ),
-  .pc       ( r_pc ),//64bit
+  .pc       ( pc ),//64bit
   .instr    ( r_inst ),//32bit
   .skip     ( 1'b0 ),
   .isRVC    ( 1'b0 ),

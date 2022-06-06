@@ -25,7 +25,6 @@ VL_MODULE(VSimTop___024root) {
     VL_OUT8(io_uart_in_valid,0,0);
     VL_IN8(io_uart_in_ch,7,0);
     CData/*0:0*/ SimTop__DOT__WriteEnable;
-    CData/*0:0*/ SimTop__DOT__r_pc;
     CData/*0:0*/ SimTop__DOT__r_valid;
     CData/*0:0*/ SimTop__DOT__U_inst_commit__DOT__wen;
     CData/*7:0*/ SimTop__DOT__U_inst_commit__DOT__wdest;
