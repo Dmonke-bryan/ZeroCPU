@@ -7,6 +7,7 @@
 `include "id_stage.v"
 `include "ex_stage.v"
 `include "Regfile.v"
+`include "DFF.v"
 
 module zerocore (
     input clk,
@@ -31,11 +32,11 @@ if_stage u_if(
 );
 
 //read inst from extern virtual RAM
-wire [`INST_BUS] inst;
+wire [`INST_BUS] instF;
 assign RamReadEnable = 1'b1;
 
 /* verilator lint_off UNUSED */
-assign inst = RamReadData[31:0];
+assign instF = RamReadData[31:0];
 assign RamReadAddr = pc;
 
 
@@ -52,8 +53,12 @@ wire [`DATA_BUS] imm;
 wire ra_en;
 wire rb_en;
 
+wire [`INST_BUS] instD;
+
+DFF #(32) u_inst_F2D(.clk(clk),.rst(rst),.wen(1'b1),.din(instF),.dout(instD));
+
 id_stage u_id(
-    .inst(inst),
+    .inst(instD),
     .ra_en(ra_en),
     .ra_addr(ra_addr),
     .rb_en(rb_en),
