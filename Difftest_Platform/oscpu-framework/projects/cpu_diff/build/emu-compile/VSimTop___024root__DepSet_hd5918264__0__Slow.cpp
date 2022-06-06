@@ -37,9 +37,6 @@ VL_ATTR_COLD void VSimTop___024root___eval_initial(VSimTop___024root* vlSelf) {
     // Body
     vlSelf->__Vclklast__TOP__clock = vlSelf->clock;
     VSimTop___024root___initial__TOP__0(vlSelf);
-    vlSelf->__Vm_traceActivity[2U] = 1U;
-    vlSelf->__Vm_traceActivity[1U] = 1U;
-    vlSelf->__Vm_traceActivity[0U] = 1U;
     VSimTop___024root___initial__TOP__1(vlSelf);
 }
 
@@ -51,9 +48,6 @@ VL_ATTR_COLD void VSimTop___024root___eval_settle(VSimTop___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    VSimTop___024root___eval_settle\n"); );
     // Body
     VSimTop___024root___settle__TOP__0(vlSelf);
-    vlSelf->__Vm_traceActivity[2U] = 1U;
-    vlSelf->__Vm_traceActivity[1U] = 1U;
-    vlSelf->__Vm_traceActivity[0U] = 1U;
 }
 
 VL_ATTR_COLD void VSimTop___024root___final(VSimTop___024root* vlSelf) {
@@ -81,11 +75,9 @@ VL_ATTR_COLD void VSimTop___024root___ctor_var_reset(VSimTop___024root* vlSelf) 
     vlSelf->SimTop__DOT__pc = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__RamReadEnable = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__RamWriteEnable = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__RamReadAddr = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__RamWriteAddr = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__RamWriteData = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__RamWriteMask = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__ReadEnable = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__ReadData = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__r_pc = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__r_instr = VL_RAND_RESET_I(32);
@@ -118,48 +110,25 @@ VL_ATTR_COLD void VSimTop___024root___ctor_var_reset(VSimTop___024root* vlSelf) 
     for (int __Vi0=0; __Vi0<4; ++__Vi0) {
         vlSelf->SimTop__DOT__intrNO[__Vi0] = VL_RAND_RESET_I(32);
     }
-    vlSelf->SimTop__DOT__Rvcpu__DOT__instVaild = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__RamReadVaild = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__jump = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__rs1ReadEnable = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__rs2ReadEnable = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__rs1ReadAddr = VL_RAND_RESET_I(5);
     vlSelf->SimTop__DOT__Rvcpu__DOT__rs2ReadAddr = VL_RAND_RESET_I(5);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadAddrE = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__BusWriteAddrE = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__BusWriteDataE = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__op1E = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__op2E = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__flushD = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__flushE = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadAddr = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__BusWriteAddr = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadData = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__BusWriteData = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadEnable = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__BusWriteEnable = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__ClintReadAddr = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__ClintWriteAddr = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__ClintWriteData = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__ClintWriteMask = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__ClintReadEnable = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__ClintWriteEnable = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__LoadStoreE = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__LoadStoreM = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__LoadRedirect = VL_RAND_RESET_I(2);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__IRQcause = VL_RAND_RESET_Q(63);
     vlSelf->SimTop__DOT__Rvcpu__DOT__itTime = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__load = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__stallF = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__jAddr = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcEnableF_r = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pc = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcD_dff__DOT__qout_r = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r = VL_RAND_RESET_I(32);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__Rtype = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__Itype = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__Utype = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csr = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_r = VL_RAND_RESET_I(15);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__memFuncE_r = VL_RAND_RESET_I(11);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instFuncE_r = VL_RAND_RESET_I(14);
@@ -187,8 +156,6 @@ VL_ATTR_COLD void VSimTop___024root___ctor_var_reset(VSimTop___024root* vlSelf) 
     vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__rs2DataE_dff__DOT__qout_r = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rs1Data = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rs2Data = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__op1 = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__op2 = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrop2 = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__resADD = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__result = VL_RAND_RESET_Q(64);
@@ -206,12 +173,8 @@ VL_ATTR_COLD void VSimTop___024root___ctor_var_reset(VSimTop___024root* vlSelf) 
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__jumpAddr_dff__DOT__qout_r = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rdWriteDataE_clk_diff__DOT__qout_r = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rd_r_clk_diff__DOT__qout_r = VL_RAND_RESET_I(6);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__instTypeM_dff__DOT__qout_r = VL_RAND_RESET_I(15);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__instM_dff__DOT__qout_r = VL_RAND_RESET_I(32);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__pcM_dff__DOT__qout_r = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__loadRes8 = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__loadRes16 = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__loadRes32 = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteDataM_r = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteEnableW_clk_diff__DOT__qout_r = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteAddrW_clk_diff__DOT__qout_r = VL_RAND_RESET_I(5);
@@ -219,24 +182,14 @@ VL_ATTR_COLD void VSimTop___024root___ctor_var_reset(VSimTop___024root* vlSelf) 
     vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteAddrW_clk_diff__DOT__qout_r = VL_RAND_RESET_I(12);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteDataW_clk_diff__DOT__qout_r = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteEnableW_clk_diff__DOT__qout_r = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__instTypeW_dff__DOT__qout_r = VL_RAND_RESET_I(15);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__instW_dff__DOT__qout_r = VL_RAND_RESET_I(32);
     vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__pcW_dff__DOT__qout_r = VL_RAND_RESET_Q(64);
     for (int __Vi0=0; __Vi0<32; ++__Vi0) {
         vlSelf->SimTop__DOT__Rvcpu__DOT__Regfile__DOT__regs[__Vi0] = VL_RAND_RESET_Q(64);
     }
-    vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mvendorid = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__marchid = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mimpid = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mhartid = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mstatus = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__misa = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__medeleg = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mideleg = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mie = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mip = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mtvec = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcounteren = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcause = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mepc = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mscratch = VL_RAND_RESET_Q(64);
@@ -250,7 +203,6 @@ VL_ATTR_COLD void VSimTop___024root___ctor_var_reset(VSimTop___024root* vlSelf) 
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mie_r = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mepc_r = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mscratch_r = VL_RAND_RESET_Q(64);
-    vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcause_t = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcause_r = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mtime = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__timediv = VL_RAND_RESET_I(3);
@@ -277,7 +229,4 @@ VL_ATTR_COLD void VSimTop___024root___ctor_var_reset(VSimTop___024root* vlSelf) 
     vlSelf->SimTop__DOT__it_pc3_dff__DOT__qout_r = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__it_instr3_dff__DOT__qout_r = VL_RAND_RESET_I(32);
     vlSelf->__Vfunc_ram_read_helper__0__Vfuncout = 0;
-    for (int __Vi0=0; __Vi0<3; ++__Vi0) {
-        vlSelf->__Vm_traceActivity[__Vi0] = VL_RAND_RESET_I(1);
-    }
 }
