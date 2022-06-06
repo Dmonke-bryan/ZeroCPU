@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-/* verilator lint_off UNOPTFLAT */
+
 /* verilator lint_off UNDRIVEN */
 
 `include "defines.v"
@@ -46,6 +46,7 @@ wire [4:0] rb_addr;
 wire [4:0] rd_addr;
 wire [`DATA_BUS] ra;
 wire [`DATA_BUS] rb;
+wire [`DATA_BUS] rw;
 wire rd_en;
 wire [`DATA_BUS] imm;
 wire ra_en;
@@ -65,16 +66,18 @@ id_stage u_id(
 );
 
 
-wire [`DATA_BUS] ra_ex;
-wire [`DATA_BUS] rb_ex;
+wire [`DATA_BUS] ina;
+wire [`DATA_BUS] inb;
 wire [`DATA_BUS] res;
-assign ra_ex = ra;
-assign rb_ex = aluBsrc ? imm : rb;
+assign ina = ra;
+assign inb = aluBsrc ? imm : rb;
+assign res = rw;
+
 
 ex_stage u_ex(
-    .ra(ra_ex),
+    .ina(ina),
     //.ra_en(ra_en),
-    .rb(rb_ex),
+    .inb(inb),
     //.rb_en(rb_en),
     .aluCtl(aluCtl),
     .res(res)
@@ -87,11 +90,11 @@ Regfile u_regs(
     .Rb_en(rb_en),
     .Ra_addr(ra_addr),
     .Rb_addr(rb_addr),
-    .Ra(ra),
+    .Ra(ina),
     .Rb(rb),
     .Rw_en(rd_en),
     .Rw_addr(rd_addr),
-    .Rw(res)
+    .Rw(rw)
 );
 
 

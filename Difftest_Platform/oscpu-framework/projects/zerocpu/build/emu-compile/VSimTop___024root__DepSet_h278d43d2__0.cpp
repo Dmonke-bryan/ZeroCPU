@@ -92,7 +92,7 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
                                                                               [0x1fU]);
     VSimTop___024unit____Vdpiimwrap_v_difftest_InstrCommit_TOP____024unit(0U, 0U, 1U, vlSelf->SimTop__DOT__u_zerocore__DOT__pc, (IData)(vlSelf->SimTop__DOT__ReadData), 0U, 0U, 0U, (IData)(vlSelf->SimTop__DOT__U_inst_commit__DOT__wen), vlSelf->SimTop__DOT__U_inst_commit__DOT__wdest, vlSelf->SimTop__DOT__U_inst_commit__DOT__wdata);
     __Vdlyvval__SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap__v0 
-        = ((IData)(vlSelf->reset) ? 0ULL : vlSelf->SimTop__DOT__u_zerocore__DOT__res);
+        = ((IData)(vlSelf->reset) ? 0ULL : vlSelf->SimTop__DOT__u_zerocore__DOT__rw);
     __Vdlyvdim0__SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap__v0 
         = (0x1fU & (IData)((vlSelf->SimTop__DOT__ReadData 
                             >> 7U)));
@@ -108,7 +108,4 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
                                                                      - 0x80000000ULL) 
                                                                     >> 3U), vlSelf->__Vfunc_ram_read_helper__0__Vfuncout);
     vlSelf->SimTop__DOT__ReadData = vlSelf->__Vfunc_ram_read_helper__0__Vfuncout;
-    if ((IData)((0x13ULL == (0x707fULL & vlSelf->SimTop__DOT__ReadData)))) {
-        vlSelf->SimTop__DOT__u_zerocore__DOT__u_id__DOT__aluCtl__out__out0 = 0U;
-    }
 }

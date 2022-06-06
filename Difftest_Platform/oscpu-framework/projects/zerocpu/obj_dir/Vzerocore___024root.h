@@ -26,10 +26,11 @@ VL_MODULE(Vzerocore___024root) {
     VL_OUT64(RamWriteData,63,0);
     QData/*63:0*/ zerocore__DOT__pc;
     QData/*63:0*/ zerocore__DOT__ra;
+    QData/*63:0*/ zerocore__DOT__rw;
+    QData/*63:0*/ zerocore__DOT__ina;
     QData/*63:0*/ zerocore__DOT__res;
-    QData/*63:0*/ __Vchglast__TOP__zerocore__DOT__ra;
     VlUnpacked<QData/*63:0*/, 32> zerocore__DOT__u_regs__DOT__regsheap;
-    VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
+    VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
 
     // INTERNAL VARIABLES
     Vzerocore__Syms* vlSymsp;  // Symbol table

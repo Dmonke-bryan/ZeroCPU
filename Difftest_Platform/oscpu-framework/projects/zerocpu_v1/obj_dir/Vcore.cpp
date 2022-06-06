@@ -10,8 +10,22 @@
 
 Vcore::Vcore(VerilatedContext* _vcontextp__, const char* _vcname__)
     : vlSymsp{new Vcore__Syms(_vcontextp__, _vcname__, this)}
-    , clk{vlSymsp->TOP.clk}
+    , iram__02Eclk{vlSymsp->TOP.iram__02Eclk}
+    , core__02Eclk{vlSymsp->TOP.core__02Eclk}
     , rst_n{vlSymsp->TOP.rst_n}
+    , rd_en{vlSymsp->TOP.rd_en}
+    , wr_en{vlSymsp->TOP.wr_en}
+    , ReadEnable{vlSymsp->TOP.ReadEnable}
+    , WriteEnable{vlSymsp->TOP.WriteEnable}
+    , rd_addr{vlSymsp->TOP.rd_addr}
+    , wr_addr{vlSymsp->TOP.wr_addr}
+    , rd_data{vlSymsp->TOP.rd_data}
+    , wr_data{vlSymsp->TOP.wr_data}
+    , ReadData{vlSymsp->TOP.ReadData}
+    , ReadAddr{vlSymsp->TOP.ReadAddr}
+    , WriteAddr{vlSymsp->TOP.WriteAddr}
+    , WriteMask{vlSymsp->TOP.WriteMask}
+    , WriteData{vlSymsp->TOP.WriteData}
     , rootp{&(vlSymsp->TOP)}
 {
 }

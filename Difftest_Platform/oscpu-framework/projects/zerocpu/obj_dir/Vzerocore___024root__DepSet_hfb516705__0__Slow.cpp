@@ -56,29 +56,29 @@ VL_ATTR_COLD void Vzerocore___024root___settle__TOP__0(Vzerocore___024root* vlSe
         vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0 = 0U;
     }
     vlSelf->RamReadAddr = vlSelf->zerocore__DOT__pc;
+    vlSelf->zerocore__DOT__ina = ((IData)(vlSelf->rst)
+                                   ? 0ULL : (((0x1fU 
+                                               & (IData)(
+                                                         (vlSelf->RamReadData 
+                                                          >> 0xfU))) 
+                                              == (0x1fU 
+                                                  & (IData)(
+                                                            (vlSelf->RamReadData 
+                                                             >> 7U))))
+                                              ? vlSelf->zerocore__DOT__rw
+                                              : vlSelf->zerocore__DOT__u_regs__DOT__regsheap
+                                             [(0x1fU 
+                                               & (IData)(
+                                                         (vlSelf->RamReadData 
+                                                          >> 0xfU)))]));
     vlSelf->zerocore__DOT__res = ((0U == (IData)(vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0))
-                                   ? (vlSelf->zerocore__DOT__ra 
+                                   ? (vlSelf->zerocore__DOT__ina 
                                       + (QData)((IData)(
                                                         (0xfffU 
                                                          & (IData)(
                                                                    (vlSelf->RamReadData 
                                                                     >> 0x14U))))))
                                    : 0ULL);
-    vlSelf->zerocore__DOT__ra = ((IData)(vlSelf->rst)
-                                  ? 0ULL : (((0x1fU 
-                                              & (IData)(
-                                                        (vlSelf->RamReadData 
-                                                         >> 0xfU))) 
-                                             == (0x1fU 
-                                                 & (IData)(
-                                                           (vlSelf->RamReadData 
-                                                            >> 7U))))
-                                             ? vlSelf->zerocore__DOT__res
-                                             : vlSelf->zerocore__DOT__u_regs__DOT__regsheap
-                                            [(0x1fU 
-                                              & (IData)(
-                                                        (vlSelf->RamReadData 
-                                                         >> 0xfU)))]));
 }
 
 VL_ATTR_COLD void Vzerocore___024root___eval_initial(Vzerocore___024root* vlSelf) {
@@ -87,6 +87,7 @@ VL_ATTR_COLD void Vzerocore___024root___eval_initial(Vzerocore___024root* vlSelf
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vzerocore___024root___eval_initial\n"); );
     // Body
     Vzerocore___024root___initial__TOP__0(vlSelf);
+    vlSelf->__Vm_traceActivity[2U] = 1U;
     vlSelf->__Vm_traceActivity[1U] = 1U;
     vlSelf->__Vm_traceActivity[0U] = 1U;
     vlSelf->__Vclklast__TOP__clk = vlSelf->clk;
@@ -98,6 +99,9 @@ VL_ATTR_COLD void Vzerocore___024root___eval_settle(Vzerocore___024root* vlSelf)
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vzerocore___024root___eval_settle\n"); );
     // Body
     Vzerocore___024root___settle__TOP__0(vlSelf);
+    vlSelf->__Vm_traceActivity[2U] = 1U;
+    vlSelf->__Vm_traceActivity[1U] = 1U;
+    vlSelf->__Vm_traceActivity[0U] = 1U;
 }
 
 VL_ATTR_COLD void Vzerocore___024root___final(Vzerocore___024root* vlSelf) {
@@ -122,14 +126,15 @@ VL_ATTR_COLD void Vzerocore___024root___ctor_var_reset(Vzerocore___024root* vlSe
     vlSelf->RamWriteData = VL_RAND_RESET_Q(64);
     vlSelf->zerocore__DOT__pc = VL_RAND_RESET_Q(64);
     vlSelf->zerocore__DOT__ra = VL_RAND_RESET_Q(64);
+    vlSelf->zerocore__DOT__rw = VL_RAND_RESET_Q(64);
+    vlSelf->zerocore__DOT__ina = VL_RAND_RESET_Q(64);
     vlSelf->zerocore__DOT__res = VL_RAND_RESET_Q(64);
     vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0 = 0;
     for (int __Vi0=0; __Vi0<32; ++__Vi0) {
         vlSelf->zerocore__DOT__u_regs__DOT__regsheap[__Vi0] = VL_RAND_RESET_Q(64);
     }
     vlSelf->zerocore__DOT__u_regs__DOT__i = VL_RAND_RESET_I(32);
-    vlSelf->__Vchglast__TOP__zerocore__DOT__ra = VL_RAND_RESET_Q(64);
-    for (int __Vi0=0; __Vi0<2; ++__Vi0) {
+    for (int __Vi0=0; __Vi0<3; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = VL_RAND_RESET_I(1);
     }
 }

@@ -25,8 +25,22 @@ class Vcore VL_NOT_FINAL {
     // PORTS
     // The application code writes and reads these signals to
     // propagate new values into/out from the Verilated model.
-    VL_IN8(&clk,0,0);
+    VL_IN8(&iram__02Eclk,0,0);
+    VL_IN8(&core__02Eclk,0,0);
     VL_IN8(&rst_n,0,0);
+    VL_IN8(&rd_en,0,0);
+    VL_IN8(&wr_en,0,0);
+    VL_OUT8(&ReadEnable,0,0);
+    VL_OUT8(&WriteEnable,0,0);
+    VL_IN16(&rd_addr,11,0);
+    VL_IN16(&wr_addr,11,0);
+    VL_OUT(&rd_data,31,0);
+    VL_IN(&wr_data,31,0);
+    VL_IN64(&ReadData,63,0);
+    VL_OUT64(&ReadAddr,63,0);
+    VL_OUT64(&WriteAddr,63,0);
+    VL_OUT64(&WriteMask,63,0);
+    VL_OUT64(&WriteData,63,0);
 
     // CELLS
     // Public to allow access to /* verilator public */ items.
