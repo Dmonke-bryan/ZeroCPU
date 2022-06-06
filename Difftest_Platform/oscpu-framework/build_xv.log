@@ -325,7 +325,7 @@ ID=`sed '/^ID=/!d;s/.*=//' $MYINFO_FILE`
 + ID=20210407
 NAME=`sed '/^Name=/!d;s/.*=//' $MYINFO_FILE`
 ++ sed '/^Name=/!d;s/.*=//' /home/bryan/ysyx/oscpu-framework/myinfo.txt
-+ NAME='Zhou Zhi Dao'
++ NAME='Bryan'
 if [[ ${#ID} -le 7 ]] || [[ ${#NAME} -le 1 ]]; then
     echo "Please fill your information in myinfo.txt!!!"
     exit 1
@@ -489,8 +489,6 @@ make[1]: Leaving directory '/home/bryan/ysyx/oscpu-framework/libraries/difftest'
 + [[ ! -f /home/bryan/ysyx/oscpu-framework/.no_commit ]]
 + git add . -A --ignore-errors
 + git commit -F - -q '--author=tracer-oscpu2021 <tracer@oscpu.org>' --no-verify --allow-empty
-+ echo Zhou Zhi Dao
-+ echo 20210407
 + hostnamectl
 + uptime
 + sync
