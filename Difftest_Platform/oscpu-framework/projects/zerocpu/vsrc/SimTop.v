@@ -56,16 +56,24 @@ wire [`ADDR_BUS] pc;
 assign inst = ReadData[31:0];
 assign pc = ReadAddr;
 
-wire diff_valid;
-assign diff_valid = (u_zerocore.instD!=0);
+reg r_pc;
+reg [`INST_BUS] r_inst;
+reg r_valid;
+
+always @(posedge clock) begin
+  r_pc <= pc;
+  r_inst <= inst;
+  r_valid <= 1'b1;
+end
+
     
 DifftestInstrCommit U_inst_commit(
   .clock    ( clock ),
   .coreid   ( 8'd0 ),//8bit
   .index    ( 8'd0 ),//8bit
-  .valid    ( 1'b1 ),
-  .pc       ( pc ),//64bit
-  .instr    ( inst ),//32bit
+  .valid    ( r_valid ),
+  .pc       ( r_pc ),//64bit
+  .instr    ( r_inst ),//32bit
   .skip     ( 1'b0 ),
   .isRVC    ( 1'b0 ),
   .scFailed ( 1'b0 ),
