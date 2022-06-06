@@ -33,7 +33,7 @@ if_stage u_if(
 
 //read inst from extern virtual RAM
 wire [`INST_BUS] instF;
-assign RamReadEnable = 1'b1;
+assign RamReadEnable = 1'b0;
 
 /* verilator lint_off UNUSED */
 assign instF = RamReadData[31:0];
