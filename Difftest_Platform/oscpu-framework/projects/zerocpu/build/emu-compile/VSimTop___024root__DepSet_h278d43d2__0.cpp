@@ -110,8 +110,12 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
     vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[__Vdlyvdim0__SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap__v0] 
         = __Vdlyvval__SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap__v0;
     vlSelf->SimTop__DOT__r_valid = 1U;
-    vlSelf->SimTop__DOT__r_inst = (IData)(vlSelf->SimTop__DOT__ReadData);
     vlSelf->SimTop__DOT__r_pc = (1U & (IData)(vlSelf->SimTop__DOT__u_zerocore__DOT__pc));
+    vlSelf->SimTop__DOT__r_inst = ((1U & (IData)((vlSelf->SimTop__DOT__u_zerocore__DOT__pc 
+                                                  >> 2U)))
+                                    ? (IData)((vlSelf->SimTop__DOT__ReadData 
+                                               >> 0x20U))
+                                    : (IData)(vlSelf->SimTop__DOT__ReadData));
     vlSelf->SimTop__DOT__u_zerocore__DOT__instD = ((IData)(vlSelf->reset)
                                                     ? 0U
                                                     : (IData)(vlSelf->SimTop__DOT__ReadData));

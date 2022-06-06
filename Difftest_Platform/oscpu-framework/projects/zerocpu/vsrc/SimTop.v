@@ -53,7 +53,7 @@ zerocore u_zerocore(
 wire [`INST_BUS] inst;
 wire [`ADDR_BUS] pc;
 
-assign inst = ReadData[31:0];
+assign inst = ReadEnable? 32'b0: (pc[2]? ReadData[63:32]: ReadData[31:0]);
 assign pc = ReadAddr;
 
 reg r_pc;
