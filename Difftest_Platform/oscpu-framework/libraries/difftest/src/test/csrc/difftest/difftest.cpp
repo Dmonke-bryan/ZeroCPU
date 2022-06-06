@@ -283,6 +283,7 @@ void Difftest::do_first_instr_commit() {
     printf("check the judgement condition 02: %d\n",dut.commit[0].valid);
     printf("check the judgement condition 03: %lx\n",dut.commit[0].pc);
     printf("The first instruction of core %d has commited. Difftest enabled. \n", id);
+    printf("do_first_instr_commit: the inst is %x\n",dut.commit[0].inst);
     has_commit = 1;
     nemu_this_pc = dut.csr.this_pc;
 
