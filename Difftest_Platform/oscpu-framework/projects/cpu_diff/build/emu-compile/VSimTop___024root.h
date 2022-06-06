@@ -28,6 +28,7 @@ VL_MODULE(VSimTop___024root) {
         VL_IN8(io_uart_in_ch,7,0);
         CData/*0:0*/ SimTop__DOT__RamReadEnable;
         CData/*0:0*/ SimTop__DOT__RamWriteEnable;
+        CData/*0:0*/ SimTop__DOT__ReadEnable;
         CData/*0:0*/ SimTop__DOT__r_valid;
         CData/*0:0*/ SimTop__DOT__r_wen;
         CData/*7:0*/ SimTop__DOT__r_wdest;
@@ -35,6 +36,8 @@ VL_MODULE(VSimTop___024root) {
         CData/*7:0*/ SimTop__DOT__trap_code;
         CData/*0:0*/ SimTop__DOT__skip;
         CData/*0:0*/ SimTop__DOT__inst_vaild;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__instVaild;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__RamReadVaild;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__jump;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__rs1ReadEnable;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__rs2ReadEnable;
@@ -42,10 +45,21 @@ VL_MODULE(VSimTop___024root) {
         CData/*4:0*/ SimTop__DOT__Rvcpu__DOT__rs2ReadAddr;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__flushD;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__flushE;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__BusReadEnable;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__BusWriteEnable;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__ClintReadEnable;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__ClintWriteEnable;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__LoadStoreE;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__LoadStoreM;
+        CData/*1:0*/ SimTop__DOT__Rvcpu__DOT__LoadRedirect;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__itTime;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__load;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__stallF;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcEnableF_r;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__Rtype;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__Itype;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__Utype;
+        CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csr;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__CSRRW;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__CSRRS;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__CSRRC;
@@ -68,6 +82,8 @@ VL_MODULE(VSimTop___024root) {
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteEnableW_clk_diff__DOT__qout_r;
         CData/*2:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__timediv;
         CData/*1:0*/ SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__Redirect1_r;
+    };
+    struct {
         CData/*1:0*/ SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__IRQtype_r;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__itTime_r;
         CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__itWhit;
@@ -82,14 +98,14 @@ VL_MODULE(VSimTop___024root) {
         SData/*10:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__memFuncE_r;
         SData/*13:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instFuncE_r;
         SData/*14:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r;
-    };
-    struct {
         SData/*10:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__memFuncE_dff__DOT__qout_r;
         SData/*13:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instFuncE_dff__DOT__qout_r;
         SData/*11:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrWriteAddrE_dff__DOT__qout_r;
         SData/*11:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrWriteAddrM_clk_diff__DOT__qout_r;
         SData/*10:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__memFuncM_clk_diff__DOT__qout_r;
+        SData/*14:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__instTypeM_dff__DOT__qout_r;
         SData/*11:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteAddrW_clk_diff__DOT__qout_r;
+        SData/*14:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__instTypeW_dff__DOT__qout_r;
         IData/*31:0*/ SimTop__DOT__r_instr;
         IData/*31:0*/ SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r;
         IData/*31:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instE_dff__DOT__qout_r;
@@ -105,6 +121,7 @@ VL_MODULE(VSimTop___024root) {
         VL_IN64(io_logCtrl_log_end,63,0);
         VL_IN64(io_logCtrl_log_level,63,0);
         QData/*63:0*/ SimTop__DOT__pc;
+        QData/*63:0*/ SimTop__DOT__RamReadAddr;
         QData/*63:0*/ SimTop__DOT__RamWriteAddr;
         QData/*63:0*/ SimTop__DOT__RamWriteData;
         QData/*63:0*/ SimTop__DOT__RamWriteMask;
@@ -123,10 +140,22 @@ VL_MODULE(VSimTop___024root) {
         QData/*63:0*/ SimTop__DOT__mip;
         QData/*63:0*/ SimTop__DOT__mie;
         QData/*63:0*/ SimTop__DOT__mscratch;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__BusReadAddrE;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__BusWriteAddrE;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__BusWriteDataE;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__op1E;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__op2E;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__BusReadAddr;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__BusWriteAddr;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__BusReadData;
+    };
+    struct {
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__BusWriteData;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__ClintReadAddr;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__ClintWriteAddr;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__ClintWriteData;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__ClintWriteMask;
+        QData/*62:0*/ SimTop__DOT__Rvcpu__DOT__IRQcause;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__jAddr;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pc;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcD_dff__DOT__qout_r;
@@ -138,6 +167,8 @@ VL_MODULE(VSimTop___024root) {
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__rs2DataE_dff__DOT__qout_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rs1Data;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rs2Data;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__op1;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__op2;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrop2;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__resADD;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__result;
@@ -148,15 +179,25 @@ VL_MODULE(VSimTop___024root) {
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__jumpAddr_dff__DOT__qout_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rdWriteDataE_clk_diff__DOT__qout_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__pcM_dff__DOT__qout_r;
-    };
-    struct {
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__loadRes8;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__loadRes16;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__loadRes32;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteDataM_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteDataW_clk_diff__DOT__qout_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteDataW_clk_diff__DOT__qout_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__pcW_dff__DOT__qout_r;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mvendorid;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__marchid;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mimpid;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mhartid;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mstatus;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__misa;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__medeleg;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mideleg;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mie;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mip;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mtvec;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcounteren;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcause;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mepc;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mscratch;
@@ -170,8 +211,11 @@ VL_MODULE(VSimTop___024root) {
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mie_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mepc_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mscratch_r;
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcause_t;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcause_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mtime;
+    };
+    struct {
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mtimecmp;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__mepcWriteData_dff__DOT__qout_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__mepcWriteDataW_dff__DOT__qout_r;
@@ -183,6 +227,7 @@ VL_MODULE(VSimTop___024root) {
         VlUnpacked<IData/*31:0*/, 4> SimTop__DOT__it_instr;
         VlUnpacked<IData/*31:0*/, 4> SimTop__DOT__intrNO;
         VlUnpacked<QData/*63:0*/, 32> SimTop__DOT__Rvcpu__DOT__Regfile__DOT__regs;
+        VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
     };
 
     // INTERNAL VARIABLES
