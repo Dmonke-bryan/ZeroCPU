@@ -38,6 +38,7 @@ VL_MODULE(VSimTop___024root) {
     QData/*63:0*/ SimTop__DOT__WriteAddr;
     QData/*63:0*/ SimTop__DOT__WriteData;
     QData/*63:0*/ SimTop__DOT__WriteMask;
+    QData/*63:0*/ SimTop__DOT__r_pc;
     QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__pc;
     QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__rw;
     QData/*63:0*/ SimTop__DOT__U_inst_commit__DOT__wdata;

@@ -56,7 +56,7 @@ wire [`ADDR_BUS] pc;
 assign inst = ReadEnable? 32'b0: (pc[2]? ReadData[63:32]: ReadData[31:0]);
 assign pc = ReadAddr;
 
-reg r_pc;
+reg [`ADDR_BUS] r_pc;
 reg [`INST_BUS] r_inst;
 reg r_valid;
 
@@ -72,7 +72,7 @@ DifftestInstrCommit U_inst_commit(
   .coreid   ( 8'd0 ),//8bit
   .index    ( 8'd0 ),//8bit
   .valid    ( r_valid ),
-  .pc       ( pc ),//64bit
+  .pc       ( r_pc ),//64bit
   .instr    ( r_inst ),//32bit
   .skip     ( 1'b0 ),
   .isRVC    ( 1'b0 ),

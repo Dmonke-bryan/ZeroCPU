@@ -93,7 +93,7 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
                                                                               vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap
                                                                               [0x1fU]);
     if (vlSelf->SimTop__DOT__r_valid) {
-        VSimTop___024unit____Vdpiimwrap_v_difftest_InstrCommit_TOP____024unit(0U, 0U, (IData)(vlSelf->SimTop__DOT__r_valid), vlSelf->SimTop__DOT__u_zerocore__DOT__pc, vlSelf->SimTop__DOT__r_inst, 0U, 0U, 0U, (IData)(vlSelf->SimTop__DOT__U_inst_commit__DOT__wen), vlSelf->SimTop__DOT__U_inst_commit__DOT__wdest, vlSelf->SimTop__DOT__U_inst_commit__DOT__wdata);
+        VSimTop___024unit____Vdpiimwrap_v_difftest_InstrCommit_TOP____024unit(0U, 0U, (IData)(vlSelf->SimTop__DOT__r_valid), vlSelf->SimTop__DOT__r_pc, vlSelf->SimTop__DOT__r_inst, 0U, 0U, 0U, (IData)(vlSelf->SimTop__DOT__U_inst_commit__DOT__wen), vlSelf->SimTop__DOT__U_inst_commit__DOT__wdest, vlSelf->SimTop__DOT__U_inst_commit__DOT__wdata);
     }
     if (vlSelf->reset) {
         __Vdly__SimTop__DOT__u_zerocore__DOT__pc = 0x80000000ULL;
@@ -110,6 +110,7 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
     vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[__Vdlyvdim0__SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap__v0] 
         = __Vdlyvval__SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap__v0;
     vlSelf->SimTop__DOT__r_valid = 1U;
+    vlSelf->SimTop__DOT__r_pc = vlSelf->SimTop__DOT__u_zerocore__DOT__pc;
     vlSelf->SimTop__DOT__r_inst = ((1U & (IData)((vlSelf->SimTop__DOT__u_zerocore__DOT__pc 
                                                   >> 2U)))
                                     ? (IData)((vlSelf->SimTop__DOT__ReadData 
