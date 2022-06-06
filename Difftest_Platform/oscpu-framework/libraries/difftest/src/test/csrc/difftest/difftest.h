@@ -243,7 +243,7 @@ public:
   }
 
 private:
-  const uint64_t firstCommit_limit = 50; //changed to 50 for debugging.
+  const uint64_t firstCommit_limit = 5000; //changed to 50 for debugging.
   const uint64_t stuck_limit = 5000;
 
   int id;
