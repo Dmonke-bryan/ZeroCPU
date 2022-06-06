@@ -15,7 +15,9 @@ VL_ATTR_COLD void VSimTop___024root___settle__TOP__0(VSimTop___024root* vlSelf) 
     VSimTop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VSimTop___024root___settle__TOP__0\n"); );
     // Init
+    CData/*0:0*/ SimTop__DOT__RamReadEnable;
     QData/*63:0*/ SimTop__DOT__RamReadAddr;
+    QData/*63:0*/ SimTop__DOT__ReadData;
     QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__BusReadData;
     QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__BusWriteData;
     CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__BusReadEnable;
@@ -450,9 +452,8 @@ VL_ATTR_COLD void VSimTop___024root___settle__TOP__0(VSimTop___024root* vlSelf) 
         SimTop__DOT__Rvcpu__DOT__ClintReadAddr = 0ULL;
         SimTop__DOT__RamReadAddr = vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadAddr;
     }
-    vlSelf->SimTop__DOT__RamReadEnable = ((0x80000000ULL 
-                                           <= vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadAddr) 
-                                          & (IData)(SimTop__DOT__Rvcpu__DOT__BusReadEnable));
+    SimTop__DOT__RamReadEnable = ((0x80000000ULL <= vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadAddr) 
+                                  & (IData)(SimTop__DOT__Rvcpu__DOT__BusReadEnable));
     vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcause_r 
         = (((QData)((IData)((1U & ((IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__IRQtypeW_dff__DOT__qout_r) 
                                    | ((~ ((IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__IRQtypeW_dff__DOT__qout_r) 
@@ -876,12 +877,20 @@ VL_ATTR_COLD void VSimTop___024root___settle__TOP__0(VSimTop___024root* vlSelf) 
                           == (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__rs1ReadAddr)) 
                          & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__rs1ReadEnable))));
     VSimTop___024unit____Vdpiimwrap_ram_read_helper_TOP____024unit(1U, 
-                                                                   ((((IData)(vlSelf->SimTop__DOT__RamReadEnable)
+                                                                   ((((IData)(SimTop__DOT__RamReadEnable)
                                                                        ? SimTop__DOT__RamReadAddr
                                                                        : vlSelf->SimTop__DOT__pc) 
                                                                      - 0x80000000ULL) 
                                                                     >> 3U), vlSelf->__Vfunc_ram_read_helper__0__Vfuncout);
-    vlSelf->SimTop__DOT__ReadData = vlSelf->__Vfunc_ram_read_helper__0__Vfuncout;
+    SimTop__DOT__ReadData = vlSelf->__Vfunc_ram_read_helper__0__Vfuncout;
+    vlSelf->SimTop__DOT__inst = ((IData)(SimTop__DOT__RamReadEnable)
+                                  ? 0U : ((1U & (IData)(
+                                                        (vlSelf->SimTop__DOT__pc 
+                                                         >> 2U)))
+                                           ? (IData)(
+                                                     (SimTop__DOT__ReadData 
+                                                      >> 0x20U))
+                                           : (IData)(SimTop__DOT__ReadData)));
     SimTop__DOT__Rvcpu__DOT__BusReadData = ((0x80000000ULL 
                                              > vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadAddr)
                                              ? ((IData)(vlSelf->reset)
@@ -895,8 +904,8 @@ VL_ATTR_COLD void VSimTop___024root___settle__TOP__0(VSimTop___024root* vlSelf) 
                                                    == SimTop__DOT__Rvcpu__DOT__ClintReadAddr)
                                                    ? vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mtimecmp
                                                    : 0ULL)))
-                                             : ((IData)(vlSelf->SimTop__DOT__RamReadEnable)
-                                                 ? vlSelf->SimTop__DOT__ReadData
+                                             : ((IData)(SimTop__DOT__RamReadEnable)
+                                                 ? SimTop__DOT__ReadData
                                                  : 0ULL));
     SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__loadRes8 
         = (SimTop__DOT__Rvcpu__DOT__BusReadData >> 

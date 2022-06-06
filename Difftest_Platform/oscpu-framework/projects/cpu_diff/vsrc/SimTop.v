@@ -107,8 +107,10 @@ always @(posedge clock) begin
     {trap, trap_code, cycleCnt, instrCnt, skip} <= 0;
   end
   else if (~trap) begin
-    r_pc <= Rvcpu.pcW;
-    r_instr <= Rvcpu.instW;
+    //r_pc <= Rvcpu.pcW;
+    r_pc <= Rvcpu.pcF;
+    //r_instr <= Rvcpu.instW;
+    r_instr <= Rvcpu.instF;
     r_valid <= inst_vaild;
     r_wen <= Rvcpu.rdWriteEnableW;
     r_wdest <= {3'b00,Rvcpu.rdWriteAddrW};
