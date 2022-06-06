@@ -1,9 +1,9 @@
 main.o: \
- /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/verilator/main.cpp \
- /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/verilator/emu.h \
- /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/common.h \
- /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/common/../../../../config/config.h \
- /home/bryan/ysyx/oscpu-framework/libraries/difftest/src/test/csrc/verilator/snapshot.h \
+ /home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/libraries/difftest/src/test/csrc/verilator/main.cpp \
+ /home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/libraries/difftest/src/test/csrc/verilator/emu.h \
+ /home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/libraries/difftest/src/test/csrc/common/common.h \
+ /home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/libraries/difftest/src/test/csrc/common/../../../../config/config.h \
+ /home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/libraries/difftest/src/test/csrc/verilator/snapshot.h \
  VSimTop.h /usr/local/share/verilator/include/verilated.h \
  /usr/local/share/verilator/include/verilatedos.h \
  /usr/local/share/verilator/include/verilated_config.h \
