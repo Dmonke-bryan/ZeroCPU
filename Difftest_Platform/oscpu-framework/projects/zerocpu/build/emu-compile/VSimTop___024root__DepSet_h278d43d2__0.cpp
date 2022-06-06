@@ -125,4 +125,7 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
                                                                      - 0x80000000ULL) 
                                                                     >> 3U), vlSelf->__Vfunc_ram_read_helper__0__Vfuncout);
     vlSelf->SimTop__DOT__ReadData = vlSelf->__Vfunc_ram_read_helper__0__Vfuncout;
+    if ((IData)((0x13U == (0x707fU & vlSelf->SimTop__DOT__u_zerocore__DOT__instD)))) {
+        vlSelf->SimTop__DOT__u_zerocore__DOT__u_id__DOT__aluCtl__out__out0 = 0U;
+    }
 }

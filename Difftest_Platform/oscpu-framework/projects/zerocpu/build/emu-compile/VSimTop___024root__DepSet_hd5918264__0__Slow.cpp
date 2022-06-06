@@ -44,6 +44,7 @@ VL_ATTR_COLD void VSimTop___024root___initial__TOP__0(VSimTop___024root* vlSelf)
     vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[0x1dU] = 0ULL;
     vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[0x1eU] = 0ULL;
     vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[0x1fU] = 0ULL;
+    vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__i = 0x20U;
 }
 
 VL_ATTR_COLD void VSimTop___024root___eval_initial(VSimTop___024root* vlSelf) {
@@ -53,9 +54,12 @@ VL_ATTR_COLD void VSimTop___024root___eval_initial(VSimTop___024root* vlSelf) {
     // Body
     vlSelf->__Vclklast__TOP__clock = vlSelf->clock;
     VSimTop___024root___initial__TOP__0(vlSelf);
+    vlSelf->__Vm_traceActivity[1U] = 1U;
+    vlSelf->__Vm_traceActivity[0U] = 1U;
 }
 
 VL_ATTR_COLD void VSimTop___024root___settle__TOP__0(VSimTop___024root* vlSelf);
+void VSimTop___024root___combo__TOP__0(VSimTop___024root* vlSelf);
 
 VL_ATTR_COLD void VSimTop___024root___eval_settle(VSimTop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
@@ -63,6 +67,9 @@ VL_ATTR_COLD void VSimTop___024root___eval_settle(VSimTop___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    VSimTop___024root___eval_settle\n"); );
     // Body
     VSimTop___024root___settle__TOP__0(vlSelf);
+    vlSelf->__Vm_traceActivity[1U] = 1U;
+    vlSelf->__Vm_traceActivity[0U] = 1U;
+    VSimTop___024root___combo__TOP__0(vlSelf);
 }
 
 VL_ATTR_COLD void VSimTop___024root___final(VSimTop___024root* vlSelf) {
@@ -96,13 +103,21 @@ VL_ATTR_COLD void VSimTop___024root___ctor_var_reset(VSimTop___024root* vlSelf) 
     vlSelf->SimTop__DOT__r_inst = VL_RAND_RESET_I(32);
     vlSelf->SimTop__DOT__r_valid = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__u_zerocore__DOT__pc = VL_RAND_RESET_Q(64);
+    vlSelf->SimTop__DOT__u_zerocore__DOT__ra = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__u_zerocore__DOT__rw = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__u_zerocore__DOT__instD = VL_RAND_RESET_I(32);
+    vlSelf->SimTop__DOT__u_zerocore__DOT__ina = VL_RAND_RESET_Q(64);
+    vlSelf->SimTop__DOT__u_zerocore__DOT__res = VL_RAND_RESET_Q(64);
+    vlSelf->SimTop__DOT__u_zerocore__DOT__u_id__DOT__aluCtl__out__out0 = 0;
     for (int __Vi0=0; __Vi0<32; ++__Vi0) {
         vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[__Vi0] = VL_RAND_RESET_Q(64);
     }
+    vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__i = VL_RAND_RESET_I(32);
     vlSelf->SimTop__DOT__U_inst_commit__DOT__wen = VL_RAND_RESET_I(1);
     vlSelf->SimTop__DOT__U_inst_commit__DOT__wdest = VL_RAND_RESET_I(8);
     vlSelf->SimTop__DOT__U_inst_commit__DOT__wdata = VL_RAND_RESET_Q(64);
     vlSelf->__Vfunc_ram_read_helper__0__Vfuncout = 0;
+    for (int __Vi0=0; __Vi0<2; ++__Vi0) {
+        vlSelf->__Vm_traceActivity[__Vi0] = VL_RAND_RESET_I(1);
+    }
 }
