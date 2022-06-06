@@ -495,7 +495,7 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
                                              + (QData)((IData)(vlSelf->SimTop__DOT__inst_vaild)));
             vlSelf->SimTop__DOT__r_pc = vlSelf->SimTop__DOT__pc;
             vlSelf->SimTop__DOT__r_instr = vlSelf->SimTop__DOT__inst;
-            vlSelf->SimTop__DOT__r_valid = vlSelf->SimTop__DOT__inst_vaild;
+            vlSelf->SimTop__DOT__r_valid = 1U;
             vlSelf->SimTop__DOT__r_wen = vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteEnableW_clk_diff__DOT__qout_r;
             vlSelf->SimTop__DOT__r_wdest = vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteAddrW_clk_diff__DOT__qout_r;
             vlSelf->SimTop__DOT__r_wdata = vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteDataW_clk_diff__DOT__qout_r;

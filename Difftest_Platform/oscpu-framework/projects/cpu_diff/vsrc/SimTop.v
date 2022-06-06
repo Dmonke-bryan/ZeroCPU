@@ -111,7 +111,8 @@ always @(posedge clock) begin
     r_pc <= Rvcpu.pcF;
     //r_instr <= Rvcpu.instW;
     r_instr <= Rvcpu.instF;
-    r_valid <= inst_vaild;
+    //r_valid <= inst_vaild;
+    r_valid <= 1'b1;
     r_wen <= Rvcpu.rdWriteEnableW;
     r_wdest <= {3'b00,Rvcpu.rdWriteAddrW};
     r_wdata <= Rvcpu.rdWriteDataW;
