@@ -63,7 +63,7 @@ DifftestInstrCommit U_inst_commit(
   .clock    ( clock ),
   .coreid   ( 8'd0 ),//8bit
   .index    ( 8'd0 ),//8bit
-  .valid    ( 1'b1 ),
+  .valid    ( 1'b0 ),
   .pc       ( pc ),//64bit
   .instr    ( inst ),//32bit
   .skip     ( 1'b0 ),

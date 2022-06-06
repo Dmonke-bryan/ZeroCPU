@@ -98,8 +98,5 @@ VL_ATTR_COLD void VSimTop___024root___ctor_var_reset(VSimTop___024root* vlSelf) 
     for (int __Vi0=0; __Vi0<32; ++__Vi0) {
         vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[__Vi0] = VL_RAND_RESET_Q(64);
     }
-    vlSelf->SimTop__DOT__U_inst_commit__DOT__wen = VL_RAND_RESET_I(1);
-    vlSelf->SimTop__DOT__U_inst_commit__DOT__wdest = VL_RAND_RESET_I(8);
-    vlSelf->SimTop__DOT__U_inst_commit__DOT__wdata = VL_RAND_RESET_Q(64);
     vlSelf->__Vfunc_ram_read_helper__0__Vfuncout = 0;
 }

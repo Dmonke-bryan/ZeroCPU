@@ -25,8 +25,6 @@ VL_MODULE(VSimTop___024root) {
     VL_OUT8(io_uart_in_valid,0,0);
     VL_IN8(io_uart_in_ch,7,0);
     CData/*0:0*/ SimTop__DOT__WriteEnable;
-    CData/*0:0*/ SimTop__DOT__U_inst_commit__DOT__wen;
-    CData/*7:0*/ SimTop__DOT__U_inst_commit__DOT__wdest;
     CData/*0:0*/ __Vclklast__TOP__clock;
     IData/*31:0*/ SimTop__DOT__u_zerocore__DOT__instD;
     VL_IN64(io_logCtrl_log_begin,63,0);
@@ -38,7 +36,6 @@ VL_MODULE(VSimTop___024root) {
     QData/*63:0*/ SimTop__DOT__WriteMask;
     QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__pc;
     QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__rw;
-    QData/*63:0*/ SimTop__DOT__U_inst_commit__DOT__wdata;
     QData/*63:0*/ __Vfunc_ram_read_helper__0__Vfuncout;
     VlUnpacked<QData/*63:0*/, 32> SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap;
 
