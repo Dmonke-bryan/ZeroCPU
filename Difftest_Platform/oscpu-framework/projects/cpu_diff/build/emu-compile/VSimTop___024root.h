@@ -26,6 +26,7 @@ VL_MODULE(VSimTop___024root) {
         VL_OUT8(io_uart_out_ch,7,0);
         VL_OUT8(io_uart_in_valid,0,0);
         VL_IN8(io_uart_in_ch,7,0);
+        CData/*0:0*/ SimTop__DOT__RamReadEnable;
         CData/*0:0*/ SimTop__DOT__RamWriteEnable;
         CData/*0:0*/ SimTop__DOT__r_valid;
         CData/*0:0*/ SimTop__DOT__r_wen;
@@ -81,15 +82,14 @@ VL_MODULE(VSimTop___024root) {
         SData/*10:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__memFuncE_r;
         SData/*13:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instFuncE_r;
         SData/*14:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r;
-        SData/*10:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__memFuncE_dff__DOT__qout_r;
     };
     struct {
+        SData/*10:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__memFuncE_dff__DOT__qout_r;
         SData/*13:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instFuncE_dff__DOT__qout_r;
         SData/*11:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrWriteAddrE_dff__DOT__qout_r;
         SData/*11:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrWriteAddrM_clk_diff__DOT__qout_r;
         SData/*10:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__memFuncM_clk_diff__DOT__qout_r;
         SData/*11:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteAddrW_clk_diff__DOT__qout_r;
-        IData/*31:0*/ SimTop__DOT__inst;
         IData/*31:0*/ SimTop__DOT__r_instr;
         IData/*31:0*/ SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r;
         IData/*31:0*/ SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instE_dff__DOT__qout_r;
@@ -108,6 +108,7 @@ VL_MODULE(VSimTop___024root) {
         QData/*63:0*/ SimTop__DOT__RamWriteAddr;
         QData/*63:0*/ SimTop__DOT__RamWriteData;
         QData/*63:0*/ SimTop__DOT__RamWriteMask;
+        QData/*63:0*/ SimTop__DOT__ReadData;
         QData/*63:0*/ SimTop__DOT__r_pc;
         QData/*63:0*/ SimTop__DOT__r_wdata;
         QData/*63:0*/ SimTop__DOT__cycleCnt;
@@ -147,9 +148,9 @@ VL_MODULE(VSimTop___024root) {
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__jumpAddr_dff__DOT__qout_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rdWriteDataE_clk_diff__DOT__qout_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__pcM_dff__DOT__qout_r;
-        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteDataM_r;
     };
     struct {
+        QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteDataM_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteDataW_clk_diff__DOT__qout_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteDataW_clk_diff__DOT__qout_r;
         QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__pcW_dff__DOT__qout_r;

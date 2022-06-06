@@ -46,13 +46,13 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
     __Vdlyvset__SimTop__DOT__Rvcpu__DOT__Regfile__DOT__regs__v0 = 0U;
     __Vdly__SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r 
         = vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r;
-    __Vdly__SimTop__DOT__instrCnt = vlSelf->SimTop__DOT__instrCnt;
-    __Vdly__SimTop__DOT__cycleCnt = vlSelf->SimTop__DOT__cycleCnt;
-    __Vdly__SimTop__DOT__trap = vlSelf->SimTop__DOT__trap;
     __Vdly__SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcycle 
         = vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcycle;
     __Vdly__SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__timediv 
         = vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__timediv;
+    __Vdly__SimTop__DOT__instrCnt = vlSelf->SimTop__DOT__instrCnt;
+    __Vdly__SimTop__DOT__cycleCnt = vlSelf->SimTop__DOT__cycleCnt;
+    __Vdly__SimTop__DOT__trap = vlSelf->SimTop__DOT__trap;
     __Vdly__SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__minstret 
         = vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__minstret;
     __Vdly__SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrReadDataE_dff__DOT__qout_r 
@@ -315,7 +315,11 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
         __Vdly__SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r 
             = ((IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__stallF)
                 ? vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r
-                : vlSelf->SimTop__DOT__inst);
+                : ((IData)(vlSelf->SimTop__DOT__RamReadEnable)
+                    ? 0U : ((1U & (IData)((vlSelf->SimTop__DOT__pc 
+                                           >> 2U)))
+                             ? (IData)((vlSelf->SimTop__DOT__ReadData 
+                                        >> 0x20U)) : (IData)(vlSelf->SimTop__DOT__ReadData))));
     }
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__BusReadEnableM_clk_diff__DOT__qout_r 
         = ((~ ((IData)(vlSelf->reset) | (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__flushE))) 
@@ -493,9 +497,9 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
             __Vdly__SimTop__DOT__cycleCnt = (1ULL + vlSelf->SimTop__DOT__cycleCnt);
             __Vdly__SimTop__DOT__instrCnt = (vlSelf->SimTop__DOT__instrCnt 
                                              + (QData)((IData)(vlSelf->SimTop__DOT__inst_vaild)));
-            vlSelf->SimTop__DOT__r_pc = vlSelf->SimTop__DOT__pc;
-            vlSelf->SimTop__DOT__r_instr = vlSelf->SimTop__DOT__inst;
-            vlSelf->SimTop__DOT__r_valid = 1U;
+            vlSelf->SimTop__DOT__r_pc = vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__pcW_dff__DOT__qout_r;
+            vlSelf->SimTop__DOT__r_instr = vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__instW_dff__DOT__qout_r;
+            vlSelf->SimTop__DOT__r_valid = vlSelf->SimTop__DOT__inst_vaild;
             vlSelf->SimTop__DOT__r_wen = vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteEnableW_clk_diff__DOT__qout_r;
             vlSelf->SimTop__DOT__r_wdest = vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteAddrW_clk_diff__DOT__qout_r;
             vlSelf->SimTop__DOT__r_wdata = vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteDataW_clk_diff__DOT__qout_r;
@@ -564,15 +568,12 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
     vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteEnableW_clk_diff__DOT__qout_r 
         = ((~ (IData)(vlSelf->reset)) & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrWriteEnableM_clk_diff__DOT__qout_r));
     if (vlSelf->reset) {
-        vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__pcW_dff__DOT__qout_r = 0ULL;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__mepcWriteData_dff__DOT__qout_r = 0ULL;
         vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcause 
             = vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcause_r;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteDataW_clk_diff__DOT__qout_r = 0ULL;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteAddrW_clk_diff__DOT__qout_r = 0U;
     } else {
-        vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__pcW_dff__DOT__qout_r 
-            = vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__pcM_dff__DOT__qout_r;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__mepcWriteData_dff__DOT__qout_r 
             = ((0x1000U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r))
                 ? vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__pcE_dff__DOT__qout_r
@@ -632,30 +633,31 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
     vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteEnableW_clk_diff__DOT__qout_r 
         = ((~ (IData)(vlSelf->reset)) & ((IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rd_r_clk_diff__DOT__qout_r) 
                                          >> 5U));
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteAddrW_clk_diff__DOT__qout_r 
-        = ((IData)(vlSelf->reset) ? 0U : (0x1fU & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rd_r_clk_diff__DOT__qout_r)));
+    if (vlSelf->reset) {
+        vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteAddrW_clk_diff__DOT__qout_r = 0U;
+        vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__pcW_dff__DOT__qout_r = 0ULL;
+    } else {
+        vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteAddrW_clk_diff__DOT__qout_r 
+            = (0x1fU & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rd_r_clk_diff__DOT__qout_r));
+        vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__pcW_dff__DOT__qout_r 
+            = vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__pcM_dff__DOT__qout_r;
+    }
     vlSelf->SimTop__DOT__Rvcpu__DOT__LoadStoreE = ((IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__BusReadEnableE_dff__DOT__qout_r) 
                                                    | (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__BusWriteEnableE_dff__DOT__qout_r));
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrWriteEnableM_clk_diff__DOT__qout_r 
         = (1U & ((~ ((IData)(vlSelf->reset) | (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__flushE))) 
                  & (IData)((0U != (0xc00U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r))))));
-    if (((IData)(vlSelf->reset) | (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__flushE))) {
-        vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__pcM_dff__DOT__qout_r = 0ULL;
-        vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrWriteDataM_clk_diff__DOT__qout_r = 0ULL;
-    } else {
-        vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__pcM_dff__DOT__qout_r 
-            = vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__pcE_dff__DOT__qout_r;
-        vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrWriteDataM_clk_diff__DOT__qout_r 
-            = ((IData)((0U != (0x24U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrFuncE_dff__DOT__qout_r))))
-                ? vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrop2
-                : ((IData)((0U != (0x12U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrFuncE_dff__DOT__qout_r))))
-                    ? (vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrReadDataE_dff__DOT__qout_r 
-                       | vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrop2)
-                    : ((IData)((0U != (9U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrFuncE_dff__DOT__qout_r))))
-                        ? (vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrReadDataE_dff__DOT__qout_r 
-                           & (~ vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrop2))
-                        : 0ULL)));
-    }
+    vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrWriteDataM_clk_diff__DOT__qout_r 
+        = (((IData)(vlSelf->reset) | (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__flushE))
+            ? 0ULL : ((IData)((0U != (0x24U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrFuncE_dff__DOT__qout_r))))
+                       ? vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrop2
+                       : ((IData)((0U != (0x12U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrFuncE_dff__DOT__qout_r))))
+                           ? (vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrReadDataE_dff__DOT__qout_r 
+                              | vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrop2)
+                           : ((IData)((0U != (9U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrFuncE_dff__DOT__qout_r))))
+                               ? (vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrReadDataE_dff__DOT__qout_r 
+                                  & (~ vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrop2))
+                               : 0ULL))));
     SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mcause_t 
         = (((0x342U == (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteAddrW_clk_diff__DOT__qout_r)) 
             & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__csrWriteEnableW_clk_diff__DOT__qout_r))
@@ -730,9 +732,6 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
             : ((1U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__Redirect2_dff__DOT__qout_r))
                 ? vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__rdWriteDataW_clk_diff__DOT__qout_r
                 : vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__rs1DataE_dff__DOT__qout_r));
-    vlSelf->SimTop__DOT__inst_vaild = ((0U != vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__instW_dff__DOT__qout_r) 
-                                       & (vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__pcW_dff__DOT__qout_r 
-                                          != vlSelf->SimTop__DOT__r_pc));
     if (((IData)(vlSelf->reset) | (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__flushE))) {
         vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__instM_dff__DOT__qout_r = 0U;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rd_r_clk_diff__DOT__qout_r = 0U;
@@ -742,20 +741,22 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
         vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rd_r_clk_diff__DOT__qout_r 
             = vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__rd_dff__DOT__qout_r;
     }
+    vlSelf->SimTop__DOT__inst_vaild = ((0U != vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__instW_dff__DOT__qout_r) 
+                                       & (vlSelf->SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__pcW_dff__DOT__qout_r 
+                                          != vlSelf->SimTop__DOT__r_pc));
+    vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__pcM_dff__DOT__qout_r 
+        = (((IData)(vlSelf->reset) | (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__flushE))
+            ? 0ULL : vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__pcE_dff__DOT__qout_r);
     if (((IData)(vlSelf->reset) | (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__flushD))) {
         vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r = 0U;
-        vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__pcE_dff__DOT__qout_r = 0ULL;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrFuncE_dff__DOT__qout_r = 0U;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrWriteAddrE_dff__DOT__qout_r = 0U;
-        vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcD_dff__DOT__qout_r 
-            = __Vdly__SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcD_dff__DOT__qout_r;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instE_dff__DOT__qout_r = 0U;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__rd_dff__DOT__qout_r = 0U;
+        vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__pcE_dff__DOT__qout_r = 0ULL;
     } else {
         vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r 
             = vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_r;
-        vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__pcE_dff__DOT__qout_r 
-            = vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcD_dff__DOT__qout_r;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrFuncE_dff__DOT__qout_r 
             = (((IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__CSRRW) 
                 << 5U) | (((IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__CSRRS) 
@@ -768,8 +769,6 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
         vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__csrWriteAddrE_dff__DOT__qout_r 
             = (vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r 
                >> 0x14U);
-        vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcD_dff__DOT__qout_r 
-            = __Vdly__SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcD_dff__DOT__qout_r;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instE_dff__DOT__qout_r 
             = vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r;
         vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__rd_dff__DOT__qout_r 
@@ -777,6 +776,8 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
                 << 5U) | ((IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__rdWriteEnableE_r)
                            ? (0x1fU & (vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r 
                                        >> 7U)) : 0U));
+        vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__pcE_dff__DOT__qout_r 
+            = vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcD_dff__DOT__qout_r;
     }
     vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__csrop2 
         = ((0x800U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r))
@@ -784,15 +785,10 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
             : ((0x400U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r))
                 ? vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rs1Data
                 : 0ULL));
-    vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__resADD 
-        = (((IData)((0U != (0x1a0U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r))))
-             ? vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__pcE_dff__DOT__qout_r
-             : vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rs1Data) 
-           + ((2U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r))
-               ? vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rs2Data
-               : vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__imm_dff__DOT__qout_r));
     vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r 
         = __Vdly__SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r;
+    vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcD_dff__DOT__qout_r 
+        = __Vdly__SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pcD_dff__DOT__qout_r;
     vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__memFuncE_r 
         = (((IData)((3U == (0x707fU & vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r))) 
             << 0xaU) | (((IData)((0x4003U == (0x707fU 
@@ -1028,6 +1024,13 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
         = (IData)((0x2073U == (0x707fU & vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r)));
     vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__CSRRC 
         = (IData)((0x3073U == (0x707fU & vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r)));
+    vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__resADD 
+        = (((IData)((0U != (0x1a0U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r))))
+             ? vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__pcE_dff__DOT__qout_r
+             : vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rs1Data) 
+           + ((2U & (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__instTypeE_dff__DOT__qout_r))
+               ? vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__rs2Data
+               : vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__imm_dff__DOT__qout_r));
     vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__imm_r 
         = ((0x63U == (0x7fU & vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r))
             ? (((- (QData)((IData)((vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__instD_dff__DOT__qout_r 
@@ -1205,9 +1208,7 @@ VL_INLINE_OPT void VSimTop___024root___combo__TOP__0(VSimTop___024root* vlSelf) 
     VSimTop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VSimTop___024root___combo__TOP__0\n"); );
     // Init
-    CData/*0:0*/ SimTop__DOT__RamReadEnable;
     QData/*63:0*/ SimTop__DOT__RamReadAddr;
-    QData/*63:0*/ SimTop__DOT__ReadData;
     QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__BusReadData;
     QData/*63:0*/ SimTop__DOT__Rvcpu__DOT__BusWriteData;
     CData/*0:0*/ SimTop__DOT__Rvcpu__DOT__BusReadEnable;
@@ -1409,8 +1410,9 @@ VL_INLINE_OPT void VSimTop___024root___combo__TOP__0(VSimTop___024root* vlSelf) 
         SimTop__DOT__Rvcpu__DOT__ClintReadAddr = 0ULL;
         SimTop__DOT__RamReadAddr = vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadAddr;
     }
-    SimTop__DOT__RamReadEnable = ((0x80000000ULL <= vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadAddr) 
-                                  & (IData)(SimTop__DOT__Rvcpu__DOT__BusReadEnable));
+    vlSelf->SimTop__DOT__RamReadEnable = ((0x80000000ULL 
+                                           <= vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadAddr) 
+                                          & (IData)(SimTop__DOT__Rvcpu__DOT__BusReadEnable));
     vlSelf->SimTop__DOT__Rvcpu__DOT__Ctrl__DOT__itTime_r 
         = ((~ (IData)(vlSelf->reset)) & (((0ULL != vlSelf->SimTop__DOT__Rvcpu__DOT__Id_stage__DOT__pcE_dff__DOT__qout_r) 
                                           & (~ (IData)(vlSelf->SimTop__DOT__Rvcpu__DOT__Exe_stage__DOT__jalbranch_dff__DOT__qout_r))) 
@@ -1562,20 +1564,12 @@ VL_INLINE_OPT void VSimTop___024root___combo__TOP__0(VSimTop___024root* vlSelf) 
                                                     ? vlSelf->SimTop__DOT__Rvcpu__DOT__jAddr
                                                     : vlSelf->SimTop__DOT__Rvcpu__DOT__If_stage__DOT__pc));
     VSimTop___024unit____Vdpiimwrap_ram_read_helper_TOP____024unit(1U, 
-                                                                   ((((IData)(SimTop__DOT__RamReadEnable)
+                                                                   ((((IData)(vlSelf->SimTop__DOT__RamReadEnable)
                                                                        ? SimTop__DOT__RamReadAddr
                                                                        : vlSelf->SimTop__DOT__pc) 
                                                                      - 0x80000000ULL) 
                                                                     >> 3U), vlSelf->__Vfunc_ram_read_helper__0__Vfuncout);
-    SimTop__DOT__ReadData = vlSelf->__Vfunc_ram_read_helper__0__Vfuncout;
-    vlSelf->SimTop__DOT__inst = ((IData)(SimTop__DOT__RamReadEnable)
-                                  ? 0U : ((1U & (IData)(
-                                                        (vlSelf->SimTop__DOT__pc 
-                                                         >> 2U)))
-                                           ? (IData)(
-                                                     (SimTop__DOT__ReadData 
-                                                      >> 0x20U))
-                                           : (IData)(SimTop__DOT__ReadData)));
+    vlSelf->SimTop__DOT__ReadData = vlSelf->__Vfunc_ram_read_helper__0__Vfuncout;
     SimTop__DOT__Rvcpu__DOT__BusReadData = ((0x80000000ULL 
                                              > vlSelf->SimTop__DOT__Rvcpu__DOT__BusReadAddr)
                                              ? ((IData)(vlSelf->reset)
@@ -1589,8 +1583,8 @@ VL_INLINE_OPT void VSimTop___024root___combo__TOP__0(VSimTop___024root* vlSelf) 
                                                    == SimTop__DOT__Rvcpu__DOT__ClintReadAddr)
                                                    ? vlSelf->SimTop__DOT__Rvcpu__DOT__CSRfile_u__DOT__mtimecmp
                                                    : 0ULL)))
-                                             : ((IData)(SimTop__DOT__RamReadEnable)
-                                                 ? SimTop__DOT__ReadData
+                                             : ((IData)(vlSelf->SimTop__DOT__RamReadEnable)
+                                                 ? vlSelf->SimTop__DOT__ReadData
                                                  : 0ULL));
     SimTop__DOT__Rvcpu__DOT__Mem_stage__DOT__loadRes8 
         = (SimTop__DOT__Rvcpu__DOT__BusReadData >> 
