@@ -182,6 +182,8 @@ void Difftest::do_instr_commit(int i) {
   progress = true;
   last_commit = ticks;
 
+
+  printf("the inst is %x\n",dut.commit[i].inst);
   // store the writeback info to debug array
   state->record_inst(dut.commit[i].pc, dut.commit[i].inst, dut.commit[i].wen, dut.commit[i].wdest, dut.commit[i].wdata, dut.commit[i].skip != 0);
 
