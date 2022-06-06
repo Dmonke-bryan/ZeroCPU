@@ -173,3 +173,13 @@ Mon, 06 Jun 2022 15:31:32 +0800
 Mon, 06 Jun 2022 15:31:32 +0800
 0.92user 0.19system 0:01.23elapsed 91%CPU (0avgtext+0avgdata 100412maxresident)k
 48inputs+5344outputs (1major+47453minor)pagefaults 0swaps
+
+[verilator] Generating C++ files...
+Mon, 06 Jun 2022 15:33:16 +0800
+0.09user 0.03system 0:00.14elapsed 90%CPU (0avgtext+0avgdata 24884maxresident)k
+0inputs+1016outputs (0major+6643minor)pagefaults 0swaps
+
+[g++] Compiling C++ files...
+Mon, 06 Jun 2022 15:33:16 +0800
+0.89user 0.19system 0:01.15elapsed 93%CPU (0avgtext+0avgdata 100424maxresident)k
+16inputs+5344outputs (0major+47490minor)pagefaults 0swaps

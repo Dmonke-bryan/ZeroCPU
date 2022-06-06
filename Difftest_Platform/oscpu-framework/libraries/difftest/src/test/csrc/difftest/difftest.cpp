@@ -398,6 +398,7 @@ int Difftest::do_golden_memory_update() {
 int Difftest::check_timeout() {
 
   printf("Bryan Debug: I am checking timeout...\n");
+  printf("Bryan Debug: Checking has_comit %d\n",has_commit);
   // check whether there're any commits since the simulation starts
   if (!has_commit && ticks > last_commit + firstCommit_limit) {
     eprintf("No instruction commits for %lu cycles of core %d. Please check the first instruction.\n",
