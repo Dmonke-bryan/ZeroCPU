@@ -92,6 +92,8 @@ int Difftest::step() {
   // TODO: update nemu/xs to fix this_pc comparison
   dut.csr.this_pc = dut.commit[0].pc;
 
+  printf("Bryan Debug: ticks is %ld\n",ticks);
+
   if (check_timeout()) {
     return 1;
   }
@@ -394,6 +396,8 @@ int Difftest::do_golden_memory_update() {
 }
 
 int Difftest::check_timeout() {
+
+  printf("Bryan Debug: I am checking timeout...\n");
   // check whether there're any commits since the simulation starts
   if (!has_commit && ticks > last_commit + firstCommit_limit) {
     eprintf("No instruction commits for %lu cycles of core %d. Please check the first instruction.\n",
