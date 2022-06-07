@@ -29,11 +29,9 @@ void VSimTop___024root__trace_chg_sub_0(VSimTop___024root* vlSelf, VerilatedVcd*
     if (VL_UNLIKELY(vlSelf->__Vm_traceActivity[1U])) {
         tracep->chgQData(oldp+1,(vlSelf->SimTop__DOT__ReadData),64);
         tracep->chgQData(oldp+3,(vlSelf->SimTop__DOT__u_zerocore__DOT__pc),64);
-        tracep->chgIData(oldp+5,(((1U & (IData)((vlSelf->SimTop__DOT__u_zerocore__DOT__pc 
-                                                 >> 2U)))
-                                   ? (IData)((vlSelf->SimTop__DOT__ReadData 
-                                              >> 0x20U))
-                                   : (IData)(vlSelf->SimTop__DOT__ReadData))),32);
+        tracep->chgBit(oldp+5,(((0U != vlSelf->SimTop__DOT__u_zerocore__DOT__instW) 
+                                & (vlSelf->SimTop__DOT__u_zerocore__DOT__pcW 
+                                   != vlSelf->SimTop__DOT__r_pc))));
         tracep->chgQData(oldp+6,(vlSelf->SimTop__DOT__r_pc),64);
         tracep->chgIData(oldp+8,(vlSelf->SimTop__DOT__r_inst),32);
         tracep->chgBit(oldp+9,(vlSelf->SimTop__DOT__r_valid));
@@ -114,63 +112,71 @@ void VSimTop___024root__trace_chg_sub_0(VSimTop___024root* vlSelf, VerilatedVcd*
         tracep->chgQData(oldp+81,((QData)((IData)((vlSelf->SimTop__DOT__u_zerocore__DOT__instD 
                                                    >> 0x14U)))),64);
         tracep->chgIData(oldp+83,(vlSelf->SimTop__DOT__u_zerocore__DOT__instD),32);
-        tracep->chgCData(oldp+84,((0x7fU & vlSelf->SimTop__DOT__u_zerocore__DOT__instD)),7);
-        tracep->chgCData(oldp+85,((7U & (vlSelf->SimTop__DOT__u_zerocore__DOT__instD 
+        tracep->chgQData(oldp+84,(vlSelf->SimTop__DOT__u_zerocore__DOT__pcD),64);
+        tracep->chgIData(oldp+86,(vlSelf->SimTop__DOT__u_zerocore__DOT__instE),32);
+        tracep->chgQData(oldp+87,(vlSelf->SimTop__DOT__u_zerocore__DOT__pcE),64);
+        tracep->chgIData(oldp+89,(vlSelf->SimTop__DOT__u_zerocore__DOT__instM),32);
+        tracep->chgQData(oldp+90,(vlSelf->SimTop__DOT__u_zerocore__DOT__pcM),64);
+        tracep->chgIData(oldp+92,(vlSelf->SimTop__DOT__u_zerocore__DOT__instW),32);
+        tracep->chgQData(oldp+93,(vlSelf->SimTop__DOT__u_zerocore__DOT__pcW),64);
+        tracep->chgCData(oldp+95,((0x7fU & vlSelf->SimTop__DOT__u_zerocore__DOT__instD)),7);
+        tracep->chgCData(oldp+96,((7U & (vlSelf->SimTop__DOT__u_zerocore__DOT__instD 
                                          >> 0xcU))),3);
-        tracep->chgBit(oldp+86,((0x13U == (0x7fU & vlSelf->SimTop__DOT__u_zerocore__DOT__instD))));
-        tracep->chgBit(oldp+87,((0U == (7U & (vlSelf->SimTop__DOT__u_zerocore__DOT__instD 
+        tracep->chgBit(oldp+97,((0x13U == (0x7fU & vlSelf->SimTop__DOT__u_zerocore__DOT__instD))));
+        tracep->chgBit(oldp+98,((0U == (7U & (vlSelf->SimTop__DOT__u_zerocore__DOT__instD 
                                               >> 0xcU)))));
-        tracep->chgBit(oldp+88,((IData)((0x13U == (0x707fU 
+        tracep->chgBit(oldp+99,((IData)((0x13U == (0x707fU 
                                                    & vlSelf->SimTop__DOT__u_zerocore__DOT__instD)))));
-        tracep->chgCData(oldp+89,(((0x13U == (0x7fU 
-                                              & vlSelf->SimTop__DOT__u_zerocore__DOT__instD)) 
-                                   & (0U == (7U & (vlSelf->SimTop__DOT__u_zerocore__DOT__instD 
-                                                   >> 0xcU))))),8);
-        tracep->chgQData(oldp+90,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[0]),64);
-        tracep->chgQData(oldp+92,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[1]),64);
-        tracep->chgQData(oldp+94,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[2]),64);
-        tracep->chgQData(oldp+96,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[3]),64);
-        tracep->chgQData(oldp+98,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[4]),64);
-        tracep->chgQData(oldp+100,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[5]),64);
-        tracep->chgQData(oldp+102,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[6]),64);
-        tracep->chgQData(oldp+104,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[7]),64);
-        tracep->chgQData(oldp+106,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[8]),64);
-        tracep->chgQData(oldp+108,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[9]),64);
-        tracep->chgQData(oldp+110,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[10]),64);
-        tracep->chgQData(oldp+112,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[11]),64);
-        tracep->chgQData(oldp+114,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[12]),64);
-        tracep->chgQData(oldp+116,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[13]),64);
-        tracep->chgQData(oldp+118,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[14]),64);
-        tracep->chgQData(oldp+120,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[15]),64);
-        tracep->chgQData(oldp+122,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[16]),64);
-        tracep->chgQData(oldp+124,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[17]),64);
-        tracep->chgQData(oldp+126,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[18]),64);
-        tracep->chgQData(oldp+128,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[19]),64);
-        tracep->chgQData(oldp+130,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[20]),64);
-        tracep->chgQData(oldp+132,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[21]),64);
-        tracep->chgQData(oldp+134,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[22]),64);
-        tracep->chgQData(oldp+136,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[23]),64);
-        tracep->chgQData(oldp+138,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[24]),64);
-        tracep->chgQData(oldp+140,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[25]),64);
-        tracep->chgQData(oldp+142,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[26]),64);
-        tracep->chgQData(oldp+144,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[27]),64);
-        tracep->chgQData(oldp+146,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[28]),64);
-        tracep->chgQData(oldp+148,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[29]),64);
-        tracep->chgQData(oldp+150,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[30]),64);
-        tracep->chgQData(oldp+152,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[31]),64);
+        tracep->chgCData(oldp+100,(((0x13U == (0x7fU 
+                                               & vlSelf->SimTop__DOT__u_zerocore__DOT__instD)) 
+                                    & (0U == (7U & 
+                                              (vlSelf->SimTop__DOT__u_zerocore__DOT__instD 
+                                               >> 0xcU))))),8);
+        tracep->chgQData(oldp+101,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[0]),64);
+        tracep->chgQData(oldp+103,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[1]),64);
+        tracep->chgQData(oldp+105,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[2]),64);
+        tracep->chgQData(oldp+107,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[3]),64);
+        tracep->chgQData(oldp+109,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[4]),64);
+        tracep->chgQData(oldp+111,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[5]),64);
+        tracep->chgQData(oldp+113,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[6]),64);
+        tracep->chgQData(oldp+115,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[7]),64);
+        tracep->chgQData(oldp+117,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[8]),64);
+        tracep->chgQData(oldp+119,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[9]),64);
+        tracep->chgQData(oldp+121,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[10]),64);
+        tracep->chgQData(oldp+123,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[11]),64);
+        tracep->chgQData(oldp+125,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[12]),64);
+        tracep->chgQData(oldp+127,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[13]),64);
+        tracep->chgQData(oldp+129,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[14]),64);
+        tracep->chgQData(oldp+131,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[15]),64);
+        tracep->chgQData(oldp+133,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[16]),64);
+        tracep->chgQData(oldp+135,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[17]),64);
+        tracep->chgQData(oldp+137,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[18]),64);
+        tracep->chgQData(oldp+139,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[19]),64);
+        tracep->chgQData(oldp+141,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[20]),64);
+        tracep->chgQData(oldp+143,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[21]),64);
+        tracep->chgQData(oldp+145,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[22]),64);
+        tracep->chgQData(oldp+147,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[23]),64);
+        tracep->chgQData(oldp+149,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[24]),64);
+        tracep->chgQData(oldp+151,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[25]),64);
+        tracep->chgQData(oldp+153,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[26]),64);
+        tracep->chgQData(oldp+155,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[27]),64);
+        tracep->chgQData(oldp+157,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[28]),64);
+        tracep->chgQData(oldp+159,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[29]),64);
+        tracep->chgQData(oldp+161,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[30]),64);
+        tracep->chgQData(oldp+163,(vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[31]),64);
     }
-    tracep->chgBit(oldp+154,(vlSelf->clock));
-    tracep->chgBit(oldp+155,(vlSelf->reset));
-    tracep->chgQData(oldp+156,(vlSelf->io_logCtrl_log_begin),64);
-    tracep->chgQData(oldp+158,(vlSelf->io_logCtrl_log_end),64);
-    tracep->chgQData(oldp+160,(vlSelf->io_logCtrl_log_level),64);
-    tracep->chgBit(oldp+162,(vlSelf->io_perfInfo_clean));
-    tracep->chgBit(oldp+163,(vlSelf->io_perfInfo_dump));
-    tracep->chgBit(oldp+164,(vlSelf->io_uart_out_valid));
-    tracep->chgCData(oldp+165,(vlSelf->io_uart_out_ch),8);
-    tracep->chgBit(oldp+166,(vlSelf->io_uart_in_valid));
-    tracep->chgCData(oldp+167,(vlSelf->io_uart_in_ch),8);
-    tracep->chgQData(oldp+168,(((IData)(vlSelf->reset)
+    tracep->chgBit(oldp+165,(vlSelf->clock));
+    tracep->chgBit(oldp+166,(vlSelf->reset));
+    tracep->chgQData(oldp+167,(vlSelf->io_logCtrl_log_begin),64);
+    tracep->chgQData(oldp+169,(vlSelf->io_logCtrl_log_end),64);
+    tracep->chgQData(oldp+171,(vlSelf->io_logCtrl_log_level),64);
+    tracep->chgBit(oldp+173,(vlSelf->io_perfInfo_clean));
+    tracep->chgBit(oldp+174,(vlSelf->io_perfInfo_dump));
+    tracep->chgBit(oldp+175,(vlSelf->io_uart_out_valid));
+    tracep->chgCData(oldp+176,(vlSelf->io_uart_out_ch),8);
+    tracep->chgBit(oldp+177,(vlSelf->io_uart_in_valid));
+    tracep->chgCData(oldp+178,(vlSelf->io_uart_in_ch),8);
+    tracep->chgQData(oldp+179,(((IData)(vlSelf->reset)
                                  ? 0ULL : (((0x1fU 
                                              & (vlSelf->SimTop__DOT__u_zerocore__DOT__instD 
                                                 >> 0x14U)) 
@@ -182,8 +188,8 @@ void VSimTop___024root__trace_chg_sub_0(VSimTop___024root* vlSelf, VerilatedVcd*
                                            [(0x1fU 
                                              & (vlSelf->SimTop__DOT__u_zerocore__DOT__instD 
                                                 >> 0x14U))]))),64);
-    tracep->chgQData(oldp+170,(vlSelf->SimTop__DOT__u_zerocore__DOT__ina),64);
-    tracep->chgQData(oldp+172,(vlSelf->SimTop__DOT__u_zerocore__DOT__res),64);
+    tracep->chgQData(oldp+181,(vlSelf->SimTop__DOT__u_zerocore__DOT__ina),64);
+    tracep->chgQData(oldp+183,(vlSelf->SimTop__DOT__u_zerocore__DOT__res),64);
 }
 
 void VSimTop___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {

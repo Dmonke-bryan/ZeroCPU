@@ -106,8 +106,15 @@ VL_ATTR_COLD void VSimTop___024root___ctor_var_reset(VSimTop___024root* vlSelf) 
     vlSelf->SimTop__DOT__u_zerocore__DOT__ra = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__u_zerocore__DOT__rw = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__u_zerocore__DOT__instD = VL_RAND_RESET_I(32);
+    vlSelf->SimTop__DOT__u_zerocore__DOT__pcD = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__u_zerocore__DOT__ina = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__u_zerocore__DOT__res = VL_RAND_RESET_Q(64);
+    vlSelf->SimTop__DOT__u_zerocore__DOT__instE = VL_RAND_RESET_I(32);
+    vlSelf->SimTop__DOT__u_zerocore__DOT__pcE = VL_RAND_RESET_Q(64);
+    vlSelf->SimTop__DOT__u_zerocore__DOT__instM = VL_RAND_RESET_I(32);
+    vlSelf->SimTop__DOT__u_zerocore__DOT__pcM = VL_RAND_RESET_Q(64);
+    vlSelf->SimTop__DOT__u_zerocore__DOT__instW = VL_RAND_RESET_I(32);
+    vlSelf->SimTop__DOT__u_zerocore__DOT__pcW = VL_RAND_RESET_Q(64);
     vlSelf->SimTop__DOT__u_zerocore__DOT__u_id__DOT__aluCtl__out__out0 = 0;
     for (int __Vi0=0; __Vi0<32; ++__Vi0) {
         vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[__Vi0] = VL_RAND_RESET_Q(64);

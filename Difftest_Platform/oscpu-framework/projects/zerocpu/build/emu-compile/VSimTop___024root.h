@@ -32,6 +32,9 @@ VL_MODULE(VSimTop___024root) {
     CData/*0:0*/ __Vclklast__TOP__clock;
     IData/*31:0*/ SimTop__DOT__r_inst;
     IData/*31:0*/ SimTop__DOT__u_zerocore__DOT__instD;
+    IData/*31:0*/ SimTop__DOT__u_zerocore__DOT__instE;
+    IData/*31:0*/ SimTop__DOT__u_zerocore__DOT__instM;
+    IData/*31:0*/ SimTop__DOT__u_zerocore__DOT__instW;
     IData/*31:0*/ SimTop__DOT__u_zerocore__DOT__u_regs__DOT__i;
     VL_IN64(io_logCtrl_log_begin,63,0);
     VL_IN64(io_logCtrl_log_end,63,0);
@@ -44,8 +47,12 @@ VL_MODULE(VSimTop___024root) {
     QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__pc;
     QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__ra;
     QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__rw;
+    QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__pcD;
     QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__ina;
     QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__res;
+    QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__pcE;
+    QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__pcM;
+    QData/*63:0*/ SimTop__DOT__u_zerocore__DOT__pcW;
     QData/*63:0*/ SimTop__DOT__U_inst_commit__DOT__wdata;
     QData/*63:0*/ __Vfunc_ram_read_helper__0__Vfuncout;
     VlUnpacked<QData/*63:0*/, 32> SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap;

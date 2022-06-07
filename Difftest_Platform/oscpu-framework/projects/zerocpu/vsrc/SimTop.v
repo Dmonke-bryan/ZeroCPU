@@ -50,19 +50,18 @@ zerocore u_zerocore(
     .RamWriteMask(WriteMask)
 );
 
-wire [`INST_BUS] inst;
-wire [`ADDR_BUS] pc;
+wire inst_valid;
 
-assign inst = ReadEnable? 32'b0: (pc[2]? ReadData[63:32]: ReadData[31:0]);
-assign pc = ReadAddr;
+assign inst_valid = (u_zerocore.instW!=0)&(u_zerocore.pcW != r_pc);
+
 
 reg [`ADDR_BUS] r_pc;
 reg [`INST_BUS] r_inst;
 reg r_valid;
 
 always @(posedge clock) begin
-  r_pc <= pc;
-  r_inst <= inst;
+  r_pc <= u_zerocore.pcW;
+  r_inst <= u_zerocore.instW;
   r_valid <= 1'b1;
 end
 
