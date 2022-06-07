@@ -64,97 +64,97 @@ Global Statistics:
 Performance Statistics:
 
   Stage, Elapsed time (sec), 001_cells                 0.000000
-  Stage, Elapsed time (sec), 002_linkparse             0.001350
-  Stage, Elapsed time (sec), 003_linkdot               0.002570
-  Stage, Elapsed time (sec), 004_linkresolve           0.000332
-  Stage, Elapsed time (sec), 005_linklvalue            0.000167
-  Stage, Elapsed time (sec), 006_linkjump              0.000119
-  Stage, Elapsed time (sec), 007_linkinc               0.000131
-  Stage, Elapsed time (sec), 008_param                 0.001098
-  Stage, Elapsed time (sec), 009_linkdotparam          0.001368
-  Stage, Elapsed time (sec), 010_deadModules           0.000292
-  Stage, Elapsed time (sec), 011_width                 0.001340
-  Stage, Elapsed time (sec), 012_widthcommit           0.000367
-  Stage, Elapsed time (sec), 013_const                 0.000178
-  Stage, Elapsed time (sec), 014_assertpre             0.000765
-  Stage, Elapsed time (sec), 015_assert                0.000178
-  Stage, Elapsed time (sec), 016_wraptop               0.000029
-  Stage, Elapsed time (sec), 017_const                 0.000310
-  Stage, Elapsed time (sec), 018_split_var             0.000181
-  Stage, Elapsed time (sec), 019_split_var             0.000026
-  Stage, Elapsed time (sec), 020_dearray               0.000120
-  Stage, Elapsed time (sec), 021_linkdot               0.001557
-  Stage, Elapsed time (sec), 022_begin                 0.000146
-  Stage, Elapsed time (sec), 023_tristate              0.000631
-  Stage, Elapsed time (sec), 024_unknown               0.000236
-  Stage, Elapsed time (sec), 025_inline                0.002323
-  Stage, Elapsed time (sec), 026_linkdot               0.001349
-  Stage, Elapsed time (sec), 027_const                 0.000387
-  Stage, Elapsed time (sec), 028_deadDtypes            0.000303
-  Stage, Elapsed time (sec), 029_inst                  0.000053
-  Stage, Elapsed time (sec), 030_const                 0.000369
-  Stage, Elapsed time (sec), 031_scope                 0.003676
-  Stage, Elapsed time (sec), 032_linkdot               0.001168
-  Stage, Elapsed time (sec), 033_class                 0.000086
-  Stage, Elapsed time (sec), 034_const                 0.000197
-  Stage, Elapsed time (sec), 035_deadDtypesScoped      0.000294
-  Stage, Elapsed time (sec), 036_case                  0.000165
-  Stage, Elapsed time (sec), 037_task                  0.000741
-  Stage, Elapsed time (sec), 038_name                  0.000357
-  Stage, Elapsed time (sec), 039_unroll                0.000146
-  Stage, Elapsed time (sec), 040_slice                 0.000133
-  Stage, Elapsed time (sec), 041_const                 0.000197
-  Stage, Elapsed time (sec), 042_life                  0.000140
-  Stage, Elapsed time (sec), 043_table                 0.000154
-  Stage, Elapsed time (sec), 044_const                 0.000176
-  Stage, Elapsed time (sec), 045_deadDtypesScoped      0.000317
-  Stage, Elapsed time (sec), 046_active                0.000190
-  Stage, Elapsed time (sec), 047_split                 0.000393
-  Stage, Elapsed time (sec), 048_splitas               0.000105
-  Stage, Elapsed time (sec), 049_tracedecl             0.001780
-  Stage, Elapsed time (sec), 050_gate                  0.005298
-  Stage, Elapsed time (sec), 051_const                 0.000474
-  Stage, Elapsed time (sec), 052_deadAllScoped         0.000558
-  Stage, Elapsed time (sec), 053_reorder               0.000286
-  Stage, Elapsed time (sec), 054_delayed               0.000342
-  Stage, Elapsed time (sec), 055_activetop             0.000504
-  Stage, Elapsed time (sec), 056_order                 0.003194
-  Stage, Elapsed time (sec), 057_genclk                0.000446
-  Stage, Elapsed time (sec), 058_clock                 0.000283
-  Stage, Elapsed time (sec), 059_const                 0.000634
-  Stage, Elapsed time (sec), 060_life                  0.000261
-  Stage, Elapsed time (sec), 061_life_post             0.000507
-  Stage, Elapsed time (sec), 062_const                 0.000388
-  Stage, Elapsed time (sec), 063_deadAllScoped         0.000395
-  Stage, Elapsed time (sec), 064_changed               0.000058
-  Stage, Elapsed time (sec), 065_trace                 0.003057
-  Stage, Elapsed time (sec), 066_localize              0.001753
-  Stage, Elapsed time (sec), 067_descope               0.000399
-  Stage, Elapsed time (sec), 068_combine               0.000557
+  Stage, Elapsed time (sec), 002_linkparse             0.001301
+  Stage, Elapsed time (sec), 003_linkdot               0.002557
+  Stage, Elapsed time (sec), 004_linkresolve           0.000290
+  Stage, Elapsed time (sec), 005_linklvalue            0.000132
+  Stage, Elapsed time (sec), 006_linkjump              0.000116
+  Stage, Elapsed time (sec), 007_linkinc               0.000132
+  Stage, Elapsed time (sec), 008_param                 0.001041
+  Stage, Elapsed time (sec), 009_linkdotparam          0.005497
+  Stage, Elapsed time (sec), 010_deadModules           0.000294
+  Stage, Elapsed time (sec), 011_width                 0.001492
+  Stage, Elapsed time (sec), 012_widthcommit           0.000353
+  Stage, Elapsed time (sec), 013_const                 0.000169
+  Stage, Elapsed time (sec), 014_assertpre             0.000776
+  Stage, Elapsed time (sec), 015_assert                0.000134
+  Stage, Elapsed time (sec), 016_wraptop               0.000026
+  Stage, Elapsed time (sec), 017_const                 0.000313
+  Stage, Elapsed time (sec), 018_split_var             0.000173
+  Stage, Elapsed time (sec), 019_split_var             0.000025
+  Stage, Elapsed time (sec), 020_dearray               0.000116
+  Stage, Elapsed time (sec), 021_linkdot               0.001543
+  Stage, Elapsed time (sec), 022_begin                 0.000158
+  Stage, Elapsed time (sec), 023_tristate              0.000696
+  Stage, Elapsed time (sec), 024_unknown               0.000249
+  Stage, Elapsed time (sec), 025_inline                0.005570
+  Stage, Elapsed time (sec), 026_linkdot               0.001392
+  Stage, Elapsed time (sec), 027_const                 0.000331
+  Stage, Elapsed time (sec), 028_deadDtypes            0.000251
+  Stage, Elapsed time (sec), 029_inst                  0.000043
+  Stage, Elapsed time (sec), 030_const                 0.000276
+  Stage, Elapsed time (sec), 031_scope                 0.003566
+  Stage, Elapsed time (sec), 032_linkdot               0.001315
+  Stage, Elapsed time (sec), 033_class                 0.000096
+  Stage, Elapsed time (sec), 034_const                 0.000217
+  Stage, Elapsed time (sec), 035_deadDtypesScoped      0.000314
+  Stage, Elapsed time (sec), 036_case                  0.000174
+  Stage, Elapsed time (sec), 037_task                  0.000872
+  Stage, Elapsed time (sec), 038_name                  0.000475
+  Stage, Elapsed time (sec), 039_unroll                0.000202
+  Stage, Elapsed time (sec), 040_slice                 0.000143
+  Stage, Elapsed time (sec), 041_const                 0.000223
+  Stage, Elapsed time (sec), 042_life                  0.000160
+  Stage, Elapsed time (sec), 043_table                 0.000202
+  Stage, Elapsed time (sec), 044_const                 0.000225
+  Stage, Elapsed time (sec), 045_deadDtypesScoped      0.000369
+  Stage, Elapsed time (sec), 046_active                0.000181
+  Stage, Elapsed time (sec), 047_split                 0.000462
+  Stage, Elapsed time (sec), 048_splitas               0.000134
+  Stage, Elapsed time (sec), 049_tracedecl             0.001813
+  Stage, Elapsed time (sec), 050_gate                  0.010327
+  Stage, Elapsed time (sec), 051_const                 0.000585
+  Stage, Elapsed time (sec), 052_deadAllScoped         0.000583
+  Stage, Elapsed time (sec), 053_reorder               0.000268
+  Stage, Elapsed time (sec), 054_delayed               0.000356
+  Stage, Elapsed time (sec), 055_activetop             0.000507
+  Stage, Elapsed time (sec), 056_order                 0.007631
+  Stage, Elapsed time (sec), 057_genclk                0.000435
+  Stage, Elapsed time (sec), 058_clock                 0.000258
+  Stage, Elapsed time (sec), 059_const                 0.000378
+  Stage, Elapsed time (sec), 060_life                  0.000271
+  Stage, Elapsed time (sec), 061_life_post             0.000541
+  Stage, Elapsed time (sec), 062_const                 0.000399
+  Stage, Elapsed time (sec), 063_deadAllScoped         0.000384
+  Stage, Elapsed time (sec), 064_changed               0.000056
+  Stage, Elapsed time (sec), 065_trace                 0.005942
+  Stage, Elapsed time (sec), 066_localize              0.001920
+  Stage, Elapsed time (sec), 067_descope               0.000404
+  Stage, Elapsed time (sec), 068_combine               0.000528
   Stage, Elapsed time (sec), 069_const                 0.000417
-  Stage, Elapsed time (sec), 070_deadAll               0.000340
-  Stage, Elapsed time (sec), 071_clean                 0.000877
-  Stage, Elapsed time (sec), 072_premit                0.000589
-  Stage, Elapsed time (sec), 073_expand                0.000863
-  Stage, Elapsed time (sec), 074_const_cpp             0.002678
-  Stage, Elapsed time (sec), 075_subst                 0.000370
-  Stage, Elapsed time (sec), 076_const_cpp             0.000833
-  Stage, Elapsed time (sec), 077_deadAll               0.000339
-  Stage, Elapsed time (sec), 078_merge_cond            0.000261
-  Stage, Elapsed time (sec), 079_reloop                0.000082
-  Stage, Elapsed time (sec), 080_depth                 0.000229
-  Stage, Elapsed time (sec), 081_cast                  0.000575
-  Stage, Elapsed time (sec), 082_common                0.000052
+  Stage, Elapsed time (sec), 070_deadAll               0.000321
+  Stage, Elapsed time (sec), 071_clean                 0.000777
+  Stage, Elapsed time (sec), 072_premit                0.000485
+  Stage, Elapsed time (sec), 073_expand                0.000953
+  Stage, Elapsed time (sec), 074_const_cpp             0.002606
+  Stage, Elapsed time (sec), 075_subst                 0.000413
+  Stage, Elapsed time (sec), 076_const_cpp             0.000854
+  Stage, Elapsed time (sec), 077_deadAll               0.000355
+  Stage, Elapsed time (sec), 078_merge_cond            0.000235
+  Stage, Elapsed time (sec), 079_reloop                0.000094
+  Stage, Elapsed time (sec), 080_depth                 0.000207
+  Stage, Elapsed time (sec), 081_cast                  0.000550
+  Stage, Elapsed time (sec), 082_common                0.000051
   Stage, Elapsed time (sec), 083_variableorder         0.000031
-  Stage, Elapsed time (sec), 084_cuse                  0.000248
-  Stage, Elapsed time (sec), 085_emit                  0.013168
-  Stage, Memory (MB), 001_cells                       20.968750
-  Stage, Memory (MB), 002_linkparse                   20.968750
-  Stage, Memory (MB), 003_linkdot                     21.968750
-  Stage, Memory (MB), 004_linkresolve                 21.968750
-  Stage, Memory (MB), 005_linklvalue                  21.968750
-  Stage, Memory (MB), 006_linkjump                    21.968750
-  Stage, Memory (MB), 007_linkinc                     21.968750
+  Stage, Elapsed time (sec), 084_cuse                  0.000240
+  Stage, Elapsed time (sec), 085_emit                  0.015253
+  Stage, Memory (MB), 001_cells                       20.972656
+  Stage, Memory (MB), 002_linkparse                   20.972656
+  Stage, Memory (MB), 003_linkdot                     21.972656
+  Stage, Memory (MB), 004_linkresolve                 21.972656
+  Stage, Memory (MB), 005_linklvalue                  21.972656
+  Stage, Memory (MB), 006_linkjump                    21.972656
+  Stage, Memory (MB), 007_linkinc                     21.972656
   Stage, Memory (MB), 008_param                       22.660156
   Stage, Memory (MB), 009_linkdotparam                22.660156
   Stage, Memory (MB), 010_deadModules                 22.660156
