@@ -109,31 +109,36 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
                     >> 7U));
     vlSelf->SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap[__Vdlyvdim0__SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap__v0] 
         = __Vdlyvval__SimTop__DOT__u_zerocore__DOT__u_regs__DOT__regsheap__v0;
-    vlSelf->SimTop__DOT__r_valid = 1U;
-    vlSelf->SimTop__DOT__r_pc = vlSelf->SimTop__DOT__u_zerocore__DOT__pcW;
     vlSelf->SimTop__DOT__r_inst = vlSelf->SimTop__DOT__u_zerocore__DOT__instW;
+    vlSelf->SimTop__DOT__r_valid = ((0U != vlSelf->SimTop__DOT__u_zerocore__DOT__instW) 
+                                    & (vlSelf->SimTop__DOT__u_zerocore__DOT__pcW 
+                                       != vlSelf->SimTop__DOT__r_pc));
+    vlSelf->SimTop__DOT__r_pc = vlSelf->SimTop__DOT__u_zerocore__DOT__pcW;
     if (vlSelf->reset) {
-        vlSelf->SimTop__DOT__u_zerocore__DOT__pcW = 0ULL;
         vlSelf->SimTop__DOT__u_zerocore__DOT__instW = 0U;
-        vlSelf->SimTop__DOT__u_zerocore__DOT__pcM = 0ULL;
+        vlSelf->SimTop__DOT__u_zerocore__DOT__pcW = 0ULL;
         vlSelf->SimTop__DOT__u_zerocore__DOT__instM = 0U;
-        vlSelf->SimTop__DOT__u_zerocore__DOT__pcE = 0ULL;
+        vlSelf->SimTop__DOT__u_zerocore__DOT__pcM = 0ULL;
         vlSelf->SimTop__DOT__u_zerocore__DOT__instE = 0U;
-        vlSelf->SimTop__DOT__u_zerocore__DOT__pcD = 0ULL;
+        vlSelf->SimTop__DOT__u_zerocore__DOT__pcE = 0ULL;
         vlSelf->SimTop__DOT__u_zerocore__DOT__instD = 0U;
+        vlSelf->SimTop__DOT__u_zerocore__DOT__pcD = 0ULL;
     } else {
-        vlSelf->SimTop__DOT__u_zerocore__DOT__pcW = vlSelf->SimTop__DOT__u_zerocore__DOT__pcM;
         vlSelf->SimTop__DOT__u_zerocore__DOT__instW 
             = vlSelf->SimTop__DOT__u_zerocore__DOT__instM;
-        vlSelf->SimTop__DOT__u_zerocore__DOT__pcM = vlSelf->SimTop__DOT__u_zerocore__DOT__pcE;
+        vlSelf->SimTop__DOT__u_zerocore__DOT__pcW = vlSelf->SimTop__DOT__u_zerocore__DOT__pcM;
         vlSelf->SimTop__DOT__u_zerocore__DOT__instM 
             = vlSelf->SimTop__DOT__u_zerocore__DOT__instE;
-        vlSelf->SimTop__DOT__u_zerocore__DOT__pcE = vlSelf->SimTop__DOT__u_zerocore__DOT__pcD;
+        vlSelf->SimTop__DOT__u_zerocore__DOT__pcM = vlSelf->SimTop__DOT__u_zerocore__DOT__pcE;
         vlSelf->SimTop__DOT__u_zerocore__DOT__instE 
             = vlSelf->SimTop__DOT__u_zerocore__DOT__instD;
-        vlSelf->SimTop__DOT__u_zerocore__DOT__pcD = vlSelf->SimTop__DOT__u_zerocore__DOT__pc;
+        vlSelf->SimTop__DOT__u_zerocore__DOT__pcE = vlSelf->SimTop__DOT__u_zerocore__DOT__pcD;
         vlSelf->SimTop__DOT__u_zerocore__DOT__instD 
             = (IData)(vlSelf->SimTop__DOT__ReadData);
+        vlSelf->SimTop__DOT__u_zerocore__DOT__pcD = vlSelf->SimTop__DOT__u_zerocore__DOT__pc;
+    }
+    if ((IData)((0x13U == (0x707fU & vlSelf->SimTop__DOT__u_zerocore__DOT__instD)))) {
+        vlSelf->SimTop__DOT__u_zerocore__DOT__u_id__DOT__aluCtl__out__out0 = 0U;
     }
     vlSelf->SimTop__DOT__u_zerocore__DOT__pc = __Vdly__SimTop__DOT__u_zerocore__DOT__pc;
     VSimTop___024unit____Vdpiimwrap_ram_read_helper_TOP____024unit(1U, 
@@ -141,7 +146,4 @@ VL_INLINE_OPT void VSimTop___024root___sequent__TOP__0(VSimTop___024root* vlSelf
                                                                      - 0x80000000ULL) 
                                                                     >> 3U), vlSelf->__Vfunc_ram_read_helper__0__Vfuncout);
     vlSelf->SimTop__DOT__ReadData = vlSelf->__Vfunc_ram_read_helper__0__Vfuncout;
-    if ((IData)((0x13U == (0x707fU & vlSelf->SimTop__DOT__u_zerocore__DOT__instD)))) {
-        vlSelf->SimTop__DOT__u_zerocore__DOT__u_id__DOT__aluCtl__out__out0 = 0U;
-    }
 }

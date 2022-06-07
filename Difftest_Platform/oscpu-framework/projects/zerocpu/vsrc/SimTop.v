@@ -62,7 +62,7 @@ reg r_valid;
 always @(posedge clock) begin
   r_pc <= u_zerocore.pcW;
   r_inst <= u_zerocore.instW;
-  r_valid <= 1'b1;
+  r_valid <= inst_valid;
 end
 
     
