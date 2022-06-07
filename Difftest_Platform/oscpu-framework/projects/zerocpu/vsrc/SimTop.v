@@ -27,6 +27,7 @@ wire [`ADDR_BUS] WriteAddr;
 wire [`DATA_BUS] WriteData;
 wire [`DATA_BUS] WriteMask;
 
+/*
 RAMHelper u_RAMHelper(
   .clk(clock),
   .ren(ReadEnable),
@@ -37,6 +38,7 @@ RAMHelper u_RAMHelper(
   .wmask(WriteMask),
   .wen(WriteEnable)
 );
+*/
 
 zerocore u_zerocore(
     .clk(clock),
@@ -65,6 +67,7 @@ always @(posedge clock) begin
   r_valid <= inst_valid;
 end
 
+/*
     
 DifftestInstrCommit U_inst_commit(
   .clock    ( clock ),
@@ -117,5 +120,7 @@ DifftestArchIntRegState U_DifftestArchIntRegState (
   .gpr_30             (u_zerocore.u_regs.regsheap[30]),
   .gpr_31             (u_zerocore.u_regs.regsheap[31])
 );
+
+*/
 
 endmodule

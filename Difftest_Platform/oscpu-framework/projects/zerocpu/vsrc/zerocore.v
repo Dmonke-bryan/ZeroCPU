@@ -35,11 +35,13 @@ if_stage u_if(
 wire [`INST_BUS] instF;
 wire [`ADDR_BUS] pcF;
 assign RamReadEnable = 1'b0;
+assign RamReadEnable = rst ? 1'b0 : 1'b1; //local test
 
 /* verilator lint_off UNUSED */
-assign instF = RamReadData[31:0];
+
 assign RamReadAddr = pc;
 assign pcF = pc;
+assign instF = pcF[1]? RamReadData[63:32] : RamReadData[31:0];
 
 
 wire aluBsrc;

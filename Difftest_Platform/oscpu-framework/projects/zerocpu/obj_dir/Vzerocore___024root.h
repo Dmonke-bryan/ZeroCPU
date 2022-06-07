@@ -18,6 +18,10 @@ VL_MODULE(Vzerocore___024root) {
     VL_OUT8(RamWriteEnable,0,0);
     CData/*3:0*/ zerocore__DOT__u_id__DOT__aluCtl__out__out0;
     CData/*0:0*/ __Vclklast__TOP__clk;
+    IData/*31:0*/ zerocore__DOT__instD;
+    IData/*31:0*/ zerocore__DOT__instE;
+    IData/*31:0*/ zerocore__DOT__instM;
+    IData/*31:0*/ zerocore__DOT__instW;
     IData/*31:0*/ zerocore__DOT__u_regs__DOT__i;
     VL_IN64(RamReadData,63,0);
     VL_OUT64(RamReadAddr,63,0);
@@ -27,10 +31,14 @@ VL_MODULE(Vzerocore___024root) {
     QData/*63:0*/ zerocore__DOT__pc;
     QData/*63:0*/ zerocore__DOT__ra;
     QData/*63:0*/ zerocore__DOT__rw;
+    QData/*63:0*/ zerocore__DOT__pcD;
     QData/*63:0*/ zerocore__DOT__ina;
     QData/*63:0*/ zerocore__DOT__res;
+    QData/*63:0*/ zerocore__DOT__pcE;
+    QData/*63:0*/ zerocore__DOT__pcM;
+    QData/*63:0*/ zerocore__DOT__pcW;
     VlUnpacked<QData/*63:0*/, 32> zerocore__DOT__u_regs__DOT__regsheap;
-    VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
+    VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
 
     // INTERNAL VARIABLES
     Vzerocore__Syms* vlSymsp;  // Symbol table
