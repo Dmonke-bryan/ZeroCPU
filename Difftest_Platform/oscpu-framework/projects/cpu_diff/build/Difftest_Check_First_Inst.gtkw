@@ -1,0 +1,52 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Tue Jun  7 05:57:04 2022
+[*]
+[dumpfile] "/home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/projects/cpu_diff/build/2022-06-07@11:21:02.vcd"
+[dumpfile_mtime] "Tue Jun  7 03:21:02 2022"
+[dumpfile_size] 87299
+[savefile] "/home/bryan/ZeroCPU/Difftest_Platform/oscpu-framework/projects/cpu_diff/build/Difftest_Check_First_Inst.gtkw"
+[timestart] 0
+[size] 1642 858
+[pos] -101 -101
+*-1.494109 4 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.SimTop.
+[treeopen] TOP.SimTop.Rvcpu.
+[sst_width] 233
+[signals_width] 134
+[sst_expanded] 1
+[sst_vpaned_height] 234
+@28
+TOP.clock
+@22
+TOP.SimTop.r_pc[63:0]
+TOP.SimTop.r_instr[31:0]
+@200
+-Inst_process
+@22
+TOP.SimTop.Rvcpu.instF[31:0]
+TOP.SimTop.Rvcpu.instD[31:0]
+TOP.SimTop.Rvcpu.instE[31:0]
+TOP.SimTop.Rvcpu.instM[31:0]
+TOP.SimTop.Rvcpu.instW[31:0]
+@200
+-PC process
+@22
+TOP.SimTop.Rvcpu.pcF[63:0]
+TOP.SimTop.Rvcpu.pcD[63:0]
+TOP.SimTop.Rvcpu.pcE[63:0]
+TOP.SimTop.Rvcpu.pcM[63:0]
+TOP.SimTop.Rvcpu.pcW[63:0]
+@200
+-Data_process
+@22
+TOP.SimTop.Rvcpu.Exe_stage.adder1[63:0]
+TOP.SimTop.Rvcpu.Exe_stage.adder2[63:0]
+TOP.SimTop.Rvcpu.Exe_stage.result[63:0]
+@200
+-Regfiles
+@22
+TOP.SimTop.Rvcpu.Regfile.regs[1][63:0]
+[pattern_trace] 1
+[pattern_trace] 0
