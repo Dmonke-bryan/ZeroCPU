@@ -83,13 +83,22 @@ VL_ATTR_COLD void Vzerocore___024root__trace_init_sub__TOP__0(Vzerocore___024roo
     tracep->declBit(c+92,"clk", false,-1);
     tracep->declBit(c+93,"rst", false,-1);
     tracep->declQuad(c+2,"pc", false,-1, 63,0);
-    tracep->popNamePrefix(1);
-    tracep->pushNamePrefix("u_inst_D2E ");
+    tracep->declBus(c+106,"instF", false,-1, 31,0);
+    tracep->declBus(c+4,"instD", false,-1, 31,0);
+    tracep->pushNamePrefix("u_inst_F2D ");
     tracep->declBus(c+118,"WIDTH", false,-1, 31,0);
     tracep->declBit(c+92,"clk", false,-1);
     tracep->declBit(c+93,"rst", false,-1);
     tracep->declBit(c+113,"wen", false,-1);
     tracep->declBus(c+106,"din", false,-1, 31,0);
+    tracep->declBus(c+4,"dout", false,-1, 31,0);
+    tracep->popNamePrefix(2);
+    tracep->pushNamePrefix("u_inst_D2E ");
+    tracep->declBus(c+118,"WIDTH", false,-1, 31,0);
+    tracep->declBit(c+92,"clk", false,-1);
+    tracep->declBit(c+93,"rst", false,-1);
+    tracep->declBit(c+113,"wen", false,-1);
+    tracep->declBus(c+4,"din", false,-1, 31,0);
     tracep->declBus(c+13,"dout", false,-1, 31,0);
     tracep->popNamePrefix(1);
     tracep->pushNamePrefix("u_inst_E2M ");
@@ -99,14 +108,6 @@ VL_ATTR_COLD void Vzerocore___024root__trace_init_sub__TOP__0(Vzerocore___024roo
     tracep->declBit(c+113,"wen", false,-1);
     tracep->declBus(c+13,"din", false,-1, 31,0);
     tracep->declBus(c+16,"dout", false,-1, 31,0);
-    tracep->popNamePrefix(1);
-    tracep->pushNamePrefix("u_inst_F2D ");
-    tracep->declBus(c+118,"WIDTH", false,-1, 31,0);
-    tracep->declBit(c+92,"clk", false,-1);
-    tracep->declBit(c+93,"rst", false,-1);
-    tracep->declBit(c+113,"wen", false,-1);
-    tracep->declBus(c+106,"din", false,-1, 31,0);
-    tracep->declBus(c+4,"dout", false,-1, 31,0);
     tracep->popNamePrefix(1);
     tracep->pushNamePrefix("u_inst_M2W ");
     tracep->declBus(c+118,"WIDTH", false,-1, 31,0);
@@ -159,7 +160,7 @@ VL_ATTR_COLD void Vzerocore___024root__trace_init_sub__TOP__0(Vzerocore___024roo
     tracep->declQuad(c+107,"Rb", false,-1, 63,0);
     tracep->declBit(c+113,"Rw_en", false,-1);
     tracep->declBus(c+10,"Rw_addr", false,-1, 4,0);
-    tracep->declQuad(c+116,"Rw", false,-1, 63,0);
+    tracep->declQuad(c+120,"Rw", false,-1, 63,0);
     for (int i = 0; i < 32; ++i) {
         tracep->declQuad(c+28+i*2,"regsheap", true,(i+0), 63,0);
     }
@@ -286,16 +287,22 @@ VL_ATTR_COLD void Vzerocore___024root__trace_full_sub_0(Vzerocore___024root* vlS
                                              == (0x1fU 
                                                  & (vlSelf->zerocore__DOT__instD 
                                                     >> 7U)))
-                                             ? vlSelf->zerocore__DOT__rw
+                                             ? vlSelf->zerocore__DOT__u_regs__DOT__Rw
                                              : vlSelf->zerocore__DOT__u_regs__DOT__regsheap
                                             [(0x1fU 
                                               & (vlSelf->zerocore__DOT__instD 
                                                  >> 0x14U))]))),64);
     tracep->fullQData(oldp+109,(vlSelf->zerocore__DOT__ina),64);
-    tracep->fullQData(oldp+111,(vlSelf->zerocore__DOT__res),64);
+    tracep->fullQData(oldp+111,(((0U == (IData)(vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0))
+                                  ? (vlSelf->zerocore__DOT__ina 
+                                     + (QData)((IData)(
+                                                       (vlSelf->zerocore__DOT__instD 
+                                                        >> 0x14U))))
+                                  : 0ULL)),64);
     tracep->fullBit(oldp+113,(1U));
     tracep->fullQData(oldp+114,(vlSelf->zerocore__DOT__ra),64);
     tracep->fullQData(oldp+116,(vlSelf->zerocore__DOT__rw),64);
     tracep->fullIData(oldp+118,(0x20U),32);
     tracep->fullIData(oldp+119,(0x40U),32);
+    tracep->fullQData(oldp+120,(vlSelf->zerocore__DOT__u_regs__DOT__Rw),64);
 }

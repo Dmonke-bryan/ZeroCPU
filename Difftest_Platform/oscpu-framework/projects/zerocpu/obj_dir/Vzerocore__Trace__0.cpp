@@ -107,13 +107,18 @@ void Vzerocore___024root__trace_chg_sub_0(Vzerocore___024root* vlSelf, Verilated
                                             == (0x1fU 
                                                 & (vlSelf->zerocore__DOT__instD 
                                                    >> 7U)))
-                                            ? vlSelf->zerocore__DOT__rw
+                                            ? vlSelf->zerocore__DOT__u_regs__DOT__Rw
                                             : vlSelf->zerocore__DOT__u_regs__DOT__regsheap
                                            [(0x1fU 
                                              & (vlSelf->zerocore__DOT__instD 
                                                 >> 0x14U))]))),64);
     tracep->chgQData(oldp+108,(vlSelf->zerocore__DOT__ina),64);
-    tracep->chgQData(oldp+110,(vlSelf->zerocore__DOT__res),64);
+    tracep->chgQData(oldp+110,(((0U == (IData)(vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0))
+                                 ? (vlSelf->zerocore__DOT__ina 
+                                    + (QData)((IData)(
+                                                      (vlSelf->zerocore__DOT__instD 
+                                                       >> 0x14U))))
+                                 : 0ULL)),64);
 }
 
 void Vzerocore___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {

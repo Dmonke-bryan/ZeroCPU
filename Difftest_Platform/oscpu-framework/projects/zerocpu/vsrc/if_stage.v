@@ -1,8 +1,12 @@
 `include "defines.v"
+`include "DFF.v"
+
 module if_stage (
     input clk,
     input rst,
-    output reg [`ADDR_BUS] pc
+    output reg [`ADDR_BUS] pc,
+    input [`INST_BUS] instF,
+    output [`INST_BUS] instD
 );
 
 
@@ -17,5 +21,6 @@ always @(posedge clk) begin
     end
 end
 
+DFF #(32) u_inst_F2D(.clk(clk),.rst(rst),.wen(1'b1),.din(instF),.dout(instD));
     
 endmodule

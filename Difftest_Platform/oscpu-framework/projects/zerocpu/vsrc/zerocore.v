@@ -7,7 +7,7 @@
 `include "id_stage.v"
 `include "ex_stage.v"
 `include "Regfile.v"
-`include "DFF.v"
+
 
 module zerocore (
     input clk,
@@ -26,11 +26,7 @@ module zerocore (
 //wire [`ADDR_BUS] pc;
 wire [`ADDR_BUS] pcF;
 
-if_stage u_if(
-    .clk(clk),
-    .rst(rst),
-    .pc(pcF)
-);
+
 
 //read inst from extern virtual RAM
 wire [`INST_BUS] instF;
@@ -38,11 +34,20 @@ wire [`INST_BUS] instF;
 //assign RamReadEnable = 1'b0;
 assign RamReadEnable = 1'b1; //for local test
 
-/* verilator lint_off UNUSED */
-assign instF = RamReadData[31:0];
 assign RamReadAddr = pcF;
+assign instF = RamReadData[31:0];
 
 wire [`INST_BUS] instD;
+
+if_stage u_if(
+    .clk(clk),
+    .rst(rst),
+    .pc(pcF),
+    .instF(instF),
+    .instD(instD)
+);
+
+
 wire [`ADDR_BUS] pcD;
 
 wire aluBsrc;
@@ -58,7 +63,7 @@ wire [`DATA_BUS] imm;
 wire ra_en;
 wire rb_en;
 
-DFF #(32) u_inst_F2D(.clk(clk),.rst(rst),.wen(1'b1),.din(instF),.dout(instD));
+
 DFF #(64) u_pc_F2D(.clk(clk),.rst(rst),.wen(1'b1),.din(pcF),.dout(pcD));
 
 id_stage u_id(
@@ -80,7 +85,7 @@ wire [`DATA_BUS] inb;
 wire [`DATA_BUS] res;
 assign ina = ra;
 assign inb = aluBsrc ? imm : rb;
-assign res = rw;
+
 
 wire [`INST_BUS] instE;
 wire [`ADDR_BUS] pcE;
@@ -110,6 +115,8 @@ DFF #(32) u_inst_M2W(.clk(clk),.rst(rst),.wen(1'b1),.din(instM),.dout(instW));
 DFF #(64) u_pc_M2W(.clk(clk),.rst(rst),.wen(1'b1),.din(pcM),.dout(pcW));
 
 
+
+
 Regfile u_regs(
     .clk(clk),
     .rst(rst),
@@ -121,7 +128,7 @@ Regfile u_regs(
     .Rb(rb),
     .Rw_en(rd_en),
     .Rw_addr(rd_addr),
-    .Rw(rw)
+    .Rw()
 );
 
 

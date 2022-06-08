@@ -18,40 +18,40 @@ VL_INLINE_OPT void Vzerocore___024root___sequent__TOP__0(Vzerocore___024root* vl
     __Vdly__zerocore__DOT__pcF = vlSelf->zerocore__DOT__pcF;
     if (vlSelf->rst) {
         __Vdly__zerocore__DOT__pcF = 0ULL;
-        vlSelf->zerocore__DOT__instW = 0U;
         vlSelf->zerocore__DOT__pcW = 0ULL;
+        vlSelf->zerocore__DOT__instW = 0U;
         __Vdlyvval__zerocore__DOT__u_regs__DOT__regsheap__v0 = 0ULL;
     } else {
         __Vdly__zerocore__DOT__pcF = (1ULL + vlSelf->zerocore__DOT__pcF);
-        vlSelf->zerocore__DOT__instW = vlSelf->zerocore__DOT__instM;
         vlSelf->zerocore__DOT__pcW = vlSelf->zerocore__DOT__pcM;
+        vlSelf->zerocore__DOT__instW = vlSelf->zerocore__DOT__instM;
         __Vdlyvval__zerocore__DOT__u_regs__DOT__regsheap__v0 
-            = vlSelf->zerocore__DOT__rw;
+            = vlSelf->zerocore__DOT__u_regs__DOT__Rw;
     }
     __Vdlyvdim0__zerocore__DOT__u_regs__DOT__regsheap__v0 
         = (0x1fU & (vlSelf->zerocore__DOT__instD >> 7U));
     vlSelf->zerocore__DOT__u_regs__DOT__regsheap[__Vdlyvdim0__zerocore__DOT__u_regs__DOT__regsheap__v0] 
         = __Vdlyvval__zerocore__DOT__u_regs__DOT__regsheap__v0;
     if (vlSelf->rst) {
-        vlSelf->zerocore__DOT__instM = 0U;
         vlSelf->zerocore__DOT__pcM = 0ULL;
-        vlSelf->zerocore__DOT__instD = 0U;
-        vlSelf->zerocore__DOT__instE = 0U;
+        vlSelf->zerocore__DOT__instM = 0U;
         vlSelf->zerocore__DOT__pcE = 0ULL;
+        vlSelf->zerocore__DOT__instE = 0U;
+        vlSelf->zerocore__DOT__pcD = 0ULL;
+        vlSelf->zerocore__DOT__instD = 0U;
     } else {
-        vlSelf->zerocore__DOT__instM = vlSelf->zerocore__DOT__instE;
         vlSelf->zerocore__DOT__pcM = vlSelf->zerocore__DOT__pcE;
-        vlSelf->zerocore__DOT__instD = (IData)(vlSelf->RamReadData);
-        vlSelf->zerocore__DOT__instE = (IData)(vlSelf->RamReadData);
+        vlSelf->zerocore__DOT__instM = vlSelf->zerocore__DOT__instE;
         vlSelf->zerocore__DOT__pcE = vlSelf->zerocore__DOT__pcD;
+        vlSelf->zerocore__DOT__instE = vlSelf->zerocore__DOT__instD;
+        vlSelf->zerocore__DOT__pcD = vlSelf->zerocore__DOT__pcF;
+        vlSelf->zerocore__DOT__instD = (IData)(vlSelf->RamReadData);
     }
+    vlSelf->zerocore__DOT__pcF = __Vdly__zerocore__DOT__pcF;
+    vlSelf->RamReadAddr = vlSelf->zerocore__DOT__pcF;
     if ((IData)((0x13U == (0x707fU & vlSelf->zerocore__DOT__instD)))) {
         vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0 = 0U;
     }
-    vlSelf->zerocore__DOT__pcD = ((IData)(vlSelf->rst)
-                                   ? 0ULL : vlSelf->zerocore__DOT__pcF);
-    vlSelf->zerocore__DOT__pcF = __Vdly__zerocore__DOT__pcF;
-    vlSelf->RamReadAddr = vlSelf->zerocore__DOT__pcF;
 }
 
 VL_INLINE_OPT void Vzerocore___024root___combo__TOP__0(Vzerocore___024root* vlSelf) {
@@ -66,17 +66,11 @@ VL_INLINE_OPT void Vzerocore___024root___combo__TOP__0(Vzerocore___024root* vlSe
                                               == (0x1fU 
                                                   & (vlSelf->zerocore__DOT__instD 
                                                      >> 7U)))
-                                              ? vlSelf->zerocore__DOT__rw
+                                              ? vlSelf->zerocore__DOT__u_regs__DOT__Rw
                                               : vlSelf->zerocore__DOT__u_regs__DOT__regsheap
                                              [(0x1fU 
                                                & (vlSelf->zerocore__DOT__instD 
                                                   >> 0xfU))]));
-    vlSelf->zerocore__DOT__res = ((0U == (IData)(vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0))
-                                   ? (vlSelf->zerocore__DOT__ina 
-                                      + (QData)((IData)(
-                                                        (vlSelf->zerocore__DOT__instD 
-                                                         >> 0x14U))))
-                                   : 0ULL);
 }
 
 void Vzerocore___024root___eval(Vzerocore___024root* vlSelf) {
