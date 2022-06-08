@@ -23,24 +23,27 @@ module zerocore (
     output [`DATA_BUS] RamWriteData
 );
     
-wire [`ADDR_BUS] pc;
+//wire [`ADDR_BUS] pc;
+wire [`ADDR_BUS] pcF;
 
 if_stage u_if(
     .clk(clk),
     .rst(rst),
-    .pc(pc)
+    .pc(pcF)
 );
 
 //read inst from extern virtual RAM
 wire [`INST_BUS] instF;
-wire [`ADDR_BUS] pcF;
-assign RamReadEnable = 1'b0;
+
+//assign RamReadEnable = 1'b0;
+assign RamReadEnable = 1'b1; //for local test
 
 /* verilator lint_off UNUSED */
 assign instF = RamReadData[31:0];
-assign RamReadAddr = pc;
-assign pcF = pc;
+assign RamReadAddr = pcF;
 
+wire [`INST_BUS] instD;
+wire [`ADDR_BUS] pcD;
 
 wire aluBsrc;
 wire [3:0] aluCtl;
@@ -54,9 +57,6 @@ wire rd_en;
 wire [`DATA_BUS] imm;
 wire ra_en;
 wire rb_en;
-
-wire [`INST_BUS] instD;
-wire [`ADDR_BUS] pcD;
 
 DFF #(32) u_inst_F2D(.clk(clk),.rst(rst),.wen(1'b1),.din(instF),.dout(instD));
 DFF #(64) u_pc_F2D(.clk(clk),.rst(rst),.wen(1'b1),.din(pcF),.dout(pcD));

@@ -9,9 +9,23 @@ using namespace std;
 static Vzerocore *top;
 static VerilatedVcdC* tfp;
 static vluint64_t main_time = 0;
-static const vluint64_t sim_time = 10000;
+static const vluint64_t sim_time = 100;
 
-uint64_t ram[1024*1024];
+//uint64_t ram[1024*1024];
+uint32_t ram[1024*1024];
+
+void init_inst()
+{
+	ram[0] = 0;
+	ram[1] = 1048723;
+	ram[2] = 2097299;
+	ram[3] = 1081491;
+
+	for (int i=4;i<200;i++)
+	{
+		ram[i] = 0;
+	}
+}
 
 void read_inst( char* filename)
 {
@@ -30,14 +44,17 @@ void read_inst( char* filename)
 
 int main(int argc, char **argv)
 {
+/*
 	char filename[100];
 	printf("Please enter your filename~\n");
 	cin >> filename;
-	read_inst(filename);
+	read_inst(filename);*/
 
   // initialization
   Verilated::commandArgs(argc, argv);
   Verilated::traceEverOn(true);
+
+  init_inst();
 
   top = new Vzerocore;
   tfp = new VerilatedVcdC;
@@ -50,24 +67,30 @@ int main(int argc, char **argv)
 	  if( main_time % 10 == 0 ) 
 	  {
 		  top->clk = 0;
+		  /*
 		  if(top->RamReadEnable) {
 		     top->RamReadData = ram[top->RamReadAddr];
-		     printf("read data %lx\r\n",ram[top->RamReadAddr]);
-		  }
-		  if(top->RamWriteEnable){ 
+		     printf("read data %x\r\n",ram[top->RamReadAddr]);
+		  }*/
+		  /*if(top->RamWriteEnable){ 
 		    ram[top->RamWriteAddr] = (ram[top->RamWriteAddr]& ~top->RamWriteMask )
 			                         | (top->RamWriteData & top->RamWriteMask);
-		    printf("write data %lx\r\n",ram[top->RamWriteAddr]);
-		  }
+		    printf("write data %x\r\n",ram[top->RamWriteAddr]);
+		  }*/
 
 		  
 	  }
 	  if( main_time % 10 == 5 ) {
 		  top->clk = 1;
 		  //if((top->pcEnableF==1) | (main_time == 15)) top->instF = *(uint32_t*)((uint8_t*)ram+top->pcF);
+		  if(top->RamReadEnable) {
+		     top->RamReadData = ram[top->RamReadAddr];
+			 printf("read addr %x\r\n",top->RamReadAddr);
+		     printf("read data %x\r\n",ram[top->RamReadAddr]);
+		  }
 	  }
 		  
-	  if( main_time < 15 )
+	  if( main_time < 20 )
 	  {
 		top->rst = 1;
 	  }
