@@ -27,7 +27,12 @@ run:
 	./obj_dir/V$(TOPNAME)
 
 rung: 
+<<<<<<< HEAD
 	gtkwave top.vcd
+=======
+	@echo "INVALID: gtkwave ./logs/top_dump.vcd"
+	gtkwave top.vcd &
+>>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
 
 clean:
 	@echo "clean the project"

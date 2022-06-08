@@ -30,12 +30,24 @@ wire [`ADDR_BUS] pcF;
 
 //read inst from extern virtual RAM
 wire [`INST_BUS] instF;
+<<<<<<< HEAD
 
 //assign RamReadEnable = 1'b0;
 assign RamReadEnable = 1'b1; //for local test
 
 assign RamReadAddr = pcF;
 assign instF = RamReadData[31:0];
+=======
+wire [`ADDR_BUS] pcF;
+assign RamReadEnable = 1'b0;
+assign RamReadEnable = rst ? 1'b0 : 1'b1; //local test
+
+/* verilator lint_off UNUSED */
+
+assign RamReadAddr = pc;
+assign pcF = pc;
+assign instF = pcF[1]? RamReadData[63:32] : RamReadData[31:0];
+>>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
 
 wire [`INST_BUS] instD;
 

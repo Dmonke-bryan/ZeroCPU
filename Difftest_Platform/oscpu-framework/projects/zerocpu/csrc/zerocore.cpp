@@ -46,9 +46,16 @@ int main(int argc, char **argv)
 {
 /*
 	char filename[100];
+<<<<<<< HEAD
 	printf("Please enter your filename~\n");
 	cin >> filename;
 	read_inst(filename);*/
+=======
+	//printf("Please enter your filename~\n");
+	//cin >> filename;
+	//read_inst(filename);
+	read_inst("inst_diff.bin");
+>>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
 
   // initialization
   Verilated::commandArgs(argc, argv);
@@ -75,14 +82,21 @@ int main(int argc, char **argv)
 		  /*if(top->RamWriteEnable){ 
 		    ram[top->RamWriteAddr] = (ram[top->RamWriteAddr]& ~top->RamWriteMask )
 			                         | (top->RamWriteData & top->RamWriteMask);
+<<<<<<< HEAD
 		    printf("write data %x\r\n",ram[top->RamWriteAddr]);
 		  }*/
 
+=======
+		    printf("write data %lx\r\n",ram[top->RamWriteAddr]);
+		  }
+			*/
+>>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
 		  
 	  }
 	  if( main_time % 10 == 5 ) {
 		  top->clk = 1;
 		  //if((top->pcEnableF==1) | (main_time == 15)) top->instF = *(uint32_t*)((uint8_t*)ram+top->pcF);
+<<<<<<< HEAD
 		  if(top->RamReadEnable) {
 		     top->RamReadData = ram[top->RamReadAddr];
 			 printf("read addr %x\r\n",top->RamReadAddr);
@@ -91,6 +105,20 @@ int main(int argc, char **argv)
 	  }
 		  
 	  if( main_time < 20 )
+=======
+		    if(top->RamReadEnable) {
+		     top->RamReadData = ram[top->RamReadAddr];
+		     //printf("read data %lx\r\n",ram[top->RamReadAddr]);
+		  }
+		  if(top->RamWriteEnable){ 
+		    ram[top->RamWriteAddr] = (ram[top->RamWriteAddr]& ~top->RamWriteMask )
+			                         | (top->RamWriteData & top->RamWriteMask);
+		    printf("write data %lx\r\n",ram[top->RamWriteAddr]);
+		  }
+	  }
+		  
+	  if( main_time < 10 )
+>>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
 	  {
 		top->rst = 1;
 	  }

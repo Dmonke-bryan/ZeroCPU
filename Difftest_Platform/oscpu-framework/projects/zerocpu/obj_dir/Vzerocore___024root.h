@@ -32,11 +32,19 @@ VL_MODULE(Vzerocore___024root) {
     QData/*63:0*/ zerocore__DOT__pcD;
     QData/*63:0*/ zerocore__DOT__ra;
     QData/*63:0*/ zerocore__DOT__rw;
+    QData/*63:0*/ zerocore__DOT__pcD;
     QData/*63:0*/ zerocore__DOT__ina;
+<<<<<<< HEAD
     QData/*63:0*/ zerocore__DOT__pcE;
     QData/*63:0*/ zerocore__DOT__pcM;
     QData/*63:0*/ zerocore__DOT__pcW;
     QData/*63:0*/ zerocore__DOT__u_regs__DOT__Rw;
+=======
+    QData/*63:0*/ zerocore__DOT__res;
+    QData/*63:0*/ zerocore__DOT__pcE;
+    QData/*63:0*/ zerocore__DOT__pcM;
+    QData/*63:0*/ zerocore__DOT__pcW;
+>>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
     VlUnpacked<QData/*63:0*/, 32> zerocore__DOT__u_regs__DOT__regsheap;
     VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
 
