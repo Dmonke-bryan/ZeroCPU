@@ -30,37 +30,22 @@ wire [`ADDR_BUS] pcF;
 
 //read inst from extern virtual RAM
 wire [`INST_BUS] instF;
-<<<<<<< HEAD
 
-//assign RamReadEnable = 1'b0;
-assign RamReadEnable = 1'b1; //for local test
-
-assign RamReadAddr = pcF;
-assign instF = RamReadData[31:0];
-=======
-wire [`ADDR_BUS] pcF;
-assign RamReadEnable = 1'b0;
-assign RamReadEnable = rst ? 1'b0 : 1'b1; //local test
-
-/* verilator lint_off UNUSED */
-
-assign RamReadAddr = pc;
-assign pcF = pc;
-assign instF = pcF[1]? RamReadData[63:32] : RamReadData[31:0];
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
-
-wire [`INST_BUS] instD;
-
-if_stage u_if(
-    .clk(clk),
-    .rst(rst),
-    .pc(pcF),
-    .instF(instF),
-    .instD(instD)
-);
-
+wire [`INST_BUS] instM;
+wire [`ADDR_BUS] pcM;
 
 wire [`ADDR_BUS] pcD;
+wire [`INST_BUS] instD;
+
+wire [`INST_BUS] instW;
+wire [`ADDR_BUS] pcW;
+
+wire [`INST_BUS] instE;
+wire [`ADDR_BUS] pcE;
+
+wire [`DATA_BUS] ina;
+wire [`DATA_BUS] inb;
+wire [`DATA_BUS] res;
 
 wire aluBsrc;
 wire [3:0] aluCtl;
@@ -74,6 +59,24 @@ wire rd_en;
 wire [`DATA_BUS] imm;
 wire ra_en;
 wire rb_en;
+
+
+//assign RamReadEnable = 1'b0;
+assign RamReadEnable = 1'b1; //for local test
+
+assign RamReadAddr = pcF;
+assign instF = RamReadData[31:0];
+
+
+
+
+if_stage u_if(
+    .clk(clk),
+    .rst(rst),
+    .pc(pcF),
+    .instF(instF),
+    .instD(instD)
+);
 
 
 DFF #(64) u_pc_F2D(.clk(clk),.rst(rst),.wen(1'b1),.din(pcF),.dout(pcD));
@@ -92,15 +95,12 @@ id_stage u_id(
 );
 
 
-wire [`DATA_BUS] ina;
-wire [`DATA_BUS] inb;
-wire [`DATA_BUS] res;
+
 assign ina = ra;
 assign inb = aluBsrc ? imm : rb;
 
 
-wire [`INST_BUS] instE;
-wire [`ADDR_BUS] pcE;
+
 
 DFF #(32) u_inst_D2E(.clk(clk),.rst(rst),.wen(1'b1),.din(instD),.dout(instE));
 DFF #(64) u_pc_D2E(.clk(clk),.rst(rst),.wen(1'b1),.din(pcD),.dout(pcE));
@@ -114,14 +114,12 @@ ex_stage u_ex(
     .res(res)
 );
 
-wire [`INST_BUS] instM;
-wire [`ADDR_BUS] pcM;
+
 
 DFF #(32) u_inst_E2M(.clk(clk),.rst(rst),.wen(1'b1),.din(instE),.dout(instM));
 DFF #(64) u_pc_E2M(.clk(clk),.rst(rst),.wen(1'b1),.din(pcE),.dout(pcM));
 
-wire [`INST_BUS] instW;
-wire [`ADDR_BUS] pcW;
+
 
 DFF #(32) u_inst_M2W(.clk(clk),.rst(rst),.wen(1'b1),.din(instM),.dout(instW));
 DFF #(64) u_pc_M2W(.clk(clk),.rst(rst),.wen(1'b1),.din(pcM),.dout(pcW));
@@ -140,7 +138,7 @@ Regfile u_regs(
     .Rb(rb),
     .Rw_en(rd_en),
     .Rw_addr(rd_addr),
-    .Rw()
+    .Rw(res)
 );
 
 

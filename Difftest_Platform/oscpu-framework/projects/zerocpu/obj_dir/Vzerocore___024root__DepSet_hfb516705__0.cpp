@@ -6,23 +6,11 @@
 
 #include "Vzerocore___024root.h"
 
-<<<<<<< HEAD
-=======
-VL_INLINE_OPT void Vzerocore___024root___combo__TOP__0(Vzerocore___024root* vlSelf) {
-    if (false && vlSelf) {}  // Prevent unused
-    Vzerocore__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vzerocore___024root___combo__TOP__0\n"); );
-    // Body
-    vlSelf->RamReadEnable = (1U & (~ (IData)(vlSelf->rst)));
-}
-
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
 VL_INLINE_OPT void Vzerocore___024root___sequent__TOP__0(Vzerocore___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vzerocore__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vzerocore___024root___sequent__TOP__0\n"); );
     // Init
-<<<<<<< HEAD
     QData/*63:0*/ __Vdly__zerocore__DOT__pcF;
     CData/*4:0*/ __Vdlyvdim0__zerocore__DOT__u_regs__DOT__regsheap__v0;
     QData/*63:0*/ __Vdlyvval__zerocore__DOT__u_regs__DOT__regsheap__v0;
@@ -30,28 +18,15 @@ VL_INLINE_OPT void Vzerocore___024root___sequent__TOP__0(Vzerocore___024root* vl
     __Vdly__zerocore__DOT__pcF = vlSelf->zerocore__DOT__pcF;
     if (vlSelf->rst) {
         __Vdly__zerocore__DOT__pcF = 0ULL;
-=======
-    QData/*63:0*/ __Vdly__zerocore__DOT__pc;
-    CData/*4:0*/ __Vdlyvdim0__zerocore__DOT__u_regs__DOT__regsheap__v0;
-    QData/*63:0*/ __Vdlyvval__zerocore__DOT__u_regs__DOT__regsheap__v0;
-    // Body
-    __Vdly__zerocore__DOT__pc = vlSelf->zerocore__DOT__pc;
-    if (vlSelf->rst) {
-        __Vdly__zerocore__DOT__pc = 0ULL;
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
         vlSelf->zerocore__DOT__pcW = 0ULL;
         vlSelf->zerocore__DOT__instW = 0U;
         __Vdlyvval__zerocore__DOT__u_regs__DOT__regsheap__v0 = 0ULL;
     } else {
-<<<<<<< HEAD
         __Vdly__zerocore__DOT__pcF = (1ULL + vlSelf->zerocore__DOT__pcF);
-=======
-        __Vdly__zerocore__DOT__pc = (1ULL + vlSelf->zerocore__DOT__pc);
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
         vlSelf->zerocore__DOT__pcW = vlSelf->zerocore__DOT__pcM;
         vlSelf->zerocore__DOT__instW = vlSelf->zerocore__DOT__instM;
         __Vdlyvval__zerocore__DOT__u_regs__DOT__regsheap__v0 
-            = vlSelf->zerocore__DOT__u_regs__DOT__Rw;
+            = vlSelf->zerocore__DOT__res;
     }
     __Vdlyvdim0__zerocore__DOT__u_regs__DOT__regsheap__v0 
         = (0x1fU & (vlSelf->zerocore__DOT__instD >> 7U));
@@ -69,25 +44,11 @@ VL_INLINE_OPT void Vzerocore___024root___sequent__TOP__0(Vzerocore___024root* vl
         vlSelf->zerocore__DOT__instM = vlSelf->zerocore__DOT__instE;
         vlSelf->zerocore__DOT__pcE = vlSelf->zerocore__DOT__pcD;
         vlSelf->zerocore__DOT__instE = vlSelf->zerocore__DOT__instD;
-<<<<<<< HEAD
         vlSelf->zerocore__DOT__pcD = vlSelf->zerocore__DOT__pcF;
         vlSelf->zerocore__DOT__instD = (IData)(vlSelf->RamReadData);
     }
     vlSelf->zerocore__DOT__pcF = __Vdly__zerocore__DOT__pcF;
     vlSelf->RamReadAddr = vlSelf->zerocore__DOT__pcF;
-=======
-        vlSelf->zerocore__DOT__pcD = vlSelf->zerocore__DOT__pc;
-        vlSelf->zerocore__DOT__instD = ((1U & (IData)(
-                                                      (vlSelf->zerocore__DOT__pc 
-                                                       >> 1U)))
-                                         ? (IData)(
-                                                   (vlSelf->RamReadData 
-                                                    >> 0x20U))
-                                         : (IData)(vlSelf->RamReadData));
-    }
-    vlSelf->zerocore__DOT__pc = __Vdly__zerocore__DOT__pc;
-    vlSelf->RamReadAddr = vlSelf->zerocore__DOT__pc;
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
     if ((IData)((0x13U == (0x707fU & vlSelf->zerocore__DOT__instD)))) {
         vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0 = 0U;
     }
@@ -105,24 +66,17 @@ VL_INLINE_OPT void Vzerocore___024root___combo__TOP__0(Vzerocore___024root* vlSe
                                               == (0x1fU 
                                                   & (vlSelf->zerocore__DOT__instD 
                                                      >> 7U)))
-<<<<<<< HEAD
-                                              ? vlSelf->zerocore__DOT__u_regs__DOT__Rw
-=======
-                                              ? vlSelf->zerocore__DOT__rw
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
+                                              ? vlSelf->zerocore__DOT__res
                                               : vlSelf->zerocore__DOT__u_regs__DOT__regsheap
                                              [(0x1fU 
                                                & (vlSelf->zerocore__DOT__instD 
                                                   >> 0xfU))]));
-<<<<<<< HEAD
-=======
     vlSelf->zerocore__DOT__res = ((0U == (IData)(vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0))
                                    ? (vlSelf->zerocore__DOT__ina 
                                       + (QData)((IData)(
                                                         (vlSelf->zerocore__DOT__instD 
                                                          >> 0x14U))))
                                    : 0ULL);
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
 }
 
 void Vzerocore___024root___eval(Vzerocore___024root* vlSelf) {
@@ -130,10 +84,6 @@ void Vzerocore___024root___eval(Vzerocore___024root* vlSelf) {
     Vzerocore__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vzerocore___024root___eval\n"); );
     // Body
-<<<<<<< HEAD
-=======
-    Vzerocore___024root___combo__TOP__0(vlSelf);
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
     if (((IData)(vlSelf->clk) & (~ (IData)(vlSelf->__Vclklast__TOP__clk)))) {
         Vzerocore___024root___sequent__TOP__0(vlSelf);
         vlSelf->__Vm_traceActivity[1U] = 1U;
@@ -141,6 +91,30 @@ void Vzerocore___024root___eval(Vzerocore___024root* vlSelf) {
     Vzerocore___024root___combo__TOP__0(vlSelf);
     // Final
     vlSelf->__Vclklast__TOP__clk = vlSelf->clk;
+}
+
+QData Vzerocore___024root___change_request_1(Vzerocore___024root* vlSelf);
+
+VL_INLINE_OPT QData Vzerocore___024root___change_request(Vzerocore___024root* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    Vzerocore__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vzerocore___024root___change_request\n"); );
+    // Body
+    return (Vzerocore___024root___change_request_1(vlSelf));
+}
+
+VL_INLINE_OPT QData Vzerocore___024root___change_request_1(Vzerocore___024root* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    Vzerocore__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vzerocore___024root___change_request_1\n"); );
+    // Body
+    // Change detection
+    QData __req = false;  // Logically a bool
+    __req |= ((vlSelf->zerocore__DOT__res ^ vlSelf->__Vchglast__TOP__zerocore__DOT__res));
+    VL_DEBUG_IF( if(__req && ((vlSelf->zerocore__DOT__res ^ vlSelf->__Vchglast__TOP__zerocore__DOT__res))) VL_DBG_MSGF("        CHANGE: vsrc/zerocore.v:48: zerocore.res\n"); );
+    // Final
+    vlSelf->__Vchglast__TOP__zerocore__DOT__res = vlSelf->zerocore__DOT__res;
+    return __req;
 }
 
 #ifdef VL_DEBUG

@@ -27,39 +27,24 @@ void Vzerocore___024root__trace_chg_sub_0(Vzerocore___024root* vlSelf, Verilated
         tracep->chgIData(oldp+0,(vlSelf->zerocore__DOT__u_regs__DOT__i),32);
     }
     if (VL_UNLIKELY(vlSelf->__Vm_traceActivity[1U])) {
-<<<<<<< HEAD
         tracep->chgQData(oldp+1,(vlSelf->zerocore__DOT__pcF),64);
-        tracep->chgIData(oldp+3,(vlSelf->zerocore__DOT__instD),32);
-        tracep->chgQData(oldp+4,(vlSelf->zerocore__DOT__pcD),64);
-        tracep->chgCData(oldp+6,(vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0),4);
-        tracep->chgCData(oldp+7,((0x1fU & (vlSelf->zerocore__DOT__instD 
-                                           >> 0xfU))),5);
-        tracep->chgCData(oldp+8,((0x1fU & (vlSelf->zerocore__DOT__instD 
-                                           >> 0x14U))),5);
-        tracep->chgCData(oldp+9,((0x1fU & (vlSelf->zerocore__DOT__instD 
-                                           >> 7U))),5);
-        tracep->chgQData(oldp+10,((QData)((IData)((vlSelf->zerocore__DOT__instD 
-                                                   >> 0x14U)))),64);
-=======
-        tracep->chgQData(oldp+1,(vlSelf->zerocore__DOT__pc),64);
-        tracep->chgCData(oldp+3,(vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0),4);
-        tracep->chgCData(oldp+4,((0x1fU & (vlSelf->zerocore__DOT__instD 
-                                           >> 0xfU))),5);
-        tracep->chgCData(oldp+5,((0x1fU & (vlSelf->zerocore__DOT__instD 
-                                           >> 0x14U))),5);
-        tracep->chgCData(oldp+6,((0x1fU & (vlSelf->zerocore__DOT__instD 
-                                           >> 7U))),5);
-        tracep->chgQData(oldp+7,((QData)((IData)((vlSelf->zerocore__DOT__instD 
-                                                  >> 0x14U)))),64);
-        tracep->chgIData(oldp+9,(vlSelf->zerocore__DOT__instD),32);
-        tracep->chgQData(oldp+10,(vlSelf->zerocore__DOT__pcD),64);
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
+        tracep->chgIData(oldp+3,(vlSelf->zerocore__DOT__instM),32);
+        tracep->chgQData(oldp+4,(vlSelf->zerocore__DOT__pcM),64);
+        tracep->chgQData(oldp+6,(vlSelf->zerocore__DOT__pcD),64);
+        tracep->chgIData(oldp+8,(vlSelf->zerocore__DOT__instD),32);
+        tracep->chgIData(oldp+9,(vlSelf->zerocore__DOT__instW),32);
+        tracep->chgQData(oldp+10,(vlSelf->zerocore__DOT__pcW),64);
         tracep->chgIData(oldp+12,(vlSelf->zerocore__DOT__instE),32);
         tracep->chgQData(oldp+13,(vlSelf->zerocore__DOT__pcE),64);
-        tracep->chgIData(oldp+15,(vlSelf->zerocore__DOT__instM),32);
-        tracep->chgQData(oldp+16,(vlSelf->zerocore__DOT__pcM),64);
-        tracep->chgIData(oldp+18,(vlSelf->zerocore__DOT__instW),32);
-        tracep->chgQData(oldp+19,(vlSelf->zerocore__DOT__pcW),64);
+        tracep->chgQData(oldp+15,((QData)((IData)((vlSelf->zerocore__DOT__instD 
+                                                   >> 0x14U)))),64);
+        tracep->chgCData(oldp+17,(vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0),4);
+        tracep->chgCData(oldp+18,((0x1fU & (vlSelf->zerocore__DOT__instD 
+                                            >> 0xfU))),5);
+        tracep->chgCData(oldp+19,((0x1fU & (vlSelf->zerocore__DOT__instD 
+                                            >> 0x14U))),5);
+        tracep->chgCData(oldp+20,((0x1fU & (vlSelf->zerocore__DOT__instD 
+                                            >> 7U))),5);
         tracep->chgCData(oldp+21,((0x7fU & vlSelf->zerocore__DOT__instD)),7);
         tracep->chgCData(oldp+22,((7U & (vlSelf->zerocore__DOT__instD 
                                          >> 0xcU))),3);
@@ -114,42 +99,21 @@ void Vzerocore___024root__trace_chg_sub_0(Vzerocore___024root* vlSelf, Verilated
     tracep->chgQData(oldp+99,(vlSelf->RamWriteAddr),64);
     tracep->chgQData(oldp+101,(vlSelf->RamWriteMask),64);
     tracep->chgQData(oldp+103,(vlSelf->RamWriteData),64);
-<<<<<<< HEAD
     tracep->chgIData(oldp+105,((IData)(vlSelf->RamReadData)),32);
-=======
-    tracep->chgIData(oldp+105,(((1U & (IData)((vlSelf->zerocore__DOT__pc 
-                                               >> 1U)))
-                                 ? (IData)((vlSelf->RamReadData 
-                                            >> 0x20U))
-                                 : (IData)(vlSelf->RamReadData))),32);
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
-    tracep->chgQData(oldp+106,(((IData)(vlSelf->rst)
+    tracep->chgQData(oldp+106,(vlSelf->zerocore__DOT__ina),64);
+    tracep->chgQData(oldp+108,(vlSelf->zerocore__DOT__res),64);
+    tracep->chgQData(oldp+110,(((IData)(vlSelf->rst)
                                  ? 0ULL : (((0x1fU 
                                              & (vlSelf->zerocore__DOT__instD 
                                                 >> 0x14U)) 
                                             == (0x1fU 
                                                 & (vlSelf->zerocore__DOT__instD 
                                                    >> 7U)))
-<<<<<<< HEAD
-                                            ? vlSelf->zerocore__DOT__u_regs__DOT__Rw
-=======
-                                            ? vlSelf->zerocore__DOT__rw
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
+                                            ? vlSelf->zerocore__DOT__res
                                             : vlSelf->zerocore__DOT__u_regs__DOT__regsheap
                                            [(0x1fU 
                                              & (vlSelf->zerocore__DOT__instD 
                                                 >> 0x14U))]))),64);
-    tracep->chgQData(oldp+108,(vlSelf->zerocore__DOT__ina),64);
-<<<<<<< HEAD
-    tracep->chgQData(oldp+110,(((0U == (IData)(vlSelf->zerocore__DOT__u_id__DOT__aluCtl__out__out0))
-                                 ? (vlSelf->zerocore__DOT__ina 
-                                    + (QData)((IData)(
-                                                      (vlSelf->zerocore__DOT__instD 
-                                                       >> 0x14U))))
-                                 : 0ULL)),64);
-=======
-    tracep->chgQData(oldp+110,(vlSelf->zerocore__DOT__res),64);
->>>>>>> c5d3714addcabc440caec53b5c140c9c63927893
 }
 
 void Vzerocore___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {

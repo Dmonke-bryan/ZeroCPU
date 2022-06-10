@@ -16,7 +16,7 @@ module Regfile (
 );
 
 //32 registers
-reg [`DATA_BUS] regsheap[0:31];
+reg [`DATA_BUS] regsheap[31:0];
 
 //init the regs' value 
 integer i;
