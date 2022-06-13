@@ -31,9 +31,11 @@ assign rd_addr = inst[11:7];
 
 //define the 1-bit flag for opcode
 wire  opcode_001_0011 = (opcode == 7'b0010011);
+wire  opcode_011_0011 = (opcode == 7'b0110011);
 
 //define the 1-bit flag for funt3
 wire  funt3_000 = (funt3 == 3'b000);
+
 //wire  funt3_101 = (funt3 == 3'b101);
 
 //define the 1-bit flag for funt7
@@ -43,6 +45,9 @@ wire  funt3_000 = (funt3 == 3'b000);
 //instructions
 //Itype
 wire ADDI = opcode_001_0011 & funt3_000;
+
+//Rtype
+wire ADD = opcode_011_0011 & funt3_000;
 
 //generate the aluCtl signal 
 //TBD - Sub, Add
@@ -60,7 +65,7 @@ assign ra_en = 1'b1;
 assign rb_en = 1'b1;
 
 //TBD - just consider addi 
-assign aluBsrc = 1'b1;
+assign aluBsrc = (ADDI);
 
 //wire SRAI = opcode_001_0011 & funt3_101 & funt7_0100000;
 assign imm = {52'b0,inst[31:20]};

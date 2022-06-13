@@ -21,9 +21,15 @@ VL_ATTR_COLD void Vzerocore___024root___settle__TOP__0(Vzerocore___024root* vlSe
     // Body
     vlSelf->RamReadAddr = vlSelf->zerocore__DOT__pcF;
     vlSelf->zerocore__DOT__u_ex__DOT__resADD = (vlSelf->zerocore__DOT__rs1DataE 
-                                                + (QData)((IData)(
-                                                                  (vlSelf->zerocore__DOT__instD 
-                                                                   >> 0x14U))));
+                                                + ((IData)(
+                                                           (0x13U 
+                                                            == 
+                                                            (0x707fU 
+                                                             & vlSelf->zerocore__DOT__instD)))
+                                                    ? (QData)((IData)(
+                                                                      (vlSelf->zerocore__DOT__instD 
+                                                                       >> 0x14U)))
+                                                    : vlSelf->zerocore__DOT__rs2DataE));
 }
 
 VL_ATTR_COLD void Vzerocore___024root___eval_initial(Vzerocore___024root* vlSelf) {

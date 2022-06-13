@@ -98,9 +98,15 @@ VL_INLINE_OPT void Vzerocore___024root___sequent__TOP__0(Vzerocore___024root* vl
     vlSelf->zerocore__DOT__instD = ((IData)(vlSelf->rst)
                                      ? 0U : (IData)(vlSelf->RamReadData));
     vlSelf->zerocore__DOT__u_ex__DOT__resADD = (vlSelf->zerocore__DOT__rs1DataE 
-                                                + (QData)((IData)(
-                                                                  (vlSelf->zerocore__DOT__instD 
-                                                                   >> 0x14U))));
+                                                + ((IData)(
+                                                           (0x13U 
+                                                            == 
+                                                            (0x707fU 
+                                                             & vlSelf->zerocore__DOT__instD)))
+                                                    ? (QData)((IData)(
+                                                                      (vlSelf->zerocore__DOT__instD 
+                                                                       >> 0x14U)))
+                                                    : vlSelf->zerocore__DOT__rs2DataE));
 }
 
 void Vzerocore___024root___eval(Vzerocore___024root* vlSelf) {
