@@ -51,7 +51,7 @@ wire [7:0] aluType = {7'b0, ADDI};
 always @(*) begin
     case (aluType)
         8'd1: aluCtl = {1'b0,3'b0};
-        default : aluCtl = 4'bz;
+        default : aluCtl = 4'b0;
     endcase
 end
 

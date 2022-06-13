@@ -45,20 +45,32 @@ wire [`ADDR_BUS] pcE;
 
 wire [`DATA_BUS] ina;
 wire [`DATA_BUS] inb;
-wire [`DATA_BUS] res;
+
+
 
 wire aluBsrc;
 wire [3:0] aluCtl;
-wire [`REG_BUS] ra_addr;
-wire [4:0] rb_addr;
-wire [4:0] rd_addr;
-wire [`DATA_BUS] ra;
-wire [`DATA_BUS] rb;
-wire [`DATA_BUS] rw;
-wire rd_en;
 wire [`DATA_BUS] imm;
-wire ra_en;
-wire rb_en;
+
+//id stage -> exe stage
+wire  rs1ReadEnable;
+wire  rs2ReadEnable;
+
+wire  [4 : 0] rs1ReadAddr;
+wire  [4 : 0] rs2ReadAddr;
+
+//regfile -> exe stage
+wire [`DATA_BUS] rs1DataD;
+wire [`DATA_BUS] rs2DataD;
+
+wire [`DATA_BUS] rs1DataE;
+wire [`DATA_BUS] rs2DataE;
+
+
+// exe stage -> wb stage
+wire rdWriteEnableW;
+wire [4 : 0]rdWriteAddrW;
+wire [`DATA_BUS]rdWriteDataW;
 
 
 //assign RamReadEnable = 1'b0;
@@ -66,8 +78,6 @@ assign RamReadEnable = 1'b1; //for local test
 
 assign RamReadAddr = pcF;
 assign instF = RamReadData[31:0];
-
-
 
 
 if_stage u_if(
@@ -79,16 +89,15 @@ if_stage u_if(
 );
 
 
-DFF #(64) u_pc_F2D(.clk(clk),.rst(rst),.wen(1'b1),.din(pcF),.dout(pcD));
 
 id_stage u_id(
     .inst(instD),
-    .ra_en(ra_en),
-    .ra_addr(ra_addr),
-    .rb_en(rb_en),
-    .rb_addr(rb_addr),
-    .rd_en(rd_en),
-    .rd_addr(rd_addr),
+    .ra_en(rs1ReadEnable),
+    .ra_addr(rs1ReadAddr),
+    .rb_en(rs2ReadEnable),
+    .rb_addr(rs2ReadAddr),
+    .rd_en(rdWriteEnableW),
+    .rd_addr(rdWriteAddrW),
     .imm(imm),
     .aluBsrc(aluBsrc),
     .aluCtl(aluCtl)
@@ -96,14 +105,15 @@ id_stage u_id(
 
 
 
-assign ina = ra;
-assign inb = aluBsrc ? imm : rb;
+DFF #(64) rs1Data_D2E(clk, rst, 1'b1, rs1DataD,rs1DataE);
+DFF #(64) rs2Data_D2E(clk, rst, 1'b1, rs2DataD,rs2DataE);
 
+assign ina = rs1DataE;
+assign inb = aluBsrc ? imm : rs2DataE;
 
+//assign rdWriteDataW = rs1DataE + rs2DataE;
+//assign rdWriteDataW = 64'h65;
 
-
-DFF #(32) u_inst_D2E(.clk(clk),.rst(rst),.wen(1'b1),.din(instD),.dout(instE));
-DFF #(64) u_pc_D2E(.clk(clk),.rst(rst),.wen(1'b1),.din(pcD),.dout(pcE));
 
 ex_stage u_ex(
     .ina(ina),
@@ -111,36 +121,24 @@ ex_stage u_ex(
     .inb(inb),
     //.rb_en(rb_en),
     .aluCtl(aluCtl),
-    .res(res)
+    .outy(rdWriteDataW)
 );
-
-
-
-DFF #(32) u_inst_E2M(.clk(clk),.rst(rst),.wen(1'b1),.din(instE),.dout(instM));
-DFF #(64) u_pc_E2M(.clk(clk),.rst(rst),.wen(1'b1),.din(pcE),.dout(pcM));
-
-
-
-DFF #(32) u_inst_M2W(.clk(clk),.rst(rst),.wen(1'b1),.din(instM),.dout(instW));
-DFF #(64) u_pc_M2W(.clk(clk),.rst(rst),.wen(1'b1),.din(pcM),.dout(pcW));
-
-
 
 
 Regfile u_regs(
     .clk(clk),
     .rst(rst),
-    .Ra_en(ra_en),
-    .Rb_en(rb_en),
-    .Ra_addr(ra_addr),
-    .Rb_addr(rb_addr),
-    .Ra(ina),
-    .Rb(rb),
-    .Rw_en(rd_en),
-    .Rw_addr(rd_addr),
-    .Rw(res)
-);
-
+    .WriteAddr(rdWriteAddrW),
+    .WriteData(rdWriteDataW),
+    .WriteEnable(rdWriteEnableW),
+    
+    .ReadAddr1(rs1ReadAddr),
+    .ReadData1(rs1DataD),
+    .ReadEnable1(rs1ReadEnable),
+    .ReadAddr2(rs2ReadAddr),
+    .ReadData2(rs2DataD),
+    .ReadEnable2(rs2ReadEnable)
+    );
 
 
 endmodule

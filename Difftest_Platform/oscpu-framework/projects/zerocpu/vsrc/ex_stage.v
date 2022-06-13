@@ -5,10 +5,12 @@ module ex_stage (
     input [`DATA_BUS] inb,
     //input rb_en,
     input [3:0] aluCtl,
-    output [`DATA_BUS] res
+    output [`DATA_BUS] outy
     
 );
 
-assign res = (aluCtl == 4'h0) ? (ina + inb) : `ZERO_64;
+wire [`DATA_BUS] resADD = ina + inb;
+
+assign outy = (aluCtl == 4'h0) ? resADD : `ZERO_64;
     
 endmodule
