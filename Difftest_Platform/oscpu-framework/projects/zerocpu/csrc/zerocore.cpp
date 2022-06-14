@@ -67,8 +67,8 @@ int main(int argc, char **argv)
 	  if( main_time % 10 == 0 ) 
 	  {
 		  top->clk = 0;
-		  /*
-		  if(top->RamReadEnable) {
+		  
+		  /*if(top->RamReadEnable) {
 		     top->RamReadData = ram[top->RamReadAddr];
 		     printf("read data %x\r\n",ram[top->RamReadAddr]);
 		  }*/

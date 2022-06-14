@@ -9,14 +9,22 @@ module DFF #(
 ) (
     input clk,
     input rst,
-    input wen,
+    //input wen,
     input [WIDTH-1:0] din,
-    output reg [WIDTH-1:0] dout
+    output [WIDTH-1:0] dout
 );
+
+reg [WIDTH-1:0] dout_r;
     always @(posedge clk) begin
-        if(rst) dout<={WIDTH{1'b0}};
-        else if(wen) dout<=din;
+        if(rst) begin 
+            dout_r<={WIDTH{1'b0}};
+        end
+        else begin
+            dout_r<=din;
+        end 
     end
+
+assign dout = dout_r;
 
 endmodule
 

@@ -28,12 +28,8 @@ class Vzerocore VL_NOT_FINAL {
     VL_IN8(&clk,0,0);
     VL_IN8(&rst,0,0);
     VL_OUT8(&RamReadEnable,0,0);
-    VL_OUT8(&RamWriteEnable,0,0);
     VL_IN64(&RamReadData,63,0);
     VL_OUT64(&RamReadAddr,63,0);
-    VL_OUT64(&RamWriteAddr,63,0);
-    VL_OUT64(&RamWriteMask,63,0);
-    VL_OUT64(&RamWriteData,63,0);
 
     // CELLS
     // Public to allow access to /* verilator public */ items.

@@ -1,26 +1,25 @@
 `timescale 1ns/1ps
 
-/* verilator lint_off UNDRIVEN */
-
 `include "defines.v"
 `include "if_stage.v"
 `include "id_stage.v"
 `include "ex_stage.v"
 `include "Regfile.v"
-
+`include "mem_stage.v"
+`include "ctrl.v"
 
 module zerocore (
     input clk,
     input rst,
     //interface with inst/data RAM
-    /* verilator lint_off UNUSED */
+   
     input [`DATA_BUS] RamReadData,
     output RamReadEnable,
-    output RamWriteEnable,
-    output [`ADDR_BUS] RamReadAddr,
-    output [`ADDR_BUS] RamWriteAddr,
-    output [`DATA_BUS] RamWriteMask,
-    output [`DATA_BUS] RamWriteData
+    //output RamWriteEnable,
+    output [`ADDR_BUS] RamReadAddr
+    //output [`ADDR_BUS] RamWriteAddr,
+    //output [`DATA_BUS] RamWriteMask,
+    //output [`DATA_BUS] RamWriteData
 );
     
 //wire [`ADDR_BUS] pc;
@@ -66,8 +65,16 @@ wire [`DATA_BUS] rs2DataD;
 wire [`DATA_BUS] rs1DataE;
 wire [`DATA_BUS] rs2DataE;
 
+// id stage -> exe stage
+wire rdWriteEnableE;
+wire [4 : 0]rdWriteAddrE;
+//wire [`DATA_BUS]rdWriteDataW;
 
-// exe stage -> wb stage
+// exe stage -> mem stage
+wire rdWriteEnableM;
+wire [4 : 0]rdWriteAddrM;
+
+// mem stage -> wb stage
 wire rdWriteEnableW;
 wire [4 : 0]rdWriteAddrW;
 wire [`DATA_BUS]rdWriteDataW;
@@ -78,6 +85,7 @@ assign RamReadEnable = 1'b1; //for local test
 
 assign RamReadAddr = pcF;
 assign instF = RamReadData[31:0];
+//assign instF = 32'h6666;
 
 
 if_stage u_if(
@@ -91,13 +99,16 @@ if_stage u_if(
 
 
 id_stage u_id(
-    .inst(instD),
-    .ra_en(rs1ReadEnable),
-    .ra_addr(rs1ReadAddr),
-    .rb_en(rs2ReadEnable),
-    .rb_addr(rs2ReadAddr),
-    .rd_en(rdWriteEnableW),
-    .rd_addr(rdWriteAddrW),
+    //INPUT
+    .clk(clk),
+    .instD(instD),
+    //OUTPUT
+    .rs1ReadEnable(rs1ReadEnable),
+    .rs1ReadAddr(rs1ReadAddr),
+    .rs2ReadEnable(rs2ReadEnable),
+    .rs2ReadAddr(rs2ReadAddr),
+    .rdWriteEnableE(rdWriteEnableE),
+    .rdWriteAddrE(rdWriteAddrE),
     .imm(imm),
     .aluBsrc(aluBsrc),
     .aluCtl(aluCtl)
@@ -105,8 +116,8 @@ id_stage u_id(
 
 
 
-DFF #(64) rs1Data_D2E(clk, rst, 1'b1, rs1DataD,rs1DataE);
-DFF #(64) rs2Data_D2E(clk, rst, 1'b1, rs2DataD,rs2DataE);
+DFF #(64) rs1Data_D2E(clk, rst, rs1DataD,rs1DataE);
+DFF #(64) rs2Data_D2E(clk, rst, rs2DataD,rs2DataE);
 
 assign ina = rs1DataE;
 assign inb = aluBsrc ? imm : rs2DataE;
@@ -114,16 +125,49 @@ assign inb = aluBsrc ? imm : rs2DataE;
 //assign rdWriteDataW = rs1DataE + rs2DataE;
 //assign rdWriteDataW = 64'h65;
 
+wire [1:0] Redirect1;
+wire [1:0] Redirect2;
 
 ex_stage u_ex(
+    //INPUT
+    .clk(clk),
+    .rst(rst),
     .ina(ina),
-    //.ra_en(ra_en),
     .inb(inb),
-    //.rb_en(rb_en),
     .aluCtl(aluCtl),
+    .rdWriteEnableE(rdWriteEnableE),
+    .rdWriteAddrE(rdWriteAddrE),
+    //OUTPUT
+    .rdWriteEnableM(rdWriteEnableM),
+    .rdWriteAddrM(rdWriteAddrM),
     .outy(rdWriteDataW)
 );
 
+mem_stage u_mem(
+    //INPUT
+    .clk(clk),
+    .rst(rst),
+    .rdWriteEnableM(rdWriteEnableM),
+    .rdWriteAddrM(rdWriteAddrM),
+    //OUTPUT
+    .rdWriteEnableW(rdWriteEnableW),
+    .rdWriteAddrW(rdWriteAddrW)
+);
+
+
+ctrl u_ctrl(
+    .clk(clk),
+    .rst(rst),
+    .rs1ReadAddr(rs1ReadAddr),
+    .rs2ReadAddr(rs2ReadAddr),
+    .rdWriteAddrE(rdWriteAddrE),
+    .rdWriteAddrM(rdWriteAddrM),
+    .rs1ReadEnable(rs1ReadEnable),
+    .rs2ReadEnable(rs2ReadEnable),
+    //OUTPUT 
+    .Redirect1(Redirect1),
+    .Redirect2(Redirect2)
+);
 
 Regfile u_regs(
     .clk(clk),

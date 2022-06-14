@@ -13,12 +13,8 @@ Vzerocore::Vzerocore(VerilatedContext* _vcontextp__, const char* _vcname__)
     , clk{vlSymsp->TOP.clk}
     , rst{vlSymsp->TOP.rst}
     , RamReadEnable{vlSymsp->TOP.RamReadEnable}
-    , RamWriteEnable{vlSymsp->TOP.RamWriteEnable}
     , RamReadData{vlSymsp->TOP.RamReadData}
     , RamReadAddr{vlSymsp->TOP.RamReadAddr}
-    , RamWriteAddr{vlSymsp->TOP.RamWriteAddr}
-    , RamWriteMask{vlSymsp->TOP.RamWriteMask}
-    , RamWriteData{vlSymsp->TOP.RamWriteData}
     , rootp{&(vlSymsp->TOP)}
 {
 }

@@ -21,6 +21,8 @@ always @(posedge clk) begin
     end
 end
 
-DFF #(32) u_inst_F2D(.clk(clk),.rst(rst),.wen(1'b1),.din(instF),.dout(instD));
-    
+//DFF #(32) u_inst_F2D(clk,rst,instF,instD);
+
+assign instD = instF;
+
 endmodule
